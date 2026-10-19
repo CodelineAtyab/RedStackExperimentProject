@@ -125,7 +125,26 @@ class Warmup_1{
 
 
 
-
+    public String front3(String str) {
+        if (str.length()>=3)
+        {
+            String neew = str.substring(0,3);
+            return neew+neew+neew;
+        }
+        else if(str.length()== 2)
+        {
+            String neew = str.substring(0,2);
+            return neew+neew+neew;
+        }
+        else if(str.length()== 1){
+            String neew = str.substring(0,1);
+            return neew+neew+neew;
+        }
+        else
+        {
+            return "";
+        }
+    }
 
 
 
