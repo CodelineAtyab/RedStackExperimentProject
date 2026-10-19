@@ -46,6 +46,19 @@ class Warmup_1{
         return 0;
     }
 
+    public static int diff21(int n) {
+        if(n <=21){
+            int sum = n-21;
+            return Math.abs(sum);
+        }
+        else
+        {
+            int sum =n-21;
+            int dbl = sum * 2;
+            return Math.abs(dbl);
+        }
+
+    }
 
 
 }
