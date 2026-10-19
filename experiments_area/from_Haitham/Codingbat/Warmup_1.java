@@ -174,6 +174,19 @@ class Warmup_1{
     }
 
 
+    public static boolean startHi(String str) {
+        if (str.length() <2)
+        {
+            return false;
+        }
+        String neew = str.substring(0, 2);
+        if (neew.equals("hi"))
+        {
+            return true;
+        }
+        return false;
+    }
+
 
 
 
