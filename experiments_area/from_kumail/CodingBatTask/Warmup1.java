@@ -4,6 +4,7 @@ public class Warmup1 {
         Warmup1 W1 = new Warmup1();
 
         System.out.println(W1.sleepIn(false, false));
+        System.out.println(W1.monkeyTrouble(true, true));
 
     }
 
@@ -13,6 +14,16 @@ public class Warmup1 {
         }
         return false;
     }
+    public boolean monkeyTrouble(boolean aSmile, boolean bSmile) {
+        if (aSmile && bSmile) {
+            return true;
+        }
+        if (!aSmile && !bSmile) {
+            return true;
+        }
+        return false;
+    }
+
 
 
 }
