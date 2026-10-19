@@ -41,6 +41,18 @@ class WarmUp1{
 		return (Math.abs(n-21)*2);
 	  }
 	}
+	
+	//Task 5
+	public boolean parrotTrouble(boolean talking, int hour) {
+	  if (talking && hour<7){
+		return true;
+	  }else if(talking&& hour>20){
+		
+		return true;
+	  }else{
+		return false;
+	  }
+	}
 
 	
     public static void main(){
@@ -65,7 +77,11 @@ class WarmUp1{
 		System.out.println(obj.diff21(19));
 		System.out.println(obj.diff21(10));
 		System.out.println(obj.diff21(21));
-		
+		//Task 5
+		System.out.println("Task5-parrotTrouble");
+		System.out.println(obj.parrotTrouble(true,6));
+		System.out.println(obj.parrotTrouble(true,7));
+		System.out.println(obj.parrotTrouble(false,6));
 
     }
 }
