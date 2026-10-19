@@ -32,7 +32,15 @@ class WarmUp1{
 		return ((a+b)*2);
 	  }
 	}
-
+	
+	//Task 4
+	public int diff21(int n) {
+	  if (n<21){
+		return Math.abs(n-21);
+	  }else{
+		return (Math.abs(n-21)*2);
+	  }
+	}
 
 	
     public static void main(){
@@ -52,6 +60,11 @@ class WarmUp1{
 		System.out.println(obj.sumDouble(1,2));
 		System.out.println(obj.sumDouble(3,2));
 		System.out.println(obj.sumDouble(2,2));
+		//Task 4
+		System.out.println("Task4-diff21");
+		System.out.println(obj.diff21(19));
+		System.out.println(obj.diff21(10));
+		System.out.println(obj.diff21(21));
 		
 
     }
