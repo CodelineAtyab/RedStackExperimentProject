@@ -5,6 +5,8 @@ public class Warmup1 {
 
         System.out.println(W1.sleepIn(false, false));
         System.out.println(W1.monkeyTrouble(true, true));
+        System.out.println(W1.sumDouble(2, 4));
+
 
     }
 
@@ -23,6 +25,15 @@ public class Warmup1 {
         }
         return false;
     }
+    public int sumDouble(int a, int b) {
+        int s = a + b;
+        if (a == b) {
+            s = s * 2;
+        }
+        return s;
+    }
+
+
 
 
 
