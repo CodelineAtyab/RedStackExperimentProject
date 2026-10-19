@@ -59,10 +59,21 @@ public class Main {
         return (a == 10 || b == 10 || a+b == 10);
     }
 
-    
+
 //    nearHundred
     public boolean nearHundred(int n) {
         return ((Math.abs(100 - n) <= 10) || (Math.abs(200 - n) <= 10));
+    }
+
+//    posNeg
+    public boolean posNeg(int a, int b, boolean negative) {
+        if (a < 0 && b < 0 && negative) {
+            return true;
+        }
+        else if ((a < 0 && b > 0 || a > 0 && b < 0) && !negative) {
+            return true;
+        }
+        return false;
     }
 
 }
