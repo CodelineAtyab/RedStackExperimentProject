@@ -76,7 +76,7 @@ public class Main {
         return false;
     }
 
-    
+
 //    notString
     public String notString(String str) {
         if (str.length() >= 3 && str.substring(0, 3).equals("not")) {
@@ -84,5 +84,14 @@ public class Main {
         }
         return "not " + str;
     }
+
+//    missingChar
+    public String missingChar(String str, int n) {
+        String front = str.substring(0, n);
+
+        String back = str.substring(n+1, str.length());
+        return front + back;
+    }
+
 
 }
