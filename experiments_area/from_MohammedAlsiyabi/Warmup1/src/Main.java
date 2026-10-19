@@ -37,7 +37,7 @@ public class Main {
         return sum;
     }
 
-    
+
 //    diff21
     public int diff21(int n) {
         if (n <= 21) {
@@ -48,5 +48,21 @@ public class Main {
     }
 
 
+//    parrotTrouble
+    public boolean parrotTrouble(boolean talking, int hour) {
+        return (talking && (hour < 7 || hour > 20));
+    }
+
+
+//    makes10
+    public boolean makes10(int a, int b) {
+        return (a == 10 || b == 10 || a+b == 10);
+    }
+
+    
+//    nearHundred
+    public boolean nearHundred(int n) {
+        return ((Math.abs(100 - n) <= 10) || (Math.abs(200 - n) <= 10));
+    }
 
 }
