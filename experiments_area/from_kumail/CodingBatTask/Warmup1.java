@@ -11,6 +11,7 @@ public class Warmup1 {
         System.out.println(W1.makes10(8, 9));
         System.out.println(W1.nearHundred(105));
         System.out.println(W1.posNeg(-1, 1, false));
+        System.out.println(W1.makes10(5, 9));
 
 
 
