@@ -8,7 +8,8 @@ public class Warmup1 {
         System.out.println(W1.sumDouble(2, 7));
         System.out.println(W1.diff21(27));
         System.out.println(W1.parrotTrouble(true, 9));
-        System.out.println(W1.makes10(5, 9));
+        System.out.println(W1.makes10(8, 9));
+        System.out.println(W1.nearHundred(105));
 
 
 
@@ -50,6 +51,10 @@ public class Warmup1 {
 
     public boolean makes10(int a, int b) {
         return a == 10 || b == 10 || a + b == 10;
+    }
+    public boolean nearHundred(int n) {
+        return Math.abs(100 - n) <= 10
+                || Math.abs(200 - n) <= 10;
     }
 
 
