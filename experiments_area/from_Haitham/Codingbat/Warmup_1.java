@@ -159,6 +159,21 @@ class Warmup_1{
     }
 
 
+    public static String front22(String str) {
+        if (str.length()>=2 )
+        {
+            String neew = str.substring(0,2);
+            return neew + str + neew;
+        }
+        else if(str.length() == 1 )
+        {
+            String neew = str.substring(0,1);
+            return neew + str + neew;
+        }
+        return str;
+    }
+
+
 
 
 
