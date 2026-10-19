@@ -3,4 +3,23 @@ class Warmup_1{
 
     }
 
+
+    public boolean sleepIn(boolean weekday, boolean vacation) {
+        if(!weekday  == true )
+        {
+            return true;
+
+        }
+        if(vacation == true )
+        {
+            return true;
+
+        }
+        return false;
+    }
+
+
+
+
+
 }
