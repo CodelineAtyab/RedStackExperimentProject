@@ -6,6 +6,7 @@ public class Warmup1 {
         System.out.println(W1.sleepIn(false, false));
         System.out.println(W1.monkeyTrouble(true, true));
         System.out.println(W1.sumDouble(2, 4));
+        System.out.println(W1.diff21(25));
 
 
     }
@@ -31,6 +32,13 @@ public class Warmup1 {
             s = s * 2;
         }
         return s;
+    }
+    public int diff21(int n) {
+        if (n <= 21) {
+            return 21 - n;
+        } else {
+            return (n - 21) * 2;
+        }
     }
 
 
