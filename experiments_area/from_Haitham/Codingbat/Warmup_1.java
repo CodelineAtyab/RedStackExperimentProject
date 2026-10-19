@@ -147,6 +147,12 @@ class Warmup_1{
     }
 
 
+    public static String backAround(String str) {
+        String neew = str.substring(str.length()-1);
+        return neew+str+neew;
+    }
+
+
 
 
 
