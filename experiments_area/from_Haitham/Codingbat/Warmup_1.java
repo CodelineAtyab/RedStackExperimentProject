@@ -261,6 +261,27 @@ class Warmup_1{
 
 
 
+    public static int intMax(int a, int b, int c) {
+        int largest;
+        if (a>b)
+        {
+            largest = a;
+        }
+        else
+        {
+            largest = b;
+        }
+        if(largest>c)
+        {
+            return largest;
+        }
+        else
+        {
+            largest = c;
+        }
+        return largest;
+    }
+
 
 
 
