@@ -5,9 +5,10 @@ public class Warmup1 {
 
         System.out.println(W1.sleepIn(false, false));
         System.out.println(W1.monkeyTrouble(true, true));
-        System.out.println(W1.sumDouble(2, 4));
+        System.out.println(W1.sumDouble(2, 7));
         System.out.println(W1.diff21(27));
         System.out.println(W1.parrotTrouble(true, 9));
+        System.out.println(W1.makes10(5, 9));
 
 
 
@@ -42,9 +43,13 @@ public class Warmup1 {
             return (n - 21) * 2;
         }
     }
-    
+
     public boolean parrotTrouble(boolean talking, int hour) {
         return talking && (hour < 7 || hour > 20);
+    }
+
+    public boolean makes10(int a, int b) {
+        return a == 10 || b == 10 || a + b == 10;
     }
 
 
