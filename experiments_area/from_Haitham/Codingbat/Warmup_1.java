@@ -32,6 +32,19 @@ class Warmup_1{
     }
 
 
+    public static int sumDouble(int a, int b) {
+        if (a != b)
+        {
+            int sum = a+b;
+            return sum;
+        }
+        else if(a == b)
+        {
+            int sum = (a+b)*2;
+            return sum;
+        }
+        return 0;
+    }
 
 
 
