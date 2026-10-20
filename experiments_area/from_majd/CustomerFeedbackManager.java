@@ -4,8 +4,7 @@ import java.util.Scanner;
 public class CustomerFeedbackManager{
 
     static String readText(String prompt){
-    Scanner scInput=new Scanner(System.in); //stored in heap
-
+    Scanner scInput=new Scanner(System.in); 
     System.out.println(prompt);
 
     String inputValue=scInput.nextLine();
@@ -14,7 +13,7 @@ public class CustomerFeedbackManager{
 
 }
     static int readNumber(String prompt){
-    Scanner scInput=new Scanner(System.in); //stored in heap
+    Scanner scInput=new Scanner(System.in); 
 
     System.out.println(prompt);
 
