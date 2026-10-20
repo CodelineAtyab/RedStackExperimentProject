@@ -26,20 +26,10 @@ public class PanasonicRemote {
 
     }
 
-    static boolean readCondition(String prompt) {
-
-        boolean conditionInput;
-
-        System.out.println(prompt);
-        conditionInput = scInput.nextBoolean();
-        return conditionInput;
-
-    }
 
     public static boolean isRemoteOn = false;
 
-    static void displayMenu() {
-        String[] array = { "on", "off", "temp", "exit" };
+    static void displayMenu(String[]array) {
 
         for (int i = 0; i < array.length; i++) {
 
@@ -54,11 +44,11 @@ public class PanasonicRemote {
 
     }
 
-    static void Program() {
+    static void Program(String[]Array) {
 
         String choice = "";
         do {
-            displayMenu();
+            displayMenu(Array);
 
             choice = readText("\n\nChoose: ");
 
@@ -95,7 +85,9 @@ write("Remote is now OFF\n\n");
 
     public static void main(String[] args) {
 
-        Program();
+                String[] array = { "on", "off", "temp", "exit"};
+
+        Program(array);
 
     }
 
