@@ -347,5 +347,14 @@ public class Warmup_1{
         return(a%10 == b%10);
     }
 
-    
+    public static String endUp(String str) {
+        if (str.length()<=3)
+        {
+            String neew = str.toUpperCase();
+            return neew;
+        }
+        String upper3 = str.substring(0,str.length()-3) + str.substring(str.length()-3).toUpperCase();
+        return upper3;
+    }
+
 }
