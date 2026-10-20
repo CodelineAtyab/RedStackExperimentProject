@@ -325,4 +325,22 @@ public class Warmup_1{
         return 0;
     }
 
+
+    public static boolean stringE(String str) {
+        int eCount = 0;
+        int counter = str.length();
+        for (int i = 0; i<counter;i++)
+        {
+            if(str.charAt(i) == 'e')
+            {
+            eCount++;
+            }
+        }
+        if (eCount >=1 && eCount <= 3)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }
