@@ -33,4 +33,13 @@ return CheckStartWithHi;
   return sentenceWithoutSpecifiedChar;
 }
 
+
+
+
+//warmup1: diff21
+public static int diff21(int n) {
+  
+  return (n>21)? Math.abs((n-21)*2):Math.abs(n-21);
+}
+
 }
