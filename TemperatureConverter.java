@@ -3,11 +3,13 @@ import java.util.Scanner;
 public class TemperatureConverter {
 
     public static void main(String[] srgs){
+
         System.out.println("this temperature degree !");
+
 
         Scanner tempObject = new Scanner(System.in);
 
-        System.out.println("Please enter the temperature in Celsius: ");
+        System.out.print("Please enter the temperature in Celsius: ");
         String userInputTemp = tempObject.nextLine();
 
 
