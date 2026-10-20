@@ -35,4 +35,14 @@ public class Warmup2 {
         return (n % 3 == 0) || (n % 5 ==0);
     }
 
+    //front22
+    public String front22(String str) {
+        int take = 2;
+        if (take > str.length()){
+            take = str.length();
+        }
+        String front = str.substring(0, take);
+        return front + str + front;
+    }
+
 }
