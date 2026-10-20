@@ -31,5 +31,7 @@ weatherStation.currentCelsius=Double.parseDouble(readText("Enter temperature in 
 
 write("Fahrenheit: "+weatherStation.getFahrenheit()+" / "+"Kalvin: "+weatherStation.getKelvin());
 
+
+scInput.close();
     }
 }
