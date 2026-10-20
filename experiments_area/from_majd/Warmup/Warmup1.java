@@ -13,4 +13,15 @@ return (a==b)? (a+b)*2: a+b;
 }
 
 
+//warmup1:startHi
+public static boolean startHi(String str) {
+  
+boolean CheckStartWithHi=false;
+  if(str.length()>=2)
+CheckStartWithHi=str.substring(0,2).equals("hi");
+
+return CheckStartWithHi;
+  
+}
+
 }
