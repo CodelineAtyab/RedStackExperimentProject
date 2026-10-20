@@ -1,10 +1,10 @@
-JAVA vERSION:
-        java version "27" 2026-09-15
-        Java(TM) SE Runtime Environment (build 27+35-2325)
-        Java HotSpot(TM) 64-Bit Server VM (build 27+35-2325, mixed mode, sharing)
-JAVA COMPILER:
-        javac 27
+Panasonic Remote
+A simple Java program that simulates a Panasonic remote control.
 
-Compilation:
-        • javac must produce PanasonicRemote.class in the same folder.
-        • Zero compilation warnings or errors.
+JDK Version: Oracle JDK 27 (27+35-2325)
+
+How to Run:
+    1-Compile the program 
+        javac PanasonicRemote.java
+    2-Run the program:
+        java PanasonicRemote
