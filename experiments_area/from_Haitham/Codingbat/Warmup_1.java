@@ -343,4 +343,9 @@ public class Warmup_1{
         return false;
     }
 
+    public static boolean lastDigit(int a, int b) {
+        return(a%10 == b%10);
+    }
+
+    
 }
