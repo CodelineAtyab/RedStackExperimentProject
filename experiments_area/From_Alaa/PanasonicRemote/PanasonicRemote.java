@@ -1,4 +1,4 @@
-public class PanRemote_Solution{ // class is a blueprint for creating objects, it defines the properties and behaviors of the objects
+public class PanasonicRemote{ // class is a blueprint for creating objects, it defines the properties and behaviors of the objects
     
     //void is a return type that indicates the method does not return any value
     //void main is the entry point of the program, it is where the program starts executing
