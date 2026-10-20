@@ -6,6 +6,9 @@ public class WarmupOne {
 	System.out.println(WarmupOne.diff21(19));
 	System.out.println(WarmupOne.parrotTrouble(true , 7 ));
 	System.out.println(WarmupOne.makes10(9,10));
+	System.out.println(WarmupOne.nearHundred(100));
+	
+	
   }
   //sleepIn solution
   public static boolean sleepIn(boolean weekday, boolean vacation) {
@@ -58,7 +61,7 @@ public static boolean parrotTrouble(boolean talking, int hour) {
 }
 
 //makes 10
- public boolean makes10(int a, int b) {
+ public static boolean makes10(int a, int b) {
   if ((a==10 || b==10) || (a+b==10)){
     return true;
   }
@@ -66,6 +69,16 @@ public static boolean parrotTrouble(boolean talking, int hour) {
     return false;
   }
 }
+
+public static boolean nearHundred(int n) {
+  if (Math.abs(100-n)==10 || Math.abs(200-n)==10){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
 
 
 }
