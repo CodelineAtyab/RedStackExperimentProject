@@ -4,10 +4,12 @@ import java.util.Scanner;
 public class CustomerFeedbackManager{
 
     static String readText(String prompt){
+
+        //function to read input
     Scanner scInput=new Scanner(System.in); 
     System.out.println(prompt);
 
-    String inputValue=scInput.nextLine();
+    String inputValue=scInput.nextLine(); 
 
     return inputValue;
 
