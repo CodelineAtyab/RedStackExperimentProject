@@ -5,7 +5,7 @@ public class WeatherStation {
         double currentCelsius = 25.0; // default temperature in Celsius
 
         Scanner CelsiusScan = new Scanner(System.in);
-        System.out.println("Enter current temperature in Celsius: ");
+        System.out.print("Enter current temperature in Celsius: ");
         String tempC = CelsiusScan.nextLine();
         currentCelsius = Double.parseDouble(tempC); // convert input to double
 
