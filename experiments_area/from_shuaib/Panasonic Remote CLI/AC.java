@@ -2,15 +2,15 @@ public class AC {
 
     int temperature = 24;
 
-    public void acOn(boolean isOn) {
-        if (isOn) {
-            System.out.println("AC is turned ON.");
+    public String acOn(boolean isRemoteOn ) {
+        if (isRemoteOn) {
+            return "Remote is now ON.";
         } else {
-            System.out.println("AC is turned OFF.");
+            return "Remote is now OFF.";
         }
     }
 
-    public int acTemperature() {
-        return temperature;
+    public void acTemperature() {
+        System.out.println("Current temperature: " + temperature + "°C");
     }
 }
