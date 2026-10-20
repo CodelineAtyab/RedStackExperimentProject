@@ -3,7 +3,7 @@ public class Warmup_1{
 
     }
 
-
+    // 1. sleepIn
     public static boolean sleepIn(boolean weekday, boolean vacation) {
         if(!weekday  == true )
         {
@@ -18,6 +18,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 2. monkeyTrouble
     public static boolean monkeyTrouble(boolean aSmile, boolean bSmile) {
         if(aSmile  == true && bSmile == true )
         {
@@ -31,7 +32,7 @@ public class Warmup_1{
         return false;
     }
 
-
+    // 3. sumDouble
     public static int sumDouble(int a, int b) {
         if (a != b)
         {
@@ -46,6 +47,7 @@ public class Warmup_1{
         return 0;
     }
 
+    // 4. diff21
     public static int diff21(int n) {
         if(n <=21){
             int sum = n-21;
@@ -60,6 +62,7 @@ public class Warmup_1{
 
     }
 
+    // 5. parrotTrouble
     public static boolean parrotTrouble(boolean talking, int hour) {
         if(talking == true && (hour <7 || hour >20))
         {
@@ -68,6 +71,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 6. makes10
     public static boolean makes10(int a, int b) {
         if (a == 10 || b == 10 || a+b== 10)
         {
@@ -76,6 +80,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 7. nearHundred
     public static boolean nearHundred(int n) {
         if((n <=110 && n >=90) || (n <=210 && n >=190) )
         {
@@ -84,6 +89,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 8. posNeg
     public static boolean posNeg(int a, int b, boolean negative) {
         if(a<0 && b<0 && negative == true)
         {
@@ -96,6 +102,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 9. notString
     public static String notString(String str) {
         if(str.length() >=3 && str.substring(0,3).equals("not"))
         {
@@ -106,14 +113,14 @@ public class Warmup_1{
         return "not " + str;
     }
 
-
+    // 10. missingChar
     public static String missingChar(String str, int n) {
         String front = str.substring(0,n);
         String back = str.substring(n+1,str.length());
         return front+back;
     }
 
-
+    // 11. frontBack
     public static String frontBack(String str) {
         if(str.length() >1){
 
@@ -123,8 +130,7 @@ public class Warmup_1{
         return str;
     }
 
-
-
+    // 12. front3
     public static String front3(String str) {
         if (str.length()>=3)
         {
@@ -146,19 +152,18 @@ public class Warmup_1{
         }
     }
 
-
+    // 13. backAround
     public static String backAround(String str) {
         String neew = str.substring(str.length()-1);
         return neew+str+neew;
     }
 
-
-
+    // 14. or35
     public static boolean or35(int n) {
         return (n % 3 == 0) || (n % 5 == 0);
     }
 
-
+    // 15. front22
     public static String front22(String str) {
         if (str.length()>=2 )
         {
@@ -173,7 +178,7 @@ public class Warmup_1{
         return str;
     }
 
-
+    // 16. startHi
     public static boolean startHi(String str) {
         if (str.length() <2)
         {
@@ -187,8 +192,7 @@ public class Warmup_1{
         return false;
     }
 
-
-
+    // 17. icyHot
     public static boolean icyHot(int temp1, int temp2) {
         if ((temp1 < 0 && temp2 > 100) || (temp1 > 100 && temp2 < 0))
         {
@@ -197,7 +201,7 @@ public class Warmup_1{
         return false;
     }
 
-
+    // 18. in1020
     public static boolean in1020(int a, int b) {
         if ((a >= 10 && a <= 20) || (b >= 10 && b <= 20))
         {
@@ -206,6 +210,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 19. hasTeen
     public static boolean hasTeen(int a, int b, int c) {
         if ((a >= 13 && a <= 19) || (b >= 13 && b <= 19) || (c >= 13 && c <= 19)) {
             return true;
@@ -213,6 +218,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 20. loneTeen
     public static boolean loneTeen(int a, int b) {
         if (((a >= 13 && a <= 19) && !(b >= 13 && b <= 19)) || ((b >= 13 && b <= 19) && !(a >= 13 && a <= 19)) )
         {
@@ -221,6 +227,7 @@ public class Warmup_1{
         return false;
     }
 
+    // 21. delDel
     public static String delDel(String str) {
         if (str.length() >=4 && str.substring(1,4).equals("del"))
         {
@@ -232,6 +239,7 @@ public class Warmup_1{
 
     }
 
+    // 22. mixStart
     public static boolean mixStart(String str) {
         if(str.length() <=2)
         {
@@ -244,8 +252,7 @@ public class Warmup_1{
         return false;
     }
 
-
-
+    // 23. startOz
     public static String startOz(String str) {
         String neww = "";
         if (str.length() >= 1 && str.charAt(0)=='o')
@@ -259,8 +266,7 @@ public class Warmup_1{
         return neww;
     }
 
-
-
+    // 24. intMax
     public static int intMax(int a, int b, int c) {
         int largest;
         if (a>b)
@@ -282,6 +288,7 @@ public class Warmup_1{
         return largest;
     }
 
+    // 25. close10
     public static int close10(int a, int b) {
         if(Math.abs(a-10) < Math.abs(b-10))
         {
@@ -294,7 +301,7 @@ public class Warmup_1{
         return b;
     }
 
-
+    // 26. in3050
     public static boolean in3050(int a, int b) {
         if (a >= 30 && a <= 40 && b >= 30 && b <= 40) {
             return true;
@@ -305,7 +312,7 @@ public class Warmup_1{
         return false;
     }
 
-
+    // 27. max1020
     public static int max1020(int a, int b) {
         if (b > a) {
             int larger = a;
@@ -325,7 +332,7 @@ public class Warmup_1{
         return 0;
     }
 
-
+    // 28. stringE
     public static boolean stringE(String str) {
         int eCount = 0;
         int counter = str.length();
@@ -343,10 +350,12 @@ public class Warmup_1{
         return false;
     }
 
+    // 29. lastDigit
     public static boolean lastDigit(int a, int b) {
         return(a%10 == b%10);
     }
 
+    // 30. endUp
     public static String endUp(String str) {
         if (str.length()<=3)
         {
@@ -357,6 +366,7 @@ public class Warmup_1{
         return upper3;
     }
 
+    // 31. everyNth
     public static String everyNth(String str, int n) {
         String neew = "";
         for (int i = 0; i<str.length() ; i=i+n)
