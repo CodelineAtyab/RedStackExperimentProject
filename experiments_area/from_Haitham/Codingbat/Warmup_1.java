@@ -125,7 +125,7 @@ public class Warmup_1{
 
 
 
-    public String front3(String str) {
+    public static String front3(String str) {
         if (str.length()>=3)
         {
             String neew = str.substring(0,3);
@@ -324,15 +324,5 @@ public class Warmup_1{
         }
         return 0;
     }
-
-
-
-
-
-
-
-
-
-
 
 }
