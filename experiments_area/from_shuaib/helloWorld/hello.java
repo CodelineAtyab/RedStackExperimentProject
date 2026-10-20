@@ -12,10 +12,11 @@ public class hello {
 		boolean stop = false;
 
 		while (!stop) {
-			System.out.println("chose from options below: ");
+			System.out.println("\n### Car Information System ###");
 			System.out.println("1. Car Honk");
 			System.out.println("2. Check Car Speed");
 			System.out.println("3. Exit");
+			System.out.print("chose from the options above: ");
 			String option = sc.nextLine();
 
 			switch (option) {
@@ -34,6 +35,7 @@ public class hello {
 					break;
 				default:
 					System.out.println("Invalid option. Please try again.");
+					break;
 			}
 		}
 	}
