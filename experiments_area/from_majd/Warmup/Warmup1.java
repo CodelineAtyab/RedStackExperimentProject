@@ -24,4 +24,13 @@ return CheckStartWithHi;
   
 }
 
+
+//warmup1: missingChar
+    public static String missingChar(String str, int n) {
+  
+  String sentenceWithoutSpecifiedChar=str.substring(0,n)+str.substring(n+1);
+  
+  return sentenceWithoutSpecifiedChar;
+}
+
 }
