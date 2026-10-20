@@ -23,14 +23,17 @@ public class hello {
 				case "1":
 					System.out.println("Enter true or false to honk the car:");
 					boolean isHonk = sc.nextBoolean();
+					sc.nextLine();
 					car.carHonk(isHonk);
 					break;
 				case "2":
 					System.out.println("Enter the Speed of car");
 					double speed = sc.nextDouble();
+					sc.nextLine();
 					System.out.println(car.carSpeed(speed));
 					break;
 				case "3":
+					System.out.println("Exiting the program. Goodbye!");
 					stop = true;
 					break;
 				default:
