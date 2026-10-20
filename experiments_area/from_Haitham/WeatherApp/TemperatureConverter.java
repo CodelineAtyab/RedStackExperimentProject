@@ -14,8 +14,8 @@ public class TemperatureConverter {
         double fahrenheit = (celsius * 9/5) + 32;
         double kelvin = celsius + 273.15;
         System.out.println("---------------------------------");
-        System.out.println("Temperature in Fahrenheit: " + fahrenheit);
-        System.out.println("Temperature in Kelvin: " + kelvin);
+        System.out.println("Fahrenheit: " + fahrenheit);
+        System.out.println("Kelvin: " + kelvin);
         System.out.println("---------------------------------");
     }
 }
