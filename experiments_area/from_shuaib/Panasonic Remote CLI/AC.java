@@ -11,6 +11,6 @@ public class AC {
     }
 
     public void acTemperature() {
-        System.out.println("Current temperature: " + temperature + "°C");
+        System.out.println("Current temperature: " + temperature + " C");
     }
 }
