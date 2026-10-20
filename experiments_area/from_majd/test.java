@@ -1,7 +1,7 @@
-public class test{
+public class test {
     
-     public static void main(String[] args) {
-        System.out.println("WELCOME to RedStack");
+    public static void main(String[] args) {
+    System.out.println("WELCOME to RedStack");
         
     }
 }
