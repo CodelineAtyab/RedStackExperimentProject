@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
 public class CustomerFeedbackManager{
 
     static String readText(String prompt){
