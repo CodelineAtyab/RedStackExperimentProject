@@ -89,7 +89,7 @@ public class Warmup_1{
         {
             return true;
         }
-        else if((a<0 && b>=0 && negative == false)||(b<0 && a>=0 && negative == false) )
+        else if((a<0 && b>0 && negative == false)||(b<0 && a>0 && negative == false) )
         {
             return true;
         }
