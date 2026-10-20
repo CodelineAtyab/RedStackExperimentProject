@@ -4,6 +4,7 @@ public class PanasonicRemote {
     public static void main(String[] args){
 
         Scanner sc = new Scanner(System.in);
+        AC ac = new AC();
         boolean stop = false;
 
         while(!stop){
@@ -18,16 +19,16 @@ public class PanasonicRemote {
 
 			switch (option) {
 				case "1":
-					
+                    System.out.println(ac.acOn(true));
 					break;
 				case "2":
-					
+					System.out.println(ac.acOn(false));
 					break;
 				case "3":
-					
+					ac.acTemperature();
 					break;
                 case "4":
-					
+					stop = true;
 					break;
 				default:
 					System.out.println("Invalid option. Please try again.");
