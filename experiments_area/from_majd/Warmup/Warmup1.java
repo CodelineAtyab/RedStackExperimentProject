@@ -43,3 +43,27 @@ public static int diff21(int n) {
 }
 
 }
+
+
+//warmup 1: close10
+
+public int getSubtractionResult(int number, int target_value){
+
+  return Math.abs(number-target_value);
+}
+
+
+public int close10(int a, int b) {
+  
+  
+  if(getSubstractionResult(a,10)<getSubstractionResult(b,10))
+  return a;
+  else if(getSubstractionResult(b,10)<getSubstractionResult(a,10))
+  return b;
+  
+  
+  return 0;
+  
+}
+
+
