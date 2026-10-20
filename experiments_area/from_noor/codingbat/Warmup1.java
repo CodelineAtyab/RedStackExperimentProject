@@ -3,6 +3,9 @@ public class Warmup1 {
         Warmup1 w = new Warmup1();
         System.out.println(w.sleepIn(false, false));
               System.out.println(diff21(19));
+              System.out.println(nearHundred(95));
+              System.out.println(missingChar("kitten", 1));
+              System.out.println(backAround("cat"));
 
       
     }
@@ -24,6 +27,42 @@ public class Warmup1 {
   return (n-21)*2;
   }
 }
+
+
+//q3
+//Given an int n, return true if it is within 10 of 100 or 200. Note: Math.abs(num) computes the absolute value of a number.
+public static boolean nearHundred(int n){
+  return (Math.abs(100-n)<=10)||(Math.abs(200-n)<=10);
+}
+
+
+//q4
+//Given a non-empty string and an int n, return a new string where the char at index n has been removed. 
+// The value of n will be a valid index of a char in the original string (i.e. n will be in the range 0..str.length()-1 inclusive).
+public static String missingChar(String str, int n) {
+   return str.substring(0, n) + str.substring(n + 1);
+
+}
+
+//q5
+//Given a string, take the last char and return a new string with the last char added at the front and back, so "cat" yields "tcatt". The original string will be length 1 or more.
+public static String backAround(String str) {
+  String last = str.substring(str.length() - 1);
+  return last + str + last;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
