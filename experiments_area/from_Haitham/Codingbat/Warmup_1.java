@@ -357,4 +357,13 @@ public class Warmup_1{
         return upper3;
     }
 
+    public static String everyNth(String str, int n) {
+        String neew = "";
+        for (int i = 0; i<str.length() ; i=i+n)
+        {
+            neew = neew + str.charAt(i);
+        }
+        return neew;
+    }
+
 }
