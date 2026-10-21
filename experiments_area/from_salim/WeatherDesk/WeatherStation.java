@@ -17,12 +17,10 @@ public class WeatherStation {
 
         System.out.print("Please enter the temperature in Celsius: ");
         String input = scanner.nextLine();
-        station.c = Double.parseDouble(input);
+        station.currentCelsius = Double.parseDouble(input);
 
         System.out.println("Fahrenheit: " + station.getFahrenheit());
         System.out.println("Kelvin: " + station.getKelvin());
-
-
 
         scanner.close();
     }
