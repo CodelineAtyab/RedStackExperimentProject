@@ -4,11 +4,11 @@ public class WeatherStation {
     double currentCelsius = 25.0;
 
     double getFahrenheit() {
-        return c * 9 / 5 + 32;
+        return currentCelsius * 9 / 5 + 32;
     }
 
     double getKelvin() {
-        return c + 273.15;
+        return currentCelsius + 273.15;
     }
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
