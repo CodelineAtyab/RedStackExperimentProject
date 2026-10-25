@@ -27,7 +27,7 @@ static String readText(String prompt){
 
 WeatherStation weatherStation=new WeatherStation();
 
-weatherStation.currentCelsius=Double.parseDouble(readText("Enter temperature in celsius:"));
+weatherStation.currentCelsius=Double.parseDouble(readText("Enter temperature value in celsius:"));
 
 write("Fahrenheit: "+weatherStation.getFahrenheit()+" / "+"Kalvin: "+weatherStation.getKelvin());
 
