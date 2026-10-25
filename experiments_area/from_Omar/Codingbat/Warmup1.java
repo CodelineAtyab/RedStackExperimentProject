@@ -40,10 +40,13 @@ public class Warmup1 {
     return front + front + front;
 
   }
-}
 
-// warm up 1 -- backAround
+  // warm up 1 -- backAround
 public String backAround(String str) {
   return str.substring(str.length()-1) + str +str.substring(str.length()-1);
 }
+
+}
+
+
 
