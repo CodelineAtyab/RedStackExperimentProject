@@ -42,7 +42,6 @@ public class PanasonicRemote {
                     System.out.println("Current temperature: " + currentTemperature+"°C"); // print the current temperature
                     break;
                 case "4" , "exit":
-                    System.out.println("Exiting...");
                     stop = true; // set stop to true to exit the loop and end the program
                     break;
                 default:
