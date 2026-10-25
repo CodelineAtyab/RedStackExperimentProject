@@ -21,13 +21,29 @@ public class TemperatureConverter {
         System.out.println(prompt);
     }
 
+    
+
+
+    static double currentCelsius = 25.0;
+
+    static double getFahrenheit() {
+
+        return (currentCelsius * 9 / 5) + 32;
+
+    }
+
+    static double getKelvin() {
+
+        return currentCelsius + 273.15;
+    }
+
+
     public static void main(String[] args) {
 
-        WeatherStation weatherStation = new WeatherStation();
 
-        weatherStation.currentCelsius = Double.parseDouble(readText("Enter temperature value in celsius:"));
+        currentCelsius = Double.parseDouble(readText("Enter temperature value in celsius:"));
 
-        write("Fahrenheit: " + weatherStation.getFahrenheit() + " / " + "Kalvin: " + weatherStation.getKelvin());
+        write("Fahrenheit: " + getFahrenheit() + " / " + "Kelvin: " +getKelvin());
 
         scInput.close();
     }
