@@ -18,8 +18,9 @@ public class WeatherStation {
 
 
     public static double getFahrenheit() {
-        return (currentCelsius * 9/5) + 32;
+        return (currentCelsius * 9/5) + 32 ;
     }
+
 
     public static double getKelvin() {
         return currentCelsius + 273.15;
