@@ -1,10 +1,12 @@
+import java.util.Scanner;
 public class PanasonicRemote {
-
+    public static Scanner sc= new Scanner(System.in);
     public static void main(String[] args) {
         int currentTemperature = 24;
         boolean isOn = false; // Variables used for the state of the remote, while loop and show stored temp
                               // values
         boolean stop = false;
+
 
         // won't stop until stop = true
         while (!stop) {
@@ -13,21 +15,22 @@ public class PanasonicRemote {
             System.out.println("1. power on");
             System.out.println("2. power off");
             System.out.println("3. temperature"); // options to choose from
-            System.out.println("4. exist");
+            System.out.println("4. exit");
             System.out.print("Choose an option:");
 
-            int option = new java.util.Scanner(System.in).nextInt(); // inputing option value
+            String option= sc.nextLine(); // inputing option value
 
+            
             switch (option) {
-                case 1:
+                case "1", "on":
                     if (isOn) {
-                        System.out.println("The remote is already on.");
+                        System.out.println("Remote is now ON");
                     } else { // if the remote is off, turn it on and print the message
                         isOn = true;
-                        System.out.println("The remote is now on.");
+                        System.out.println("Remote is now ON");
                     }
                     break;
-                case 2:
+                case "2" , "off":
                     if (!isOn) {
                         System.out.println("The remote is already off.");
                     } else {
@@ -35,10 +38,10 @@ public class PanasonicRemote {
                         System.out.println("The remote is now off.");
                     }
                     break;
-                case 3:
-                    System.out.println("Current temperature: " + currentTemperature); // print the current temperature
+                case "3" , "temp":
+                    System.out.println("Current temperature: " + currentTemperature+"°C"); // print the current temperature
                     break;
-                case 4:
+                case "4" , "exit":
                     System.out.println("Exiting...");
                     stop = true; // set stop to true to exit the loop and end the program
                     break;
@@ -49,5 +52,6 @@ public class PanasonicRemote {
                     break;
             }
         }
+        sc.close();
     }
 }

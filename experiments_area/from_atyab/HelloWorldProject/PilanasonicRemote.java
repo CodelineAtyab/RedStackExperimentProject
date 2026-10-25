@@ -1,4 +1,4 @@
-public class PanasonicRemote {
+public class PilanasonicRemote {
     public static void main(String[] args) {
         System.out.println("Hello, Panasonic Remote!");
     }
