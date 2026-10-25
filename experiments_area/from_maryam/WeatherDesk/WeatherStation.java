@@ -5,7 +5,7 @@ public class WeatherStation {
     double currentCelsius = 25.0;
 
     // Method to calculate that input
-    double getfahrenheit(){
+    double getFahrenheit(){
         return  (currentCelsius * 9 / 5) + 32;
 
     }
@@ -20,8 +20,8 @@ public class WeatherStation {
         WeatherStation station = new WeatherStation();
 
         // Declare variables that you have to use late;
-        double fahrnheit = 0;
-        double kelvin = 0;
+        double Fahrenheit = 0;
+        double Kelvin = 0;
 
         // Take input from user
 
@@ -34,10 +34,9 @@ public class WeatherStation {
 
 
         //Display the output
-        System.out.println("fahrnheit: ");
-        System.out.println(station.getfahrenheit());
-        System.out.println("kelvin: ");
-        System.out.println(station.getKelvin());
+        System.out.println("Fahrenheit: " + station.getFahrenheit());
+        System.out.println("Kelvin: " + station.getKelvin());
+
 
 
 
