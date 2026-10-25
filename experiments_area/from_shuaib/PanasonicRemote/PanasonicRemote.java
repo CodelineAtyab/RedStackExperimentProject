@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class PanasonicRemote {
-	// default tempreture
+	
 	static int temperature = 24;
 
 	public static String acOn(boolean isRemoteOn) {
