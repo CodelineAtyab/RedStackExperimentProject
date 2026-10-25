@@ -7,8 +7,8 @@ public class PanasonicRemote{
         System.out.println("Welcome to Panasonic Remote Control"); //Welcome message
 
         boolean running = true;//To keep the program running until user wants to exit
-        boolean isOn = true;//To check if the remote is on or off
-        int currentTemp =24;
+        boolean isRemoteon = true;//To check if the remote is on or off
+        int Currenttemperature =24;
         
         while(running == true){
             //Menu for the user to choose from
@@ -19,20 +19,20 @@ public class PanasonicRemote{
             
             switch(choice){ 
                 case 1: // if the remote is off turn it on and print the msg 
-                    if (isOn == true){ 
-                        System.out.println("Remote is on");
+                    if (isRemoteon == true){ 
+                        System.out.println("Remote is now ON");
                     }else{
-                        isOn = true;
-                        System.out.println("Remote is on");
+                        isRemoteon = true;
+                        System.out.println("Remote is now OFF");
                     }
                     break;
                 case 2:
-                    isOn = false;
-                    System.out.println("Remote is off");
+                    isRemoteon = false;
+                    System.out.println("Remote is now OFF");
                     break;
                 case 3:
 
-                    System.out.println(currentTemp);
+                    System.out.println("Current temperature : "+Currenttemperature+"°C");
                     break;
 
                 case 4:
