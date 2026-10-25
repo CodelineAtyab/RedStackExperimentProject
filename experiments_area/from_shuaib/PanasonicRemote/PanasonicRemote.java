@@ -1,11 +1,24 @@
 import java.util.Scanner;
 
 public class PanasonicRemote {
-    
-    public static void main(String[] args){
+
+	static int temperature = 24;
+
+	public static String acOn(boolean isRemoteOn) {
+		if (isRemoteOn) {
+			return "Remote is now ON.";
+		} else {
+			return "Remote is now OFF.";
+		}
+	}
+
+	public static void acTemperature() {
+		System.out.println("Current temperature: " + temperature + " C");
+	}
+
+	public static void main(String[] args){
 
         Scanner sc = new Scanner(System.in);
-        AC ac = new AC();
         boolean stop = false;
 
         while(!stop){
@@ -20,13 +33,13 @@ public class PanasonicRemote {
 
 			switch (option) {
 				case "1":
-                    System.out.println(ac.acOn(true));
+                    System.out.println(acOn(true));
 					break;
 				case "2":
-					System.out.println(ac.acOn(false));
+					System.out.println(acOn(false));
 					break;
 				case "3":
-					ac.acTemperature();
+					acTemperature();
 					break;
                 case "4":
 					stop = true;
