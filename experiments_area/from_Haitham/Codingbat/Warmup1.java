@@ -1,4 +1,4 @@
-public class Warmup_1{
+public class Warmup1{
     public static void main(String[] args) {
 
     }
