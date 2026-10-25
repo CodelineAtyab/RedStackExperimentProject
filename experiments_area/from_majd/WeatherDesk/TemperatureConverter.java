@@ -28,7 +28,7 @@ public class TemperatureConverter {
 
     static double getFahrenheit() {
 
-        return (currentCelsius * 9 / 5) + 32; //return
+        return (currentCelsius * 9 / 5) + 32;
 
     }
 

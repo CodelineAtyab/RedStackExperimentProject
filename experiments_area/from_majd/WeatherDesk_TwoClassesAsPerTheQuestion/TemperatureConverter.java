@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+
+//Class WeatherStation
 public class TemperatureConverter {
 
     static Scanner scInput = new Scanner(System.in);
