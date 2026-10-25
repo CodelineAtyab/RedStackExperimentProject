@@ -6,7 +6,7 @@ public static void main(String[] args) {
 
     // Declare variables that you have to use later
     double Celsius = 0;
-    double fahrnheit = 0;
+    double Fahrenheit = 0;
     double kelvin = 0;
 
     // Take input from user
@@ -20,14 +20,12 @@ public static void main(String[] args) {
     Celsius = Double.parseDouble(userInput);
 
     //process (Calculate) that input
-    fahrnheit = (Celsius * 9 / 5) + 32;
+    Fahrenheit = (Celsius * 9 / 5) + 32;
     kelvin = Celsius + 273.15;
 
     //Display the output
-    System.out.println("fahrnheit: ");
-    System.out.println(fahrnheit);
-    System.out.println("kelvin: ");
-    System.out.println(kelvin);
+    System.out.println("Fahrenheit: " + Fahrenheit);
+    System.out.println("Kelvin: " + kelvin);
 
 
 
