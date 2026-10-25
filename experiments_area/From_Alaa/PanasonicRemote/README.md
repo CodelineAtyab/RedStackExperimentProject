@@ -1,21 +1,29 @@
 # PanasonicRemote
 
-## JDK version
-openjdk 17.0.20.1 2 and javac 17.0.20.1
+## JDK Version
 
-## How to compile?
-To compile the code (Java file in plaintext)---> (bytecode(which is PanasonicRemote.class)) we run :
-```
+OpenJDK 17.0.20.1
+
+## How to Compile
+
+Open a terminal in the directory containing `PanasonicRemote.java` and run:
+
+```bash
 javac PanasonicRemote.java
 ```
 
-##  How to run in the Laptop?
-To run this projectand we run this in the terminal and make sure we are on the right directory :
+This compiles the Java source file into bytecode and creates `PanasonicRemote.class`.
+
+## How to Run
+
+Run the compiled program using:
+
+```bash
+java PanasonicRemote
 ```
-java .\PanRemot.java
-```
 
-## JVM and JIT Explenation:
-When I run (javac PanasonicRemote.java), the compiler reads my Java file and turns it into bytecode. It saves that bytecode in (PanasonicRemote.class). Then the JVM loads the bytecode and starts running it. While the program runs, the JIT compiler looks for code that runs many times (called hotspots) and turns it into native machine code. The computer can run that native code directly, so it is faster.
+## JVM and JIT Explanation
 
+When I run `javac PanasonicRemote.java`, the Java compiler converts my source code into bytecode and saves it in `PanasonicRemote.class`.
 
+The JVM (Java Virtual Machine) loads and executes this bytecode. While the program runs, the JIT (Just-In-Time) compiler can compile frequently executed code into native machine code to improve performance.
