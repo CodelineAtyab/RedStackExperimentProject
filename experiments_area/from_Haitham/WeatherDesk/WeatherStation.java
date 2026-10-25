@@ -23,6 +23,6 @@ public class WeatherStation {
 
 
     public static double getKelvin() {
-        return currentCelsius + 273.15;
+        return currentCelsius + 273.15 ;
     }
 }
