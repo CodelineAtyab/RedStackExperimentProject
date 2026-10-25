@@ -16,7 +16,7 @@ public class PanasonicRemote {
     }
 
     static int readNumber(String prompt) {
-
+//readNumber function
         int number = 0;
 
         System.out.println(prompt);
