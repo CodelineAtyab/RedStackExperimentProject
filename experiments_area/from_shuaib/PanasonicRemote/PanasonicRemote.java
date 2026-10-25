@@ -49,5 +49,6 @@ public class PanasonicRemote {
 					break;
 			}
         }
+		sc.close();
     }
 }
