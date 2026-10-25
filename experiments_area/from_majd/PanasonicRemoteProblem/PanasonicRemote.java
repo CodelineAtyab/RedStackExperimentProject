@@ -68,7 +68,7 @@ write("Remote is now OFF\n\n");
 
                 case "3":
                 case "temp":
-                    write("Current temperature is: 24 C\n\n");
+                    write("Current temperature is: 24°C\n\n");
                     break;
 
                     case "4":
