@@ -9,7 +9,51 @@
 
 ### Project Structure
 
-The project contains **all individual member directories** under `experiments_area`, each named after the contributor (e.g., `fromatyab`, `fromishaq` etc ...). Work is typically organized into sprint mini projects (e.g., `project1`, `project2`).
+All member work lives under `experiments_area`, inside a directory named after the contributor: `from_<name>` (e.g. `from_atyab`, `from_ishaq`). Inside your own directory, create **one directory per exercise, sprint mini project, or Maven project**. Do not leave files loose in `experiments_area/from_<name>/`.
+
+#### Allowed layouts
+
+**1. Practice folder** — for standalone `.java` files (CodingBat, exercises, small programs):
+
+```
+experiments_area/
+└── from_<name>/
+    └── <practice-topic>/          # e.g. CodingBat, HelloWorld, project1
+        ├── HelloWorld.java
+        └── Warmup1.java
+```
+
+All `.java` files directly inside that folder are compiled together with `javac`. Files that reference each other must live in the same folder. Create a separate folder per exercise so class names don't collide.
+
+**2. Maven project** — for anything built with Maven:
+
+```
+experiments_area/
+└── from_<name>/
+    └── <project-name>/           # e.g. demo, WeatherDesk
+        ├── pom.xml
+        ├── mvnw
+        └── src/
+            ├── main/java/...
+            └── test/java/...
+```
+
+#### Not allowed
+
+| Location | Why |
+|----------|-----|
+| `experiments_area/from_<name>/*.java` | Loose files in your member root; put them in a practice folder |
+| `experiments_area/from_<name>/pom.xml` | A Maven project must have its own directory |
+| `experiments_area/*.java`, `experiments_area/pom.xml` | Files belong inside a member directory |
+
+#### What CI checks on every pull request
+
+- **Changed Maven projects:** `mvn clean test-compile` with **Amazon Corretto JDK 17**.
+- **Changed practice folders:** `javac --release 17` on every `.java` file in that folder.
+- Any syntax or compilation error fails the PR.
+- Any file in a forbidden location fails the **Check folder layout** job, with an annotation on the offending file.
+
+Java version for all builds is **Amazon Corretto OpenJDK 17**; use that locally to match CI.
 
 ### What's Inside
 
