@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class TemperatureConverter {
-    
+
     public static void main(String[] args) {
         WeatherStation weatherStation = new WeatherStation();
         System.out.print("Enter temperature in Celsius: ");
