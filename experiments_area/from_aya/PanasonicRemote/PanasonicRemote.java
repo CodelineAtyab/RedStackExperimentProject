@@ -42,7 +42,7 @@ public class PanasonicRemote {
 
                 case "3"://displays the current temperature ==24(vari in the top)
                 case "temp":
-                    System.out.println("Current temperature: " + currentTemp + "C");
+                   System.out.println("Current temperature: " + currentTemp + "°C");
                     break;
 
                 case "4":
