@@ -9,13 +9,13 @@ public class TemperatureConverter {
 
         double cel = Double.parseDouble(temp);
 
-        double fahr = cel * 9 / 5 + 32;
-        double kel = cel + 273.15;
+        double fahrenheit = cel * 9 / 5 + 32;
+        double kelvin = cel + 273.15;
 
-        System.out.print("The temp in Fahr: ");
-        System.out.println(fahr);
-        System.out.print("The temp in Kel: ");
-        System.out.println(kel);
+        System.out.print("The temp in Fahrenheit: ");
+        System.out.println(fahrenheit);
+        System.out.print("The temp in Kelvin: ");
+        System.out.println(kelvin);
 
         CelTemp.close();
     }

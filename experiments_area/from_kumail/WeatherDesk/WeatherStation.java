@@ -11,9 +11,9 @@ public class WeatherStation {
 
         wStat.currentCelsius = Double.parseDouble(temp);
 
-        System.out.print("The temp in Fahren: ");
+        System.out.print("The temp in Fahrenheit: ");
         System.out.println(wStat.getFahrenheit());
-        System.out.print("The temp in Kelv: ");
+        System.out.print("The temp in Kelvin: ");
         System.out.println(wStat.getKelvin());
 
         CurTemp.close();
