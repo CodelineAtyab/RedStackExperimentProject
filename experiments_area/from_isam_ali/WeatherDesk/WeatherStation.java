@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 public class WeatherStation   {
 
- double currentCelsius = 25.0;
-
+     double currentCelsius = 25.0;
     public double getFahrenheit() {
+
 
          return currentCelsius * 9/5+32;
     }
@@ -19,7 +19,9 @@ public class WeatherStation   {
         Scanner input1 = new Scanner(System.in);
 
         System.out.print("Enter Tempreture in Celcius : ");
-        double converter = Double.parseDouble(input1.nextLine());
+         String temp = input1.nextLine();
+
+         weather.currentCelsius = Double.parseDouble(temp);
 
 
         System.out.println("Fahrenheit : " + weather.getFahrenheit() + " / Kelvin : " + weather.getKelvin());
