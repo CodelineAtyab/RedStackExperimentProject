@@ -33,8 +33,10 @@ public class Warmup1 {
 
   // warmup1: diff21
   public static int diff21(int n) {
-
-    return (n > 21) ? Math.abs((n - 21) * 2) : Math.abs(n - 21);
+    if(n>21)
+      return Math.abs((n-21)*2);
+    else
+      return Math.abs(n-21);
   }
 
 
@@ -43,16 +45,10 @@ public class Warmup1 {
 
 // warmup 1: close10
 
-static int getSubtractionResult(int number, int target_value) {
-
-  return Math.abs(number - target_value);
-}
-
  static int close10(int a, int b) {
-
-  if (getSubtractionResult(a, 10) < getSubtractionResult(b, 10))
+  if(Math.abs(a-10)<Math.abs(b-10))
     return a;
-  else if (getSubtractionResult(b, 10) < getSubtractionResult(a, 10))
+  else if(Math.abs(b-10)<Math.abs(a-10))
     return b;
 
   return 0;
@@ -68,8 +64,7 @@ static int getSubtractionResult(int number, int target_value) {
     System.out.println(startHi("Hillo"));
     System.out.println(missingChar("Hello",1));
     System.out.println(diff21(4));
-    System.out.println(getSubtractionResult(10,3));
-    System.out.println(close10(10,7));
+    System.out.println(close10(10,3));
 
   }
 
