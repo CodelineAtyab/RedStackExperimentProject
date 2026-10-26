@@ -1,30 +1,33 @@
 import java.util.Scanner;
 public class WeatherStation {
 
+    static double currentCelsius = 25.0;
     public static void main(String[] args) {
-        double currentCelsius = 25.0; 
+         
 
-        Scanner Celsius = new Scanner(System.in);
-        System.out.print("Please enter current temperature in Celsius: ");
+        Scanner scanner = new Scanner(System.in);
+        WeatherStation weatherObject = new WeatherStation();
 
-        String watherObject = Celsius.nextLine();
+        System.out.print("Please enter the temperature in Celsius: ");
+        String input = scanner.nextLine();
 
-        currentCelsius = Double.parseDouble(watherObject); 
+        weatherObject.currentCelsius = Double.parseDouble(input);
 
+        System.out.println("Fahrenheit: " + weatherObject.getFahrenheit());
+        System.out.println("Kelvin: " + weatherObject.getKelvin());
 
-        System.out.println("Fahrenheit degree : " + getFahrenheit(currentCelsius));
-        System.out.println("Kelvin degree : " + getKelvin(currentCelsius));
+        scanner.close();
 
     }
 
 
 
-    public static double getFahrenheit(double watherObject) { 
-        return watherObject * 9 / 5 + 32;
+    public static double getFahrenheit() {
+        return currentCelsius * 9 / 5 + 32;
     }
 
-    public static double getKelvin(double watherObject) {
-        return watherObject + 273.15;
+    public static double  getKelvin() {
+        return currentCelsius + 273.15;
     }
 
 }
