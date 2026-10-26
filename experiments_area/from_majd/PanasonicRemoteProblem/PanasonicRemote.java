@@ -21,7 +21,7 @@ public class PanasonicRemote {
 
         String choice = "";
         do {
-System.out.println("1) on   2) off   3) temp   4) exit\n");
+System.out.println("1) on   2) off   3) temp   4) exit");
             choice = scInput.nextLine();
 
             switch (choice) {
