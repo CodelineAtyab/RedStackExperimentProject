@@ -9,7 +9,7 @@ public class TemperatureConverter {
         double fahrenheit = weatherStation.convertCelsiusToFahrenheit(celsiusValue);
         double kelvin = weatherStation.convertCelsiusToKelvin(celsiusValue);
 
-        System.out.println("Fahrenheit: " + fahrenheit);
+        System.out.println("Fahrenheit: " + fahrenheit+ "");
         System.out.println("Kelvin: " + kelvin);
     }
 
