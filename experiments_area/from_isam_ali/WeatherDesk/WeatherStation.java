@@ -22,8 +22,8 @@ public class WeatherStation   {
         double converter = Double.parseDouble(input1.nextLine());
 
 
-        System.out.println("in Fahrenheit : " + weather.getFahrenheit());
-        System.out.println("in Fahrenheit : " + weather.getKelvin());        
+        System.out.println("Fahrenheit : " + weather.getFahrenheit() + " / Kelvin : " + weather.getKelvin());
+   
     }
     
 }
