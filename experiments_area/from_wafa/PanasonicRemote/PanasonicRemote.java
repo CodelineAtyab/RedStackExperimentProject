@@ -2,77 +2,73 @@ import java.util.Scanner;
 
 public class PanasonicRemote { 
 
-    public static void main(String[] args){
-        System.out.println("Hello, Panasonic Remote");
+    static boolean isRemoteOn = false;
+    static int currentTemp = 24; 
+    static boolean running=true;
 
+    public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
-        
-        int choice;
+        String choice;
 
         do{
             menu();
-            System.out.println("Please enter a number to choice (1 to 4) :  ");
+            System.out.println("Please enter (1 or on) (2 or off) (3 or temp) (4 or exit) :  ");
             
-          
-                choice = scanner.nextInt();
-                switch (choice) {
-                    case 1:
-                        powerOn();
-                        break;
-                    case 2:
-                        powerOff();
-                        break;
-                    case 3:
-                        temprature();
-                        break;
-                    case 4:
-                        exit();
-                        break;
-                    default:
-                        System.out.println("Invalid choice!");
-                        break;
-                }
+            choice = scanner.nextLine().trim().toLowerCase();
 
-        }while(choice != 4);
+            switch (choice) {
+                case "1":
+                case "on":
+                    powerOn();
+                    break;
+                case "2":
+                case "off":
+                    powerOff();
+                    break;
+                case "3":
+                case "temp":
+                    temprature();
+                    break;
+                case "4":
+                case "exit":
+                    exit();
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+                    break;
+            }
+
+        } while(choice !="4" && choice!="exit" );
 
         scanner.close();
     }
-
 
     public static void menu(){
         System.out.println("1. ON");
         System.out.println("2. OFF");
         System.out.println("3. TEMP");
         System.out.println("4. EXIT");
-
     }
 
    public static void powerOn(){ 
-        boolean isOn = true;
-        if (isOn == true){ 
-            System.out.println("Remote is on");
-        }else{
-            isOn = false;
-            System.out.println("Remote is off");
-            }
+        isRemoteOn = true;
+        System.out.println("Remote is now ON");
     }
 
     public static void powerOff(){ 
-        boolean isOn = true;
-        if (isOn != false){ 
-            System.out.println("Remote is off");
-        }else{
-            isOn = false;
-            System.out.println("Remote is on");
-            }
+        isRemoteOn = false;
+        System.out.println("Remote is now OFF");
     }
 
     public static void temprature(){ 
-        int currentTemp=24;
-        System.out.println("Temprature is set to " + currentTemp + " c degrees");
+        if (isRemoteOn) {
+            System.out.println("Current temperature: " + currentTemp + "°C");
+        } else {
+            System.out.println("Cannot check temperature. Remote is currently OFF");
+        }
     }
 
     public static void exit(){ 
-        return;
+        running=false;
     }
 }
