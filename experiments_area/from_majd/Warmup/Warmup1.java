@@ -5,7 +5,7 @@ public class Warmup1 {
     return ((a >= 13 && a <= 19) || (b >= 13 && b <= 19) || (c >= 13 && c <= 19));
   }
 
-  // warmup1: sumDouble
+  // warmup1: sumDouble function
    static int sumDouble(int a, int b) {
 
     return (a == b) ? (a + b) * 2 : a + b;
