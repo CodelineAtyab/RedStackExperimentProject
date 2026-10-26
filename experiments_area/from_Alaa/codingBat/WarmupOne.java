@@ -70,6 +70,7 @@ public static boolean parrotTrouble(boolean talking, int hour) {
   }
 }
 
+//nearHundred
 public static boolean nearHundred(int n) {
   if (Math.abs(100-n)==10 || Math.abs(200-n)==10){
     return true;
@@ -78,6 +79,7 @@ public static boolean nearHundred(int n) {
     return false;
   }
 }
+
 
 
 
