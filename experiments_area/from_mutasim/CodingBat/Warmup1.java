@@ -330,5 +330,16 @@ class Warmup1 {
             result = result + str.charAt(i);
         }
         return result;
+
+
+        System.out.println(sleepIn(true, true));
+    }
+
+    public static boolean sleepIn(boolean weekday, boolean vacation) {
+        if (!weekday || vacation) {
+            return true;
+        }
+        return false;
+
     }
 }
