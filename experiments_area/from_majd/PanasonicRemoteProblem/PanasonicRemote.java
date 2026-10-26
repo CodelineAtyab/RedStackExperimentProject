@@ -16,14 +16,6 @@ public class PanasonicRemote {
             System.out.println("Remote is now OFF");
     }
 
-    static void displayMenu(String[] array) {
-
-        for (int i = 0; i < array.length; i++) {
-
-            System.out.print((i + 1) + ")" + array[i] + "   ");
-        }
-
-    }
 
     static void Program() {
 

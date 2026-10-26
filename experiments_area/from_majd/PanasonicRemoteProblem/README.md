@@ -5,7 +5,7 @@ A small Java console program that simulates a Panasonic remote control.
 ## Features
 
 - Repeatedly displays a menu to turn the remote on or off, check the temperature, or exit.
-- isRemoteOn now activates based on choice
+- isRemoteOn variable now activates based on choice
 - Accepts either the menu number or its text command:
   - `1` or `on` turns the remote on.
   - `2` or `off` turns the remote off.
