@@ -29,6 +29,39 @@ public class StringOne {
         return lastTwo + lastTwo + lastTwo;
     }
 
+    //firstTwo
+    public static String firstTwo(String str) {
+        if (str.length() < 2) {
+            return str;
+        } else {
+            return str.substring(0, 2);
+        }
+    }
+
+    //firstHalf
+    public static String firstHalf(String str) {
+        int halfLength = str.length() / 2;
+        return str.substring(0, halfLength);
+    }
+
+    //withoutEnd
+    public static String withoutEnd(String str) {
+        if (str.length() <= 2) {
+            return "";
+        } else {
+            return str.substring(1, str.length() - 1);
+        }
+    }
+
+    //comboString
+    public static String comboString(String a, String b) {
+        if (a.length() < b.length()) {
+            return a + b + a;
+        } else {
+            return b + a + b;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println(helloName("Alice"));
         System.out.println(helloName("Bob"));
@@ -45,6 +78,18 @@ public class StringOne {
 
         System.out.println(extraEnd("Hello"));
         System.out.println(extraEnd("ab"));
+
+        System.out.println(firstTwo("Hello"));
+        System.out.println(firstTwo("ab"));
+
+        System.out.println(firstHalf("Hello"));
+        System.out.println(firstHalf("abc"));
+
+        System.out.println(withoutEnd("Hello"));
+        System.out.println(withoutEnd("ab"));
+
+        System.out.println(comboString("Hello", "Hi"));
+        System.out.println(comboString("Hi", "Hello"));
 
     }
 }
