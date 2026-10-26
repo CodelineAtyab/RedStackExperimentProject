@@ -6,9 +6,13 @@ public class TemperatureConverter {
     static WeatherStation ws = new WeatherStation();
 
     public static void main(String[] args) {
+        String celsius="";
 
         System.out.print("Enter temperature value in celsius: ");
-        ws.currentCelsius = Double.parseDouble(scInput.nextLine());
+        
+        celsius=scInput.nextLine();
+        ws.currentCelsius = Double.parseDouble(celsius);
+        
         System.out.println("Fahrenheit: " + ws.getFahrenheit());
         System.out.println("Kelvin: " + ws.getKelvin());
 
