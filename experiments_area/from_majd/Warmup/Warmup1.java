@@ -7,8 +7,11 @@ public class Warmup1 {
 
   // warmup1: sumDouble function
    static int sumDouble(int a, int b) {
+    if(a==b)
+    return (a+b)*2;
 
-    return (a == b) ? (a + b) * 2 : a + b;
+    else 
+      return a+b;
 
   }
 

@@ -3,7 +3,6 @@
 This folder contains solutions to these CodingBat Java Warmup-1 exercises:
 
 | Exercise | What it does |
-|---|---|
 | `hasTeen` | Checks whether any of three numbers is in the teen range (13–19). |
 | `sumDouble` | Returns the sum of two numbers, doubling it when the numbers are equal. |
 | `startHi` | Checks whether a string starts with `"hi"`. |
