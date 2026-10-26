@@ -1,4 +1,4 @@
-public boolean sleepIn(boolean weekday, boolean vacation) {
+public boolean SleepIn(boolean weekday, boolean vacation) {
   if (!weekday || vacation) {
     return true;
   }

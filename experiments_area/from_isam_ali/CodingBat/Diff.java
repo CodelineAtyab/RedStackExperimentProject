@@ -1,4 +1,4 @@
-public int diff21(int n) {
+public int Diff(int n) {
   if (n <= 21 ) {
     return 21-n;
   }

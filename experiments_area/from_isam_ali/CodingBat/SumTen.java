@@ -1,4 +1,4 @@
-public boolean makes10(int a, int b) {
+public boolean SumTen(int a, int b) {
   int sum = a+b;
   if (a == 10 || b == 10){
     return true;
