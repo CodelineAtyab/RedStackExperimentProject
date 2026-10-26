@@ -4,32 +4,19 @@ public class PanasonicRemote {
 
     static Scanner scInput = new Scanner(System.in);
 
-    static String readText(String prompt) {
-
-        String inputValue = "";
-
-        System.out.println(prompt);
-
-        inputValue = scInput.nextLine();
-        return inputValue;
-
-    }
-
-    static int readNumber(String prompt) {
-//readNumber function
-        int number = 0;
-
-        System.out.println(prompt);
-        number = scInput.nextInt();
-
-        return number;
-
-    }
-
+    static int currentTemp = 24;
 
     public static boolean isRemoteOn = false;
 
-    static void displayMenu(String[]array) {
+    static void displayRemoteStatus() {
+
+        if (isRemoteOn)
+            System.out.println("Remote is now ON");
+        else
+            System.out.println("Remote is now OFF");
+    }
+
+    static void displayMenu(String[] array) {
 
         for (int i = 0; i < array.length; i++) {
 
@@ -38,42 +25,40 @@ public class PanasonicRemote {
 
     }
 
-    static void write(String prompt) {
-
-        System.out.println(prompt);
-
-    }
-
-    static void Program(String[]Array) {
+    static void Program() {
 
         String choice = "";
         do {
-            displayMenu(Array);
-
-            choice = readText("\n\nChoose: ");
+System.out.println("1) on   2) off   3) temp   4) exit\n");
+            choice = scInput.nextLine();
 
             switch (choice) {
                 case "1":
-                case "on":
+                case "on": {
+                    isRemoteOn = true;
 
-write("Remote is now ON\n\n");
+                    displayRemoteStatus();
+
+                }
+
                     break;
 
                 case "2":
-                case "off":
+                case "off": {
+                    isRemoteOn = false;
+                    displayRemoteStatus();
 
-write("Remote is now OFF\n\n");
-
+                }
                     break;
 
                 case "3":
                 case "temp":
-                    write("Current temperature is: 24°C\n\n");
+                    System.out.println("Current temperature is:" + currentTemp+"°C\n\n");
                     break;
 
-                    case "4":
-                    case "exit":
-                        return;
+                case "4":
+                case "exit":
+                    return;
                 default:
                     System.out.println("not within the available choices\n\n");
                     break;
@@ -85,9 +70,7 @@ write("Remote is now OFF\n\n");
 
     public static void main(String[] args) {
 
-                String[] array = { "on", "off", "temp", "exit"};
-
-        Program(array);
+        Program();
 
     }
 

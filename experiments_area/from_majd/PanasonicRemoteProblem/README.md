@@ -1,18 +1,19 @@
-# Panasonic Remote Problem
+# Panasonic Remote
 
-A small Java console program that simulates a Panasonic remote menu.
+A small Java console program that simulates a Panasonic remote control.
 
 ## Features
 
-- Displays options to turn the remote on or off, check the temperature, or exit.
-- Accepts either the option number or its text command:
-  - `1` or `on`
-  - `2` or `off`
-  - `3` or `temp`
-  - `4` or `exit`
-- Reports a fixed current temperature of 24°C.
-
-The on and off options currently print a status message; they do not change the remote's state.
+- Repeatedly displays a menu to turn the remote on or off, check the temperature, or exit.
+- isRemoteOn now activates based on choice
+- Accepts either the menu number or its text command:
+  - `1` or `on` turns the remote on.
+  - `2` or `off` turns the remote off.
+  - `3` or `temp` displays the current temperature.
+  - `4` or `exit` ends the program.
+- Reports the remote's updated status after an on/off command.
+- Displays a fixed temperature of 24°C.
+- Prints an error message for commands that are not available menu choices.
 
 ## Compile and run
 
