@@ -6,8 +6,8 @@ public class TemperatureConverter {
         WeatherStation weatherStation=new WeatherStation();
         String Celsius = new Scanner(System.in).nextLine();
         weatherStation.Celsius = Double.parseDouble(Celsius);
-        double fahrenheit = weatherStation.convertCelsiusToFahrenheit(celsiusValue);
-        double kelvin = weatherStation.convertCelsiusToKelvin(celsiusValue);
+        double fahrenheit = weatherStation.convertCelsiusToFahrenheit(weatherStation.Celsius);
+        double kelvin = weatherStation.convertCelsiusToKelvin(weatherStation.Celsius);
 
         System.out.println("Fahrenheit: " + fahrenheit);
         System.out.println("/ Kelvin: " + kelvin);
