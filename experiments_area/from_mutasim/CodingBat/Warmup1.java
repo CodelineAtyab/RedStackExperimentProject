@@ -250,7 +250,6 @@ class Warmup1 {
         } else {
             max = b;
         }
-
         if (c > max) {
             max = c;
         }
