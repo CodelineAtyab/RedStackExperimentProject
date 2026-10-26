@@ -22,7 +22,8 @@ public class FeedbackComments {
             System.out.println(comments.get(index));
         }
 
-        System.out.println("--- forEach lambda ---");
-        comments.forEach(comment -> System.out.println(comment));
+        for(int i=0; i<comments.size(); i++){
+            System.err.println(comments.get(i));
+        }
     }
 }
