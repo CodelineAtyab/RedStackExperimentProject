@@ -1,8 +1,10 @@
+import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class FlexibleDataStore {
   public static void main(String[] args) {
-    ArrayList<Integer> teamMemberIds = new ArrayList<>();
+    List<Integer> teamMemberIds = new LinkedList<>();
     teamMemberIds.add(10);
     teamMemberIds.add(11);
     teamMemberIds.add(12);
