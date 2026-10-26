@@ -3,47 +3,14 @@ import java.util.Scanner;
 public class TemperatureConverter {
 
     static Scanner scInput = new Scanner(System.in);
-
-    static String readText(String prompt) {
-
-        String inputValue = "";
-
-        System.out.println(prompt);
-
-        inputValue = scInput.nextLine();
-
-        return inputValue;
-
-    }
-
-    static void write(String prompt) {
-
-        System.out.println(prompt);
-    }
-
-    
-
-
-    static double currentCelsius = 25.0;
-
-    static double getFahrenheit() {
-
-        return (currentCelsius * 9 / 5) + 32;
-
-    }
-
-    static double getKelvin() {
-
-        return currentCelsius + 273.15;
-    }
-
+    static WeatherStation ws = new WeatherStation();
 
     public static void main(String[] args) {
 
-
-        currentCelsius = Double.parseDouble(readText("Enter temperature value in celsius:"));
-
-        write("Fahrenheit: " + getFahrenheit() + " / " + "Kelvin: " +getKelvin());
+        System.out.print("Enter temperature value in celsius: ");
+        ws.currentCelsius = Double.parseDouble(scInput.nextLine());
+        System.out.println("Fahrenheit: " + ws.getFahrenheit());
+        System.out.println("Kelvin: " + ws.getKelvin());
 
         scInput.close();
     }
