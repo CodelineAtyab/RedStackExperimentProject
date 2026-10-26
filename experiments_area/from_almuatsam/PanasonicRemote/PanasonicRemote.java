@@ -4,15 +4,16 @@ public class PanasonicRemote {
 
     private static final int MIN_TEMPERATURE = 16;
     private static final int MAX_TEMPERATURE = 30;
-    private static final int DEFAULT_TEMPERATURE = 24;
 
     public static void main(String[] args) {
-        int temperature = DEFAULT_TEMPERATURE;
-        boolean isOn = false;
+        // Store the remote state and current temperature.
+        int currentTemp = 24;
+        boolean isRemoteOn = false;
         boolean shouldExit = false;
 
         try (Scanner scanner = new Scanner(System.in)) {
             while (!shouldExit) {
+                // Display the menu and read the user's command.
                 printMenu();
 
                 if (!scanner.hasNextLine()) {
@@ -20,20 +21,21 @@ public class PanasonicRemote {
                 }
                 String choice = scanner.nextLine().trim().toLowerCase();
 
+                // Handle the selected remote command.
                 switch (choice) {
                     case "1":
                     case "on":
-                        if (isOn) {
+                        if (isRemoteOn) {
                             System.out.println("Remote is already ON");
                         } else {
-                            isOn = true;
+                            isRemoteOn = true;
                             System.out.println("Remote is now ON");
                         }
                         break;
                     case "2":
                     case "off":
-                        if (isOn) {
-                            isOn = false;
+                        if (isRemoteOn) {
+                            isRemoteOn = false;
                             System.out.println("Remote is now OFF");
                         } else {
                             System.out.println("Remote is already OFF");
@@ -41,29 +43,29 @@ public class PanasonicRemote {
                         break;
                     case "3":
                     case "temp":
-                        if (requireOn(isOn)) {
-                            System.out.println("Current temperature: " + temperature + "°C");
+                        if (requireOn(isRemoteOn)) {
+                            System.out.println("Current temperature: " + currentTemp + "°C");
                         }
                         break;
                     case "4":
                     case "up":
-                        if (requireOn(isOn)) {
-                            if (temperature >= MAX_TEMPERATURE) {
+                        if (requireOn(isRemoteOn)) {
+                            if (currentTemp >= MAX_TEMPERATURE) {
                                 System.out.println("Maximum temperature is " + MAX_TEMPERATURE + "°C");
                             } else {
-                                temperature++;
-                                System.out.println("Temperature increased to " + temperature + "°C");
+                                currentTemp++;
+                                System.out.println("Temperature increased to " + currentTemp + "°C");
                             }
                         }
                         break;
                     case "5":
                     case "down":
-                        if (requireOn(isOn)) {
-                            if (temperature <= MIN_TEMPERATURE) {
+                        if (requireOn(isRemoteOn)) {
+                            if (currentTemp <= MIN_TEMPERATURE) {
                                 System.out.println("Minimum temperature is " + MIN_TEMPERATURE + "°C");
                             } else {
-                                temperature--;
-                                System.out.println("Temperature decreased to " + temperature + "°C");
+                                currentTemp--;
+                                System.out.println("Temperature decreased to " + currentTemp + "°C");
                             }
                         }
                         break;
@@ -80,6 +82,7 @@ public class PanasonicRemote {
         }
     }
 
+    // Display the available commands.
     private static void printMenu() {
         System.out.println();
         System.out.println("Panasonic AC Remote");
@@ -92,10 +95,11 @@ public class PanasonicRemote {
         System.out.print("Choose an option: ");
     }
 
-    private static boolean requireOn(boolean isOn) {
-        if (!isOn) {
+    // Check whether the remote is on before changing its settings.
+    private static boolean requireOn(boolean isRemoteOn) {
+        if (!isRemoteOn) {
             System.out.println("Remote is OFF, turn it on first");
         }
-        return isOn;
+        return isRemoteOn;
     }
 }
