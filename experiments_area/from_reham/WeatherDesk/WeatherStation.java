@@ -10,7 +10,7 @@ public class WeatherStation{
     }
 
     public  double getKelvin(){
-        return C +273.15;
+        return CurrentCelsius +273.15;
     }
 
     public static void main(String[] args){
