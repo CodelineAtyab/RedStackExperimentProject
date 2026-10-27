@@ -15,10 +15,11 @@ public class PanasonicRemote{
             System.out.println("\nMenu");
             System.out.println("1.on \n2.off \n3.temp \n4.exit");
 
-            int choice = Menu.nextInt(); //To take the user input for the menu
+            String choice = Menu.nextLine().toLowerCase();//To take the user input for the menu
             
             switch(choice){ 
-                case 1: // if the remote is off turn it on and print the msg 
+                case "1": // if the remote is off turn it on and print the msg
+                case "on": 
                     if (isRemoteon == true){ 
                         System.out.println("Remote is now ON");
                     }else{
@@ -26,16 +27,18 @@ public class PanasonicRemote{
                         System.out.println("Remote is now OFF");
                     }
                     break;
-                case 2:
+                case "2":
+                case "off":
                     isRemoteon = false;
                     System.out.println("Remote is now OFF");
                     break;
-                case 3:
-
+                case "3":
+                case "temp":
                     System.out.println("Current temperature : "+Currenttemperature+"°C");
                     break;
 
-                case 4:
+                case "4":
+                case "exit":
                     System.out.println("Goodbye!");
                     running = false;
                     break;
