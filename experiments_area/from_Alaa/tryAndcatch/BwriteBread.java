@@ -18,6 +18,13 @@ public class BwriteBread {
             BufferedReader reader = new BufferedReader(new FileReader(sourceFile)); // allocating a memory buffer to read the file
             BufferedWriter writer = new BufferedWriter(new FileWriter(destinationFile)); // allocating a memory buffer to write the file
             
+            String line; // Variable to hold each line read from the source file
+            while ((line = reader.readLine()) != null) { // Read each line until the end of the file is reached
+                writer.write(line); // Write the line to the destination file
+                writer.newLine(); // Add a new line after writing each line
+            }
+            reader.close(); // Close the reader
+            writer.close(); // Close the writer
         } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage()); // Handle any IO exceptions that may occur during file operations
         }
