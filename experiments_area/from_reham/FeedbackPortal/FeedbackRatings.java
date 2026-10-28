@@ -11,8 +11,8 @@ public class FeedbackRatings {
             ratings[j] =j+3;
         }
 
-            for (int i=0 ; i<3 ; i++){
-                System.out.println("Customer " + (i + 1) + ": "
+        for (int i=0 ; i<3 ; i++){
+            System.out.println("Customer " + (i + 1) + ": "
         + customerNames[i] + " - rating " + ratings[i]);
 
         }
