@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import java.util.Scanner;
+
 public class WeatherStation {
     static double currentCelsius = 25;
     public static void main(String[] args) {
