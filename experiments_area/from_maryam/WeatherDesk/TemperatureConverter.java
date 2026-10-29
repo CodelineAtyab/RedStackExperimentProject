@@ -1,0 +1,36 @@
+import java.util.Scanner;
+
+public class TemperatureConverter {
+
+public static void main(String[] args) {
+
+    // Declare variables that you have to use later
+    double Celsius = 0;
+    double fahrnheit = 0;
+    double kelvin = 0;
+
+    // Take input from user
+
+    Scanner cakeObject = new Scanner(System.in);
+    System.out.print("Please enter the temperature in Celsius: ");
+    String userInput = cakeObject.nextLine();
+
+    cakeObject.close();
+
+    Celsius = Double.parseDouble(userInput);
+
+    //process (Calculate) that input
+    fahrnheit = (Celsius * 9 / 5) + 32;
+    kelvin = Celsius + 273.15;
+
+    //Display the output
+    System.out.println("fahrnheit: ");
+    System.out.println(fahrnheit);
+    System.out.println("kelvin: ");
+    System.out.println(kelvin);
+
+
+
+
+}}
+
