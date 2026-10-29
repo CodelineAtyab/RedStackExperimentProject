@@ -12,7 +12,8 @@ class WarmUpOne {
     //task1
     public static boolean sleepIn(boolean weekday, boolean vacation) {
         if (!weekday || vacation){
-        return true;}
+            return true;
+        }
         return false;
     }
 
@@ -32,22 +33,22 @@ class WarmUpOne {
 
     //task4
     public static int diff21(int n) {
-    if (n > 21) return (2*(Math.abs(n-21)));
+        if (n > 21) return (2*(Math.abs(n-21)));
   
-    return Math.abs(n-21);
+        return Math.abs(n-21);
     }
 
     //task5
     public static boolean parrotTrouble(boolean talking, int hour) {
-    if (talking && (hour>20 || hour<7)) return true;
+        if (talking && (hour>20 || hour<7)) return true;
   
-    return false;
+        return false;
     }
 
     //task6
     public static boolean makes10(int a, int b) {
         if ( a==10 || b==10 || (a+b)==10) return true;
     
-    return false;
+        return false;
     }
 }
