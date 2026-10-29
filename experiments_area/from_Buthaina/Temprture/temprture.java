@@ -24,5 +24,6 @@ public static void main(String[] args)
     System.out.println("The temperature in Kelvin is: " + kelvin);
     System.out.println("Thank you for using the temperature converter!");
 }
-
+}
+}
 
