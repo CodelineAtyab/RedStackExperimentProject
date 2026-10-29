@@ -1,5 +1,5 @@
 
-public class TestWarmup {
+public class Warmup {
 
     public static void main(String[] args) {
         TestWarmup warmup = new TestWarmup();
