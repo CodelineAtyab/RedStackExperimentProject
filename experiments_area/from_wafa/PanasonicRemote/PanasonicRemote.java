@@ -38,7 +38,7 @@ public class PanasonicRemote {
                     break;
             }
 
-        } while(choice !="4" && choice!="exit" );
+        } while(!choice.equals("4") && !choice.equals("exit") );
 
         scanner.close();
     }
@@ -61,11 +61,8 @@ public class PanasonicRemote {
     }
 
     public static void temprature(){ 
-        if (isRemoteOn) {
-            System.out.println("Current temperature: " + currentTemp + "°C");
-        } else {
-            System.out.println("Cannot check temperature. Remote is currently OFF");
-        }
+        System.out.println("Current temperature: " + currentTemp + "°C");
+    
     }
 
     public static void exit(){ 
