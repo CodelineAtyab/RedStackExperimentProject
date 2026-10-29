@@ -19,7 +19,9 @@ A small Java console program that simulates a Panasonic remote control.
 
 From this directory, compile with Java 17 and run the program:
 
-```sh
-javac --release 17 PanasonicRemote.java
-java PanasonicRemote
-```
+- `javac --release 17 PanasonicRemote.java` compiles the Java source code into a class file.
+- `java PanasonicRemote` runs the compiled program.
+
+## JVM and JIT
+
+The JVM (Java Virtual Machine) runs the compiled Java program. The JIT (Just-In-Time compiler) helps it run faster by turning frequently used parts into machine code while the program is running.
