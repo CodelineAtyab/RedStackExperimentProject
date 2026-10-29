@@ -7,5 +7,9 @@ public class FeedbackLookup {
         feedbackByCustomer.put("cust_2", "Slow delivery");
         feedbackByCustomer.put("cust_3", "Needs dark mode");
 
+        System.out.println(feedbackByCustomer.get("cust_2"));
+        System.out.println(feedbackByCustomer.get("cust_3"));
+        System.out.println(feedbackByCustomer.get("cust_9"));
+
     }
 }
