@@ -11,7 +11,7 @@ public class ArrayOne {
         return length >= 1 && nums[0] == nums[length-1];
     }
 
-    //makePi solution
+    //makePi_solution
     public static int[] makePi() {
         return new int[]{3, 1, 4};
     }
