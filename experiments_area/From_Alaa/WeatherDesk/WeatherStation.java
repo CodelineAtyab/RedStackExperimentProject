@@ -1,28 +1,36 @@
+
 import java.util.Scanner;
+
 public class WeatherStation {
 
+    // Field of the class (not a local variable in main)
+    double currentCelsius = 25.0;
+
     public static void main(String[] args) {
-        double currentCelsius = 25.0; // default temperature in Celsius
 
         Scanner CelsiusScan = new Scanner(System.in);
+
         System.out.print("Enter current temperature in Celsius: ");
         String tempC = CelsiusScan.nextLine();
-        currentCelsius = Double.parseDouble(tempC); // convert input to double
 
+        // Create a WeatherStation object
+        WeatherStation object = new WeatherStation();
 
-        System.out.println("Temperature in Fahrenheit: " + getFahrenheit(currentCelsius));
-        System.out.println("Temperature in Kelvin: " + getKelvin(currentCelsius));
+        // Set the object's field using the input
+        object.currentCelsius = Double.parseDouble(tempC);
 
+        // Print using the object's methods
+        System.out.println("Fahrenheit: " + object.getFahrenheit());
+        System.out.println("Kelvin: " + object.getKelvin());
+
+        CelsiusScan.close();
     }
 
-
-
-    public static double getFahrenheit(double tempC) { //static so that it can be called without creating an instance of the class
-        return tempC * 9 / 5 + 32;
+    public double getFahrenheit() {
+        return currentCelsius * 9 / 5 + 32;
     }
 
-    public static double getKelvin(double tempC) {
-        return tempC + 273.15;
+    public double getKelvin() {
+        return currentCelsius + 273.15;
     }
-
 }
