@@ -4,6 +4,14 @@
 
 This folder contains Java warm-up exercises completed as part of the CodingBat practice task.
 
+## Exercises Solved
+
+- `sleepIn`
+- `monkeyTrouble`
+- `sumDouble`
+- `diff21`
+- `parrotTrouble`
+
 ## File
 
 - `AlmuatsamWarmup.java` — contains the warm-up exercise solutions.
@@ -16,10 +24,8 @@ Compile the Java file:
 javac AlmuatsamWarmup.java
 ```
 
-Run the compiled class using the class name declared in the Java file:
+Run the compiled class:
 
 ```bash
-java ClassName
+java AlmuatsamWarmup
 ```
-
-Replace `ClassName` with the actual class name that contains the `main` method.
