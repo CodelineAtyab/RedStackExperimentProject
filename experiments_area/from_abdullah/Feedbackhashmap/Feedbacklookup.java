@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class FeedbackLookup {
+public class Feedbacklookup {
     public static void main(String[] args) {
         HashMap<String, String> feedbackByCustomer = new HashMap<>();
 
