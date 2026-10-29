@@ -48,6 +48,11 @@ public class PanasonicRemote {
                         }
                         break;
                     case "4":
+                    case "exit":
+                        System.out.println("Goodbye");
+                        shouldExit = true;
+                        break;
+                    case "5":
                     case "up":
                         if (requireOn(isRemoteOn)) {
                             if (currentTemp >= MAX_TEMPERATURE) {
@@ -58,7 +63,7 @@ public class PanasonicRemote {
                             }
                         }
                         break;
-                    case "5":
+                    case "6":
                     case "down":
                         if (requireOn(isRemoteOn)) {
                             if (currentTemp <= MIN_TEMPERATURE) {
@@ -69,13 +74,8 @@ public class PanasonicRemote {
                             }
                         }
                         break;
-                    case "6":
-                    case "exit":
-                        System.out.println("Goodbye");
-                        shouldExit = true;
-                        break;
                     default:
-                        System.out.println("Invalid option, please enter 1-6 or a command name");
+                        System.out.println("Invalid option, please enter 1-6 or one of: on, off, temp, exit, up, down");
                         break;
                 }
             }
@@ -89,9 +89,9 @@ public class PanasonicRemote {
         System.out.println("1) on");
         System.out.println("2) off");
         System.out.println("3) temp");
-        System.out.println("4) up");
-        System.out.println("5) down");
-        System.out.println("6) exit");
+        System.out.println("4) exit");
+        System.out.println("5) up");
+        System.out.println("6) down");
         System.out.print("Choose an option: ");
     }
 
