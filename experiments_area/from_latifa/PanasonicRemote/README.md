@@ -4,6 +4,7 @@ openjdk version "17.0.20.1" 2026-08-18 LTS
 #javac compiles .java files into byte-code (.class).
 run this -->
         javac PanasonicRemote.java
+        java PanasonicRemote
 
 #How the JVM loads that byte-code.
 The JVM loads the .class file and executes the bytecode.
