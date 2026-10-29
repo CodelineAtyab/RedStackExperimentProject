@@ -2,7 +2,7 @@
 public class Warmup {
 
     public static void main(String[] args) {
-        TestWarmup warmup = new TestWarmup();
+        Warmup warmup = new Warmup();
 
         System.out.println(warmup.sleepIn(false, false));
         System.out.println(warmup.monkeyTrouble(true, true));
