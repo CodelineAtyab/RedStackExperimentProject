@@ -17,8 +17,8 @@ public class FeedbackRatings {
 
 
     for (int i = 0; i < customerNames.length; i++) {
-        System.out.println("Customer 1:  "+customerNames[i] + " -  rating " + ratings[i]);
-    }
+    System.out.println("Customer " + (i + 1) + ": " + customerNames[i] + " - rating " + ratings[i]);
+}
 
          
    }
