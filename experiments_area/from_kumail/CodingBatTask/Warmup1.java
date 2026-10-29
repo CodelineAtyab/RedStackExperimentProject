@@ -12,9 +12,6 @@ public class Warmup1 {
         System.out.println(W1.nearHundred(105));
         System.out.println(W1.posNeg(-1, 1, false));
         System.out.println(W1.makes10(5, 9));
-
-
-
     }
 
     public boolean sleepIn(boolean weekday, boolean vacation) {
@@ -23,6 +20,7 @@ public class Warmup1 {
         }
         return false;
     }
+
     public boolean monkeyTrouble(boolean aSmile, boolean bSmile) {
         if (aSmile && bSmile) {
             return true;
@@ -32,6 +30,7 @@ public class Warmup1 {
         }
         return false;
     }
+
     public int sumDouble(int a, int b) {
         int s = a + b;
         if (a == b) {
@@ -39,6 +38,7 @@ public class Warmup1 {
         }
         return s;
     }
+
     public int diff21(int n) {
         if (n <= 21) {
             return 21 - n;
@@ -48,6 +48,7 @@ public class Warmup1 {
     }
 
     public boolean parrotTrouble(boolean talking, int hour) {
+
         return talking && (hour < 7 || hour > 20);
     }
 
@@ -66,10 +67,5 @@ public class Warmup1 {
                     || (a > 0 && b < 0);
         }
     }
-
-
-
-
-
 
 }
