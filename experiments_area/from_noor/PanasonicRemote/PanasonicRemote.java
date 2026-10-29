@@ -6,10 +6,12 @@ public class PanasonicRemote {
     public static void main(String[] args) {
         Scanner inputscanner = new Scanner(System.in);
 
+        // Set the initial remote state and temperature.
         boolean isRemoteOn = false;
         boolean running = true;
         int currentTemp = 24;
 
+        // Keep showing the menu until the user exits.
         while (running) {
             System.out.println("1) on   2) off   3) temp   4) exit");
 
@@ -18,48 +20,27 @@ public class PanasonicRemote {
             switch (userInput) {
                 case "1":
                 case "on":
+                    // Turn the remote on.
                     isRemoteOn = true;
                     System.out.println("Remote is now ON");
                     break;
 
                 case "2":
                 case "off":
+                    // Turn the remote off.
                     isRemoteOn = false;
                     System.out.println("Remote is now OFF");
                     break;
 
                 case "3":
                 case "temp":
-                    if (isRemoteOn) {
-                        System.out.println("Current temperature: " + currentTemp + "°C");
-                        System.out.println("1) Increase  2) Decrease");
-
-                        String tempChoice = inputscanner.nextLine().trim();
-
-                        if (tempChoice.equals("1")) {
-                            if (currentTemp < 30) {
-                                currentTemp++;
-                            } else {
-                                System.out.println("Maximum temperature is 30°C");
-                            }
-                        } else if (tempChoice.equals("2")) {
-                            if (currentTemp > 16) {
-                                currentTemp--;
-                            } else {
-                                System.out.println("Minimum temperature is 16°C");
-                            }
-                        } else {
-                            System.out.println("Invalid temperature option");
-                        }
-
-                        System.out.println("Current temperature: " + currentTemp + "°C");
-                    } else {
-                        System.out.println("Remote is OFF");
-                    }
+                    // Display the current temperature.
+                    System.out.println("Current temperature: " + currentTemp + "°C");
                     break;
 
                 case "4":
                 case "exit":
+                    // Exit the program.
                     running = false;
                     break;
 
