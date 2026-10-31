@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CustomerFeedbackPortal {
@@ -21,6 +24,38 @@ public class CustomerFeedbackPortal {
         catch(Exception e) {System.out.println("Invalid input. Please enter a number."); sc.next();}
         return num;
     }
+
+    
+    public static void startUp(){
+        int num =6;
+
+        for(int i = 0 ; i <num ; i++)
+        {
+            for (int j = 0 ; j <= i ; j++)
+            {
+                    System.out.print("*");                
+            } 
+            
+            if (i == 3) {
+                System.out.print("    ACME SOLUTIONS    ");}
+            else {
+                int spaces = (num - i) * 2 + 16;
+                for (int j = 0; j < spaces; j++) {
+                    System.out.print(" ");
+                    }
+                }
+                
+            for (int j = 0 ; j <= i ; j++)
+            {
+                System.out.print("*");                
+            }
+            
+            System.out.println();
+        }
+    }
+
+
+
 
 
 
