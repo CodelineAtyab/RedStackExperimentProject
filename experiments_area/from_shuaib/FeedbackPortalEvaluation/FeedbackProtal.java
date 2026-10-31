@@ -127,41 +127,28 @@ public class FeedbackProtal {
     }
 
     static void RatingReport() {
+        if (feedbackList.isEmpty()) {
+            System.out.println("No feedback has been submitted yet.");
+            return;
+        }
+
         ArrayList<String> products = new ArrayList<>();
-        ArrayList<String[]> allEntries = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"))) {
-            String line = reader.readLine();
-            while (line != null) {
-                String[] parts = line.split(",", 5);
-                if (parts.length == 5) {
-                    allEntries.add(parts);
-                    String prod = parts[2].trim();
-                    if (!products.contains(prod)) {
-                        products.add(prod);
-                    }
-                }
-                line = reader.readLine();
+        for (HashMap<String, String> entry : feedbackList) {
+            String prod = entry.get("Product").trim();
+            if (!products.contains(prod)) {
+                products.add(prod);
             }
-        } catch (IOException e) {
-            System.out.println("No feedback has been submitted yet.");
-            return;
         }
 
-        if (allEntries.isEmpty()) {
-            System.out.println("No feedback has been submitted yet.");
-            return;
-        }
-
-        // 2D array (rows,cols)
+        // 2D array (rows, cols)
         int[][] ratingCounts = new int[products.size()][5];
         int[] starTotals = new int[5];
 
-        for (String[] entry : allEntries) {
-            String prod = entry[2].trim();
+        for (HashMap<String, String> entry : feedbackList) {
+            String prod = entry.get("Product").trim();
             int prodIndex = products.indexOf(prod);
             try {
-                int rating = Integer.parseInt(entry[3].trim());
+                int rating = Integer.parseInt(entry.get("Rating").trim());
                 if (rating >= 1 && rating <= 5) {
                     ratingCounts[prodIndex][rating - 1]++;
                     starTotals[rating - 1]++;
