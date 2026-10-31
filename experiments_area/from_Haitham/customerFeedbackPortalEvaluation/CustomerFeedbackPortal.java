@@ -52,6 +52,25 @@ public class CustomerFeedbackPortal {
             
             System.out.println();
         }
+        loadFeedback();
+    }
+
+        public static void loadFeedback(){
+        String file = "C:\\Users\\Tanka\\Documents\\Opal\\RedStackExperimentProject\\experiments_area\\from_Haitham\\customerFeedbackPortalEvaluation\\feedback.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            names[count] = parts[0];
+            ratings[count] = Integer.parseInt(parts[1]);
+            comments[count] = parts[2];
+            products[count] = parts[3];
+            count++;
+        }
+        System.out.println("Loaded " + count + " feedback entries from feedback.txt");
+        }catch (IOException e) {
+        System.out.println("No saved feedback found. Starting fresh.");
+        }
     }
 
 
@@ -60,6 +79,6 @@ public class CustomerFeedbackPortal {
 
 
     public static void main(String[] args) {
-        
+        startUp();
     }
 }
