@@ -53,6 +53,7 @@ public class CustomerFeedbackPortal {
             System.out.println();
         }
         loadFeedback();
+        menu();
     }
 
         public static void loadFeedback(){
@@ -76,7 +77,46 @@ public class CustomerFeedbackPortal {
 
 
 
-
+    public static void menu(){  
+        boolean isRunning = true;
+        while (isRunning) {
+            System.out.println("+====================================+");
+            System.out.println("|      CUSTOMER FEEDBACK PORTAL      |");
+            System.out.println("+====================================+");
+            System.out.println("|      1. Submit Feedback            |");
+            System.out.println("|      2. View All Feedback          |");
+            System.out.println("|      3. Rating Report              |");
+            System.out.println("|      4. Search by Product          |");
+            System.out.println("|      5. Save to File               |");
+            System.out.println("|      6. Exit                       |");
+            System.out.println("+====================================+");
+            System.out.print("Enter your choice: ");
+            int choice = numinput();
+            switch (choice) {
+                case 1:
+                    submitFeedback();
+                    break;
+                case 2:
+                    
+                    break;
+                case 3:
+                    
+                    break;
+                case 4:
+                    
+                    break;
+                case 5:
+                    
+                    break;
+                case 6:
+                    isRunning = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
+                    break;
+            }
+        } 
+    }
 
     public static void main(String[] args) {
         startUp();
