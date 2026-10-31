@@ -86,7 +86,7 @@ public class FeedbackProtal {
         System.out.print("Comment: ");
         comment = sc.nextLine().trim();
 
-        //save in data collection
+        // save in data collection
         HashMap<String, String> entry = new HashMap<>();
         entry.put("No", String.valueOf(feedbackList.size() + 1));
         entry.put("Customer", name);
@@ -111,6 +111,41 @@ public class FeedbackProtal {
 
     }
 
+    static void ViewAllFeedback() {
+        boolean hasData = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"))) {
+            String line = reader.readLine();
+            if (line != null) {
+                hasData = true;
+                // columns
+                System.out.printf("%-5s %-10s %-12s %-8s %s%n", "No.", "Customer", "Product", "Rating", "Comment");
+                System.out.printf("%-5s %-10s %-12s %-8s %s%n", "---", "--------", "-------", "------", "-------");
+
+                // data from feedback.txt
+                while (line != null) {
+                    String[] parts = line.split(",", 5);
+                    if (parts.length == 5) {
+                        System.out.printf("%-5s %-10s %-12s %-8s %s%n",
+                                parts[0], parts[1], parts[2], parts[3], parts[4]);
+                    }
+                    line = reader.readLine();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("No feedback has been submitted yet.");
+        }
+
+        if (!hasData) {
+            System.out.println("No feedback has been submitted yet.");
+        }
+    }
+
+    static void RatingReport(){
+
+    }
+
+    
     public static void main(String[] args) {
         Logo();
         try {
@@ -139,10 +174,10 @@ public class FeedbackProtal {
                     SubmitFeedback();
                     break;
                 case "2":
-
+                    ViewAllFeedback();
                     break;
                 case "3":
-
+                    RatingReport();
                     break;
                 case "4":
 
