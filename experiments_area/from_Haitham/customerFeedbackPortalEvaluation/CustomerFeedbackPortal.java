@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -64,9 +66,9 @@ public class CustomerFeedbackPortal {
             while ((line = reader.readLine()) != null) {
             String[] parts = line.split("\\|");
             names[count] = parts[0];
-            ratings[count] = Integer.parseInt(parts[1]);
-            comments[count] = parts[2];
-            products[count] = parts[3];
+            products[count] = parts[1];
+            ratings[count] = Integer.parseInt(parts[2]);
+            comments[count] = parts[3];
             count++;
         }
         System.out.println("Loaded " + count + " feedback entries from feedback.txt");
@@ -156,7 +158,7 @@ public class CustomerFeedbackPortal {
             }
 
             String[] uniqueProducts = Arrays.stream(products).limit(count) .distinct().toArray(String[]::new);
-            
+
             int uniqueCount = uniqueProducts.length;
             int[][] grid = new int[uniqueCount][5];
             for (int i = 0 ; i < count ; i++)
@@ -175,7 +177,19 @@ public class CustomerFeedbackPortal {
             System.out.println("Product   1*   2*   3*   4*   5*   Total   Average");
         }
 
-
+            public static void saveFeedback(){
+        String file = "C:\\Users\\Tanka\\Documents\\Opal\\RedStackExperimentProject\\experiments_area\\from_Haitham\\customerFeedbackPortalEvaluation\\feedback.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (int i = 0; i < count; i++) {
+                writer.write(names[i] + "|" + products[i] + "|" + ratings[i] + "|" + comments[i]);
+                writer.newLine();
+            }
+            System.out.println("Feedback Saved");
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
     public static void menu(){  
         boolean isRunning = true;
         while (isRunning) {
@@ -205,9 +219,10 @@ public class CustomerFeedbackPortal {
                     
                     break;
                 case 5:
-                    
+                    saveFeedback();
                     break;
                 case 6:
+                    saveFeedback();
                     isRunning = false;
                     break;
                 default:
