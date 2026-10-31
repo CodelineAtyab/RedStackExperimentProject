@@ -204,24 +204,21 @@ public class FeedbackProtal {
         System.out.println("--- Search by Product ---");
         System.out.print("Product to search: ");
         String searchInput = sc.nextLine().trim();
+        String searchKey = searchInput.toLowerCase();
 
-        HashMap<String, ArrayList<HashMap<String, String>>> productMap = new HashMap<>();
-
+        ArrayList<HashMap<String, String>> entries = new ArrayList<>();
         for (HashMap<String, String> entry : feedbackList) {
-            String product = entry.get("Product").trim();
-            productMap.putIfAbsent(product.toLowerCase(), new ArrayList<>());
-            productMap.get(product.toLowerCase()).add(entry);
+            if (entry.get("Product").trim().toLowerCase().equals(searchKey)) {
+                entries.add(entry);
+            }
         }
 
-        String searchKey = searchInput.toLowerCase();
-        if (!productMap.containsKey(searchKey)) {
+        if (entries.isEmpty()) {
             System.out.println("No feedback found for \"" + searchInput + "\".");
             return;
         }
 
-        ArrayList<HashMap<String, String>> entries = productMap.get(searchKey);
         String actualProduct = entries.get(0).get("Product").trim();
-
         System.out.println("Found " + entries.size() + " entries for \"" + actualProduct + "\":");
 
         int totalRating = 0;
