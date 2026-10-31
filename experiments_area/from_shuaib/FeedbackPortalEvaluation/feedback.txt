@@ -4,3 +4,4 @@
 4,Omar,Laptop,5,excellent
 5,ali,pc,4,good
 6,osama,pc,5,good
+7,khalil,Laptop,4,nice
