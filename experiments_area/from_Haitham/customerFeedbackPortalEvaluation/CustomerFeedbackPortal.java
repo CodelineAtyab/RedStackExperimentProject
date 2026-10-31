@@ -13,14 +13,14 @@ public class CustomerFeedbackPortal {
 
     public static int numinput(){
         int num = 999;
-        try{num = sc.nextInt();}
+        try{num = sc.nextInt();sc.nextLine();}
         catch(Exception e) {System.out.println("Invalid input. Please enter a number."); sc.next();}
         return num;
     }
     
     public static double doubleNumInput(){
         double num = 0;
-        try{num = sc.nextDouble();}
+        try{num = sc.nextDouble();sc.nextLine();}
         catch(Exception e) {System.out.println("Invalid input. Please enter a number."); sc.next();}
         return num;
     }
@@ -75,37 +75,56 @@ public class CustomerFeedbackPortal {
     }
 
         public static void submitFeedback(){
-        System.out.println("--- Submit Feedback ---");
+            System.out.println("--- Submit Feedback ---");
         
-            System.out.print("Customer name: ");
-            String name = sc.next();
-            if (name.isEmpty()) {
-                System.out.print("Name cannot be empty.");
-                return;
-            }
-            System.out.print("Product name: ");
-            String product = sc.next();
-            if (product.isEmpty()) {
-                System.out.print("Product cannot be empty.");
-                return;
-            }
+            String name ;
+            while (true)
+                {
+                System.out.print("Customer name: ");
+                name = sc.nextLine();
+                if (!name.isEmpty()) {
+                    
+                    break;
+                }
+                System.out.print("Name cannot be empty. ");
+                }
+
+
+            String product ;
+            while (true) 
+                {
+                System.out.print("Product name: ");
+                product = sc.nextLine();
+                if (!product.isEmpty()) {
+                    
+                    break;
+                }
+                System.out.print("Product cannot be empty. ");
+                }
             
             int rating = 0;
-            while (true) {
+            while (true)
+                {
                 System.out.print("Enter your rating (1-5): ");
                 rating = numinput();
                 if (rating >= 1 && rating <= 5) {
-                    break; // Valid rating, exit the loop
+                    break; 
                 }
                 
-                System.out.println("Rating must be a number from 1 to 5. Please try again.");
-            }
-            System.out.print("Enter your comment: ");
-            String comment = sc.next();
-            if (comment.isEmpty()) {
-                System.out.println("Comment cannot be empty.");
-                return;
-            }
+                System.out.print("Rating must be a number from 1 to 5. ");
+                }
+
+                String comment ;
+            while (true)
+                {
+                System.out.print("Enter your comment: ");
+                comment = sc.nextLine();
+                if (!comment.isEmpty()) {
+                    
+                    break;
+                }
+                System.out.print("Comment cannot be empty. ");
+                }
 
             names[count] = name;
             ratings[count] = rating;
