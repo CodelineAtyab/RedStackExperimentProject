@@ -134,7 +134,18 @@ public class CustomerFeedbackPortal {
             System.out.println("Thank you, " + name + "! Your feedback has been recorded.");
         }
 
-
+        public static void viewAllFeedback(){
+        if (count == 0) {
+            System.out.println("No feedback available.");
+            return;
+        }
+        System.out.println("No.   Customer    Product    Rating    Comment");
+        for (int i = 0; i < count; i++) {
+            System.out.println(i + ". "+  names[i] + "   " + products[i]+  "    " + ratings[i]+ "    " + comments[i]);
+            System.out.println("--------------------");
+        }
+    
+        }
 
 
     public static void menu(){  
@@ -157,7 +168,7 @@ public class CustomerFeedbackPortal {
                     submitFeedback();
                     break;
                 case 2:
-                    
+                    viewAllFeedback();
                     break;
                 case 3:
                     
