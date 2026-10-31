@@ -86,7 +86,7 @@ public class FeedbackProtal {
         System.out.print("Comment: ");
         comment = sc.nextLine().trim();
 
-        // save in data collection
+        //save in data collection
         HashMap<String, String> entry = new HashMap<>();
         entry.put("No", String.valueOf(feedbackList.size() + 1));
         entry.put("Customer", name);
@@ -94,6 +94,18 @@ public class FeedbackProtal {
         entry.put("Rating", String.valueOf(rating));
         entry.put("Comment", comment);
         feedbackList.add(entry);
+
+        // store in feedback.txt
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt", true))) {
+            writer.write(entry.get("No") + "," +
+                    entry.get("Customer") + "," +
+                    entry.get("Product") + "," +
+                    entry.get("Rating") + "," +
+                    entry.get("Comment"));
+            writer.newLine();
+        } catch (IOException e) {
+            System.out.println("Error writing to feedback.txt");
+        }
 
         System.out.println("Thank you, " + name + "! Your feedback has been recorded.");
 
