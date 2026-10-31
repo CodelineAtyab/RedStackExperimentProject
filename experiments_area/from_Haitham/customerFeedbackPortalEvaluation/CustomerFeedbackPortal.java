@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CustomerFeedbackPortal {
@@ -136,15 +137,42 @@ public class CustomerFeedbackPortal {
 
         public static void viewAllFeedback(){
         if (count == 0) {
-            System.out.println("No feedback available.");
+            System.out.println("No feedback has been submitted yet.");
             return;
         }
         System.out.println("No.   Customer    Product    Rating    Comment");
+        System.out.println("----------------------------------------------");
         for (int i = 0; i < count; i++) {
             System.out.println(i + ". "+  names[i] + "   " + products[i]+  "    " + ratings[i]+ "    " + comments[i]);
-            System.out.println("--------------------");
+            
         }
     
+        }
+
+        public static void ratingReport(){
+            if (count == 0) {
+            System.out.println("No feedback available.");
+            return;
+            }
+
+            String[] uniqueProducts = Arrays.stream(products).limit(count) .distinct().toArray(String[]::new);
+            
+            int uniqueCount = uniqueProducts.length;
+            int[][] grid = new int[uniqueCount][5];
+            for (int i = 0 ; i < count ; i++)
+            {
+                String currentProduct = products[i];
+                int rating = ratings[i];
+
+                int index = Arrays.asList(uniqueProducts).indexOf(currentProduct);
+
+
+                if (index != -1) {
+                    grid[index][rating - 1]++;
+                }
+            }
+
+            System.out.println("Product   1*   2*   3*   4*   5*   Total   Average");
         }
 
 
@@ -171,7 +199,7 @@ public class CustomerFeedbackPortal {
                     viewAllFeedback();
                     break;
                 case 3:
-                    
+                    ratingReport();
                     break;
                 case 4:
                     
