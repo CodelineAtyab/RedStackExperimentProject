@@ -3,7 +3,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.DEREncodable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class CustomerFeedbackPortal {
@@ -174,7 +176,46 @@ public class CustomerFeedbackPortal {
                 }
             }
 
-            System.out.println("Product   1*   2*   3*   4*   5*   Total   Average");
+            System.out.println("Product      1*   2*   3*   4*   5*   Total   Average");
+            System.out.println("-------     ---  ---  ---  ---  ---  -------  -------");
+            for (int i = 0 ; i<uniqueCount; i++)
+            {
+                System.out.print(uniqueProducts[i] + "   ");
+                for (int j = 0 ; j<5 ; j++)
+                {
+                    
+                    System.out.print("    "+grid[i][j] );
+                }
+                System.out.println();
+            }
+        }
+        
+        public static void searchByProduct() {
+            System.out.println("--- Search by Product ---");
+            System.out.print("Product to search: ");
+            String productt = sc.nextLine().trim();
+            HashMap<String, HashMap<String, String>> productDetails = new HashMap<>();
+            HashMap<String, String> details = new HashMap<>();
+
+            for (int i = 0; i < count; i++) {
+                if(products[i].equals(productt) ){
+                    details.put(names[i], ratings[i] + "   " + comments[i] );
+                    productDetails.put(products[i],details);
+                    }
+                }
+                int numberOfFeedback = details.size();
+                if(details.isEmpty())
+                {
+                    System.out.println("No feedback found for \"" + productt + "\".");
+                }
+                else
+                {
+                    System.out.println("Found "+numberOfFeedback+" entries for " + productt);
+                    for (String key : details.keySet()) {
+                            System.out.println(key + "   " +details.get(key));
+                    }
+                    
+                }
         }
 
             public static void saveFeedback(){
@@ -216,7 +257,7 @@ public class CustomerFeedbackPortal {
                     ratingReport();
                     break;
                 case 4:
-                    
+                    searchByProduct();
                     break;
                 case 5:
                     saveFeedback();
