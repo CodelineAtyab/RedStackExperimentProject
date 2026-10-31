@@ -1,9 +1,13 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class FeedbackProtal {
 
     static Scanner sc = new Scanner(System.in);
+    static ArrayList<HashMap<String, String>> feedbackList = new ArrayList<>();
+
     static void Logo() {
         String Text = "ACME SOLUTIONS ";
         for (int i = 0; i < 6; i++) {
@@ -46,9 +50,58 @@ public class FeedbackProtal {
         }
     }
 
+    static void SubmitFeedback() {
+
+        String name = "";
+        String product = "";
+        int rating = 0;
+        String comment = "";
+
+        System.out.println("--- Submit Feedback ---");
+
+        System.out.print("Customer name: ");
+        name = sc.nextLine().trim();
+        while (name.isEmpty()) {
+            System.out.print("Name cannot be empty. Customer name: ");
+            name = sc.nextLine().trim();
+        }
+
+        System.out.print("Product: ");
+        product = sc.nextLine().trim();
+
+        System.out.print("Rating (1-5): ");
+        while (true) {
+            String input = sc.nextLine().trim();
+            try {
+                rating = Integer.parseInt(input);
+                if (rating >= 1 && rating <= 5) {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.print("Rating must be a number from 1 to 5. Rating (1-5): ");
+        }
+
+        System.out.print("Comment: ");
+        comment = sc.nextLine().trim();
+
+        // save in data collection
+        HashMap<String, String> entry = new HashMap<>();
+        entry.put("No", String.valueOf(feedbackList.size() + 1));
+        entry.put("Customer", name);
+        entry.put("Product", product);
+        entry.put("Rating", String.valueOf(rating));
+        entry.put("Comment", comment);
+        feedbackList.add(entry);
+
+        System.out.println("Thank you, " + name + "! Your feedback has been recorded.");
+
+    }
+
     public static void main(String[] args) {
+        Logo();
         try {
-            Logo();
             LoadFeedback();
         } catch (Exception e) {
             System.out.println("No saved feedback found. Starting fresh.");
@@ -71,19 +124,19 @@ public class FeedbackProtal {
 
             switch (input) {
                 case "1":
-                    
+                    SubmitFeedback();
                     break;
                 case "2":
-                    
+
                     break;
                 case "3":
-                    
+
                     break;
                 case "4":
 
                     break;
                 case "5":
-                    
+
                     break;
                 case "6":
                     stop = true;
@@ -91,7 +144,7 @@ public class FeedbackProtal {
                     break;
                 default:
                     System.out.println("Invalid choice. Please enter a number from 1 to 6.");
-                    
+
             }
 
         } while (!stop);
