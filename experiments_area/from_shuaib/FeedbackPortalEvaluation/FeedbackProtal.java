@@ -36,22 +36,30 @@ public class FeedbackProtal {
     }
 
     static void LoadFeedback() throws IOException {
-        int count = 0;
+        feedbackList.clear();
         BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"));
         String line = reader.readLine();
         while (line != null) {
-            count++;
+            String[] parts = line.split(",", 5);
+            if (parts.length == 5) {
+                HashMap<String, String> entry = new HashMap<>();
+                entry.put("No", parts[0]);
+                entry.put("Customer", parts[1]);
+                entry.put("Product", parts[2]);
+                entry.put("Rating", parts[3]);
+                entry.put("Comment", parts[4]);
+                feedbackList.add(entry);
+            }
             line = reader.readLine();
         }
         reader.close();
 
-        if (count > 0) {
-            System.out.println("Loaded " + count + " feedback entries from feedback.txt");
+        if (!feedbackList.isEmpty()) {
+            System.out.println("Loaded " + feedbackList.size() + " feedback entries from feedback.txt");
         }
     }
 
     static void SubmitFeedback() {
-
         String name = "";
         String product = "";
         int rating = 0;
@@ -94,21 +102,7 @@ public class FeedbackProtal {
         entry.put("Rating", String.valueOf(rating));
         entry.put("Comment", comment);
         feedbackList.add(entry);
-
-        // store in feedback.txt
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt", true))) {
-            writer.write(entry.get("No") + "," +
-                    entry.get("Customer") + "," +
-                    entry.get("Product") + "," +
-                    entry.get("Rating") + "," +
-                    entry.get("Comment"));
-            writer.newLine();
-        } catch (IOException e) {
-            System.out.println("Error writing to feedback.txt");
-        }
-
         System.out.println("Thank you, " + name + "! Your feedback has been recorded.");
-
     }
 
     static void ViewAllFeedback() {
@@ -276,6 +270,21 @@ public class FeedbackProtal {
         System.out.printf("Average rating: %.2f%n", average);
     }
 
+    static void SaveToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt"))) {
+            for (HashMap<String, String> entry : feedbackList) {
+                writer.write(entry.get("No") + "," +
+                        entry.get("Customer") + "," +
+                        entry.get("Product") + "," +
+                        entry.get("Rating") + "," +
+                        entry.get("Comment"));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to feedback.txt");
+        }
+    }
+
     public static void main(String[] args) {
         Logo();
         try {
@@ -313,10 +322,11 @@ public class FeedbackProtal {
                     SearchByProduct();
                     break;
                 case "5":
-
+                    SaveToFile();
                     break;
                 case "6":
                     stop = true;
+                    SaveToFile();
                     System.out.println("Thank you!");
                     break;
                 default:
