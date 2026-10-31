@@ -74,6 +74,47 @@ public class CustomerFeedbackPortal {
         }
     }
 
+        public static void submitFeedback(){
+        System.out.println("--- Submit Feedback ---");
+        
+            System.out.print("Customer name: ");
+            String name = sc.next();
+            if (name.isEmpty()) {
+                System.out.print("Name cannot be empty.");
+                return;
+            }
+            System.out.print("Product name: ");
+            String product = sc.next();
+            if (product.isEmpty()) {
+                System.out.print("Product cannot be empty.");
+                return;
+            }
+            
+            int rating = 0;
+            while (true) {
+                System.out.print("Enter your rating (1-5): ");
+                rating = numinput();
+                if (rating >= 1 && rating <= 5) {
+                    break; // Valid rating, exit the loop
+                }
+                
+                System.out.println("Rating must be a number from 1 to 5. Please try again.");
+            }
+            System.out.print("Enter your comment: ");
+            String comment = sc.next();
+            if (comment.isEmpty()) {
+                System.out.println("Comment cannot be empty.");
+                return;
+            }
+
+            names[count] = name;
+            ratings[count] = rating;
+            comments[count] = comment;
+            products[count] = product;
+            count++;
+            System.out.println("Thank you, " + name + "! Your feedback has been recorded.");
+        }
+
 
 
 
