@@ -192,7 +192,6 @@ public class FeedbackProtal {
         System.out.printf("%-12s %-4s %-4s %-4s %-4s %-4s %-7s %s%n", "-------", "---", "---", "---", "---", "---",
                 "-----", "-------");
 
-        
         for (int i = 0; i < products.size(); i++) {
             String prod = products.get(i);
             int sumRatings = 0;
@@ -215,7 +214,6 @@ public class FeedbackProtal {
                     average);
         }
 
-       
         System.out.println("\nRatings overview");
         for (int star = 5; star >= 1; star--) {
             int count = starTotals[star - 1];
@@ -228,6 +226,54 @@ public class FeedbackProtal {
             String starLabel = (star == 1) ? "1 star " : star + " stars";
             System.out.printf("%-8s | %-5s (%d)%n", starLabel, starsBar, count);
         }
+    }
+
+    static void SearchByProduct() {
+        System.out.println("--- Search by Product ---");
+        System.out.print("Product to search: ");
+        String searchInput = sc.nextLine().trim();
+
+        // Key-value data structure to group feedback entries by product name[cite: 6]
+        HashMap<String, ArrayList<String[]>> productMap = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"))) {
+            String line = reader.readLine();
+            while (line != null) {
+                String[] parts = line.split(",", 5);
+                if (parts.length == 5) {
+                    String product = parts[2].trim();
+                    productMap.putIfAbsent(product.toLowerCase(), new ArrayList<>());
+                    productMap.get(product.toLowerCase()).add(parts);
+                }
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        String searchKey = searchInput.toLowerCase();
+        if (!productMap.containsKey(searchKey)) {
+            System.out.println("No feedback found for \"" + searchInput + "\".");
+            return;
+        }
+
+        ArrayList<String[]> entries = productMap.get(searchKey);
+        String actualProduct = entries.get(0)[2].trim();
+
+        System.out.println("Found " + entries.size() + " entries for \"" + actualProduct + "\":");
+
+        int totalRating = 0;
+        for (String[] entry : entries) {
+            String customer = entry[1].trim();
+            String rating = entry[3].trim();
+            String comment = entry[4].trim();
+
+            totalRating += Integer.parseInt(rating);
+            System.out.printf("     %-8s %-4s %s%n", customer, rating, comment);
+        }
+
+        double average = (double) totalRating / entries.size();
+        System.out.printf("Average rating: %.2f%n", average);
     }
 
     public static void main(String[] args) {
@@ -264,7 +310,7 @@ public class FeedbackProtal {
                     RatingReport();
                     break;
                 case "4":
-
+                    SearchByProduct();
                     break;
                 case "5":
 
