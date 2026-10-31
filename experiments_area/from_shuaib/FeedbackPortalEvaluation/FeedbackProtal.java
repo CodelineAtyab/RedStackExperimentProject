@@ -106,32 +106,23 @@ public class FeedbackProtal {
     }
 
     static void ViewAllFeedback() {
-        boolean hasData = false;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"))) {
-            String line = reader.readLine();
-            if (line != null) {
-                hasData = true;
-                // columns
-                System.out.printf("%-5s %-10s %-12s %-8s %s%n", "No.", "Customer", "Product", "Rating", "Comment");
-                System.out.printf("%-5s %-10s %-12s %-8s %s%n", "---", "--------", "-------", "------", "-------");
-
-                // data from feedback.txt
-                while (line != null) {
-                    String[] parts = line.split(",", 5);
-                    if (parts.length == 5) {
-                        System.out.printf("%-5s %-10s %-12s %-8s %s%n",
-                                parts[0], parts[1], parts[2], parts[3], parts[4]);
-                    }
-                    line = reader.readLine();
-                }
-            }
-        } catch (IOException e) {
+        if (feedbackList.isEmpty()) {
             System.out.println("No feedback has been submitted yet.");
+            return;
         }
 
-        if (!hasData) {
-            System.out.println("No feedback has been submitted yet.");
+        // columns
+        System.out.printf("%-5s %-10s %-12s %-8s %s%n", "No.", "Customer", "Product", "Rating", "Comment");
+        System.out.printf("%-5s %-10s %-12s %-8s %s%n", "---", "--------", "-------", "------", "-------");
+
+        // data from data collection
+        for (HashMap<String, String> entry : feedbackList) {
+            System.out.printf("%-5s %-10s %-12s %-8s %s%n",
+                    entry.get("No"),
+                    entry.get("Customer"),
+                    entry.get("Product"),
+                    entry.get("Rating"),
+                    entry.get("Comment"));
         }
     }
 
