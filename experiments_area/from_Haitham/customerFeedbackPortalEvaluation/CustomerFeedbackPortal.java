@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.DEREncodable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -196,7 +195,17 @@ public class CustomerFeedbackPortal {
                 System.out.printf("    %.2f", average);
                 System.out.println();
             }
-            
+            System.out.println("Ratings overview");
+            for (int i = 5 ; i > 0 ; i--){
+                int count = starCounts[i-1];
+                String star = "";
+                for(int j = 0 ; j < count; j++){
+                    star +="*";
+                }
+                if(i == 1){ System.out.println(i+" star   |"+star+"  ("+count+")");}
+                else{ System.out.println(i+" stars  |"+star+"  ("+count+")");}
+                
+            }
         }
         
         public static void searchByProduct() {
