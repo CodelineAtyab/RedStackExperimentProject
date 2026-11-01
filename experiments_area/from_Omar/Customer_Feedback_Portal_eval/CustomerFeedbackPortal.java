@@ -15,28 +15,25 @@ public class CustomerFeedbackPortal {
     public static Scanner sc = new Scanner(System.in);
 
     public static void Logo() {
-        String Text = "ACME SOLUTIONS ";
+        String text = "ACME SOLUTIONS ";
+
         for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < i + 1; j++) {
-
+            for (int j = 0; j <= i; j++) {
                 System.out.print("* ");
+            }
 
-                if (j == i) {
-                    if (i == 3) {
-                        System.out.print("       ");
-                        System.out.print(Text);
-                        System.out.print("      ");
-                    } else
-                        for (int spaces = 10; spaces > i; spaces--) {
-                            System.out.print("    ");
-                        }
-
-                    for (int l = 0; l < j + 1; l++) {
-
-                        System.out.print(" *");
-                    }
+            if (i == 3) {
+                System.out.print("      " + text + "      ");
+            } else {
+                for (int spaces = 10; spaces > i; spaces--) {
+                    System.out.print("    ");
                 }
             }
+
+            for (int l = 0; l <= i; l++) {
+                System.out.print(" *");
+            }
+
             System.out.println();
         }
     }
