@@ -171,15 +171,18 @@ public class CustomerFeedbackPortal {
             System.out.printf("%-12s  %3s  %3s  %3s  %3s  %3s  %6s  %8s%n", "Product", "1*", "2*", "3*", "4*", "5*",
                     "Total", "Average");
             System.out.println("----------  ----  ----  ----  ----  ----  ------  -------");
-            int[] totstars = new int[5];
+            int[] ts= new int[5];
             for (int i = 0; i < products.size(); i++) {
                 int total = 0;
                 int sum = 0;
                 for (int j = 0; j < 5; j++) {
+
                     total += rating_r[i][j];
                     sum += rating_r[i][j] * (j + 1);
-                    totstars[j] += rating_r[i][j];
+                    ts[j] += rating_r[i][j];
+
                 }
+                
                 double avg = 0.0;
                 if (total > 0) {
                     avg = sum / total;
@@ -189,20 +192,20 @@ public class CustomerFeedbackPortal {
             }
             System.out.println("\nRatings overview");
             for (int i = 5; i >= 1; i--) {
-                int count = totstars[i - 1];
-                String peoplestars = "";
+                int count = ts[i - 1];
+                String votes = "";
                 for (int j = 0; j < count; j++) {
-                    peoplestars += "* ";
+                    votes += "* ";
                 }
-                peoplestars = peoplestars.trim();
-                String label = "";
-                if (i == 1) {
-                    label = "1 star";
-                } else {
-                    label = i + "stars";
-                }
+                votes = votes.trim();
+                String column = "";
+               
+                    
+               
+                    column = i + "stars";
+                
 
-                System.out.printf("%-8s | %-10s (%d)%n", label, peoplestars, count);
+                System.out.printf("%-8s | %-10s (%d)%n", column, votes, count);
             }
         }
     }
