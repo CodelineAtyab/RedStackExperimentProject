@@ -1,0 +1,3 @@
+Haitham|Phone|5|good
+Ahmed|Book|3|Boring
+Khalid|Book|5|Very good

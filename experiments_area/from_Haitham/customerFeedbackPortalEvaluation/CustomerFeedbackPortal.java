@@ -163,6 +163,7 @@ public class CustomerFeedbackPortal {
 
             int uniqueCount = uniqueProducts.length;
             int[][] grid = new int[uniqueCount][5];
+            int[] starCounts = new int[5];
             for (int i = 0 ; i < count ; i++)
             {
                 String currentProduct = products[i];
@@ -173,6 +174,7 @@ public class CustomerFeedbackPortal {
 
                 if (index != -1) {
                     grid[index][rating - 1]++;
+                    starCounts[rating - 1]++;
                 }
             }
 
@@ -180,14 +182,21 @@ public class CustomerFeedbackPortal {
             System.out.println("-------     ---  ---  ---  ---  ---  -------  -------");
             for (int i = 0 ; i<uniqueCount; i++)
             {
+                int sum = 0;
+                int totalRatings = 0;
                 System.out.print(uniqueProducts[i] + "   ");
                 for (int j = 0 ; j<5 ; j++)
                 {
-                    
-                    System.out.print("    "+grid[i][j] );
+                    sum += grid[i][j] * (j + 1);
+                    totalRatings += grid[i][j];
+                    System.out.print("    "+grid[i][j]);    
                 }
+                System.out.print("    "+totalRatings);
+                double average = (totalRatings > 0) ? (double) sum / totalRatings : 0;
+                System.out.printf("    %.2f", average);
                 System.out.println();
             }
+            
         }
         
         public static void searchByProduct() {
