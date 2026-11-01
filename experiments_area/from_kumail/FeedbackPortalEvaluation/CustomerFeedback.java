@@ -2,11 +2,45 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class CustomerFeedback {
 
     static Scanner scanner = new Scanner(System.in);
     static ArrayList<HashMap<String, String>> feedbackEntries = new ArrayList<>();
+
+    static Map<String, Runnable> MENU = new LinkedHashMap<>();
+    static boolean exit = false;
+
+    static {
+        MENU.put("Submit Feedback", () -> SubmitFeedback());
+        MENU.put("View All Feedback", () -> ViewAllFeedback());
+        MENU.put("Rating Report", () -> RatingReport());
+        MENU.put("Search by Product", () -> SearchByProduct());
+        MENU.put("Save to File", () -> SaveToFile());
+        MENU.put("Exit", () -> {
+            SaveToFile();
+            System.out.println("Thank you!");
+            exit = true;
+        });
+    }
+
+    static void printMenu() {
+        String line = "+" + "=".repeat(41) + "+";
+        System.out.println("\n" + line);
+        System.out.println("|         CUSTOMER FEEDBACK PORTAL        |");
+        System.out.println(line);
+
+        List<String> labels = new ArrayList<>(MENU.keySet());
+        for (int i = 0; i < labels.size(); i++) {
+            System.out.printf("| %-39s |%n", (i + 1) + ". " + labels.get(i));
+        }
+
+        System.out.println(line);
+    }
 
     public static void main(String[] args) {
         printBanner();
@@ -16,50 +50,26 @@ public class CustomerFeedback {
             System.out.println("No saved feedback found. Starting fresh.");
         }
 
-        boolean exit = false;
+        List<Runnable> actions = new ArrayList<>(MENU.values());
+
         do {
-            System.out.println("\n+=========================================+");
-            System.out.println("|         CUSTOMER FEEDBACK PORTAL        |");
-            System.out.println("+=========================================+");
-            System.out.println("| 1. Submit Feedback                      |");
-            System.out.println("| 2. View All Feedback                    |");
-            System.out.println("| 3. Rating Report                        |");
-            System.out.println("| 4. Search by Product                    |");
-            System.out.println("| 5. Save to File                         |");
-            System.out.println("| 6. Exit                                 |");
-            System.out.println("+=========================================+");
+            printMenu();
             System.out.print("Enter your choice: ");
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
 
-            switch (input) {
-                case "1":
-                    SubmitFeedback();
-                    break;
-                case "2":
-                    ViewAllFeedback();
-                    break;
-                case "3":
-                    RatingReport();
-                    break;
-                case "4":
-                    SearchByProduct();
-                    break;
-                case "5":
-                    SaveToFile();
-                    break;
-                case "6":
-                    exit = true;
-                    SaveToFile();
-                    System.out.println("Thank you!");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
-
+            try {
+                int choice = Integer.parseInt(input);
+                if (choice >= 1 && choice <= actions.size()) {
+                    actions.get(choice - 1).run();
+                } else {
+                    System.out.println("Invalid choice. Please enter a number from 1 to " + actions.size() + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid choice. Please enter a number from 1 to " + actions.size() + ".");
             }
-
         } while (!exit);
-
     }
+
 
     static void printBanner() {
         String bannerText = "ACME SOLUTIONS ";
@@ -164,12 +174,11 @@ public class CustomerFeedback {
             return;
         }
 
-        // columns
         System.out.printf("%-5s %-10s %-12s %-8s %s%n", "No.", "Customer", "Product", "Rating", "Comment");
         System.out.printf("%-5s %-10s %-12s %-8s %s%n", "---", "--------", "-------", "------", "-------");
 
-        // data from data collection
-        for (HashMap<String, String> rec : feedbackEntries) {
+        for (int i = 0; i < feedbackEntries.size(); i++) {
+            HashMap<String, String> rec = feedbackEntries.get(i);
             System.out.printf("%-5s %-10s %-12s %-8s %s%n",
                     rec.get("No"),
                     rec.get("Customer"),
@@ -249,23 +258,25 @@ public class CustomerFeedback {
         String typProd = scanner.nextLine().trim();
         String lowerKey = typProd.toLowerCase();
 
-        ArrayList<HashMap<String, String>> matche = new ArrayList<>();
-        for (HashMap<String, String> rec : feedbackEntries) {
+        ArrayList<HashMap<String, String>> match = new ArrayList<>();
+        for (int i = 0; i < feedbackEntries.size(); i++) {
+            HashMap<String, String> rec = feedbackEntries.get(i);
             if (rec.get("Product").trim().toLowerCase().equals(lowerKey)) {
-                matche.add(rec);
+                match.add(rec);
             }
         }
 
-        if (matche.isEmpty()) {
+        if (match.isEmpty()) {
             System.out.println("No feedback found for \"" + typProd + "\".");
             return;
         }
 
-        String displayName = matche.get(0).get("Product").trim();
-        System.out.println("Found " + matche.size() + " entries for \"" + displayName + "\":");
+        String displayName = match.get(0).get("Product").trim();
+        System.out.println("Found " + match.size() + " entries for \"" + displayName + "\":");
 
         int ratingTotal = 0;
-        for (HashMap<String, String> record : matche) {
+        for (int i = 0; i < match.size(); i++) {
+            HashMap<String, String> record = match.get(i);
             String customer = record.get("Customer").trim();
             String rating = record.get("Rating").trim();
             String comment = record.get("Comment").trim();
@@ -274,13 +285,14 @@ public class CustomerFeedback {
             System.out.printf("     %-8s %-4s %s%n", customer, rating, comment);
         }
 
-        double averageRating = (double) ratingTotal / matche.size();
+        double averageRating = (double) ratingTotal / match.size();
         System.out.printf("Average rating: %.2f%n", averageRating);
     }
 
     static void SaveToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt"))) {
-            for (HashMap<String, String> record : feedbackEntries) {
+            for (int i = 0; i < feedbackEntries.size(); i++) {
+                HashMap<String, String> record = feedbackEntries.get(i);
                 writer.write(record.get("No") + "," + record.get("Customer") + "," + record.get("Product") + "," + record.get("Rating") + "," + record.get("Comment"));
                 writer.newLine();
             }
