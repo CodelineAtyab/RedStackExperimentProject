@@ -77,9 +77,9 @@ public class FeedbackPortal {
     }
 
     public static void printBanner() {
-        String companyName = "OASIS TECH";
-        int rows = 6;
-        int bannerWidth = 36;
+        String companyName = "ACME SOLUTIONS";
+        int rows = 7;
+        int bannerWidth = 40;
 
         System.out.println();
 
@@ -204,9 +204,7 @@ public class FeedbackPortal {
 
             if (value.isEmpty()) {
                 System.out.println(fieldName + " cannot be empty.");
-            } else if (value.contains("|")) {
-                System.out.println("Please do not use the | character.");
-            } else {
+            }  else {
                 return value;
             }
         }
