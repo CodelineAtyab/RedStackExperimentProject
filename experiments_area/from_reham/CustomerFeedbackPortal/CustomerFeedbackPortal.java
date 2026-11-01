@@ -1,18 +1,44 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class CustomerFeedbackPortal {
+
+    static Scanner input =new Scanner(System.in);
     //  Create arrays
     static String[] names =new String [100];
+    static String[] products =new String [100];
     static int[] ratings = new int[100];
     static String[] comments = new String[100];
     static int count =0;
     public static void main(String[] args) {
+        boolean system = true;
         logo();
         loadfeedback();
-        menu();
         
+        while (system == true){
+        menu();
+
+            int choice = 0;
+            try{
+                System.out.print("Enter your choice: ");
+                choice = input.nextInt();
+                if (choice > 6 || choice <1){
+                    System.out.println("Please enter a number from 1 to 6 ");
+                }
+
+                switch (choice){
+                    case 1: SubmitFeedback();break;
+                }
+
+            }catch(InputMismatchException exception){
+                System.out.println("Invalid choice. Please enter a number from 1 to 6.");
+                input.nextLine();
+            }
+
+        }
     }
 
     public static void logo(){
@@ -45,9 +71,11 @@ public class CustomerFeedbackPortal {
             String Line;
             while((Line=read.readLine())!=null){
                 String name = Line;
+                String product =read.readLine();
                 String rating = read.readLine();
                 String comment = read.readLine();
                 names[count] = name;
+                products[count]= product;
                 ratings[count] = Integer.parseInt(rating);
                 comments[count] = comment;
                 count ++;
@@ -104,10 +132,50 @@ public class CustomerFeedbackPortal {
             System.out.print("=");
         }
         System.out.println("+");
+    }
 
-       
+    public static void SubmitFeedback(){
+        System.out.println("--- Submit Feedback ---");
+        if(count<100){
+            //Name
+            System.out.print("Customer name: ");
+            input.nextLine();
+            String name = input.nextLine();
+            while(name.isBlank()){
+                System.out.println("Name can not be empty");
+                System.out.print("Customer name: ");
 
+                name=input.nextLine();
 
+            }
+            //Product
+            System.out.print("Product: ");
+            String products=input.nextLine();
+            //rating
+            int rating=0;
+            while(true){
+                try{
+                System.out.print("Rating (1-5): ");
+                rating = input.nextInt();
+
+                if(rating >5 || rating <1 ){
+                    System.out.println("Please Enter a valid Number ");
+                }
+                else{
+                    break;
+                }
+                }catch(InputMismatchException exception){
+                System.out.println("Enter A Number!");
+                input.nextLine();
+                }
+            }
+
+            System.out.print("Comment: ");
+            String comment =input.nextLine();
+            input.nextLine();
+
+            System.out.println("Thank you, "+name+"! Your feedback has been recorded.");
+        }
 
     }
 
