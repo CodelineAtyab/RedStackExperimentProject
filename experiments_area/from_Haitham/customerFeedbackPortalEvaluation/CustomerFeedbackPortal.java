@@ -3,8 +3,12 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CustomerFeedbackPortal {
@@ -236,7 +240,7 @@ public class CustomerFeedbackPortal {
                 }
         }
 
-            public static void saveFeedback(){
+        public static void saveFeedback(){
         String file = "C:\\Users\\Tanka\\Documents\\Opal\\RedStackExperimentProject\\experiments_area\\from_Haitham\\customerFeedbackPortalEvaluation\\feedback.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (int i = 0; i < count; i++) {
@@ -251,42 +255,36 @@ public class CustomerFeedbackPortal {
     
     public static void menu(){  
         boolean isRunning = true;
+        Map<String, Runnable> menuMap = new LinkedHashMap<>();
+        menuMap.put("Submit Feedback", () -> submitFeedback());
+        menuMap.put("View All Feedback", () -> viewAllFeedback());
+        menuMap.put("Rating Report", () -> ratingReport());
+        menuMap.put("Search by Product", () -> searchByProduct());
+        menuMap.put("Save to File", () -> saveFeedback());
         while (isRunning) {
             System.out.println("+====================================+");
             System.out.println("|      CUSTOMER FEEDBACK PORTAL      |");
             System.out.println("+====================================+");
-            System.out.println("|      1. Submit Feedback            |");
-            System.out.println("|      2. View All Feedback          |");
-            System.out.println("|      3. Rating Report              |");
-            System.out.println("|      4. Search by Product          |");
-            System.out.println("|      5. Save to File               |");
-            System.out.println("|      6. Exit                       |");
+            int index = 1;
+            for (String string : menuMap.keySet()) {
+                int length = 27-string.length();
+                System.out.printf("|      "+index +". "+string + "%-"+ length +"s"+"|\n", " ");
+                index++;
+            }
+            System.out.println("|      "+index +". Exit                       |");
             System.out.println("+====================================+");
             System.out.print("Enter your choice: ");
             int choice = numinput();
-            switch (choice) {
-                case 1:
-                    submitFeedback();
-                    break;
-                case 2:
-                    viewAllFeedback();
-                    break;
-                case 3:
-                    ratingReport();
-                    break;
-                case 4:
-                    searchByProduct();
-                    break;
-                case 5:
-                    saveFeedback();
-                    break;
-                case 6:
-                    saveFeedback();
-                    isRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
-                    break;
+            
+            List<Runnable> run = new ArrayList<>(menuMap.values());
+            if (choice > 0 && choice <= run.size()){
+                run.get(choice-1).run();
+            }else if (choice == index) {
+                saveFeedback();
+                isRunning = false;
+            }
+            else{
+                System.out.println("Invalid choice. Please Try again.");
             }
         } 
     }
