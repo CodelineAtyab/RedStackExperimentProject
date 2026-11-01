@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.NumberFormatException;
-import java.lang.Thread.State;
+import java.util.InputMismatchException;
 
 public class CustomerFeedbackPortal {
     public static Scanner sc = new Scanner(System.in);
@@ -83,7 +81,7 @@ public class CustomerFeedbackPortal {
         System.out.println("+====================================+");
     }
 
-    public static void Submitfeedback(ArrayList<HashMap<String, String>> feedback) {
+    public static void Submitfeedback(ArrayList<HashMap<String, String>> feedback)throws InputMismatchException {
         System.out.println("--- Submit Feedback ---");
         String name = "";
 
@@ -182,7 +180,7 @@ public class CustomerFeedbackPortal {
                     ts[j] += rating_r[i][j];
 
                 }
-                
+
                 double avg = 0.0;
                 if (total > 0) {
                     avg = sum / total;
@@ -210,7 +208,7 @@ public class CustomerFeedbackPortal {
         }
     }
 
-    public static void Searchbyproduct(ArrayList<HashMap<String, String>> feedback) {
+    public static void Searchbyproduct(ArrayList<HashMap<String, String>> feedback)throws InputMismatchException {
         System.out.println("--- Search by Product ---");
         System.out.print("product to search: ");
         String searchP = sc.nextLine().trim();
@@ -299,6 +297,9 @@ public class CustomerFeedbackPortal {
             }
         } catch (IOException e) {
             System.out.println("No saved feedback found. Starting fresh.");
+        }
+        catch(InputMismatchException e){
+            System.out.println("Invalid input. Please enter a number from 1 to 6.");
         }
 
         sc.close();
