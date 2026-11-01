@@ -31,6 +31,7 @@ public class CustomerFeedbackPortal {
 
                 switch (choice){
                     case 1: SubmitFeedback();break;
+                    case 2: ViewAllFeedback();break;
                 }
 
             }catch(InputMismatchException exception){
@@ -44,6 +45,7 @@ public class CustomerFeedbackPortal {
     public static void logo(){
         int rn=6;
         for (int r=0; r<rn ;r++){
+
             for(int sl=0 ; sl<=r ;sl++){
             System.out.print("*");
             }
@@ -134,6 +136,7 @@ public class CustomerFeedbackPortal {
         System.out.println("+");
     }
 
+    //Submit FeedBack
     public static void SubmitFeedback(){
         System.out.println("--- Submit Feedback ---");
         if(count<100){
@@ -179,7 +182,29 @@ public class CustomerFeedbackPortal {
 
     }
 
+    //View All Feedback 
+    public static void ViewAllFeedback(){
+        System.out.println("No.   Customer         Product         Rating    Comment           ");
+        System.out.println("-".repeat(3)+"   "+"-".repeat(10)+"       "+"-".repeat(12)+"    "+"-".repeat(6)+"    "+"-".repeat(15));
 
+        for(int i =0; i<count; i++){
+            System.out.print(" "+i+"     ");
+            System.out.print(names[i]);
+            for (int j=0; j<=15-names[i].length();j++){
+                System.out.print(" ");
+            }
+            System.out.print(products[i]);
+            for (int j=0; j<=15-products[i].length();j++){
+                System.out.print(" ");
+            }
+            System.out.print(ratings[i]);
+            String numtext= String.valueOf(ratings);
+            for (int j=0; j<=2*(15-numtext.length());j++){
+                System.out.print(" ");
+            }
+            System.out.println(comments[i]);
+        }
+    }
 
 }
 
