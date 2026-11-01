@@ -13,9 +13,10 @@ import java.lang.Thread.State;
 
 public class CustomerFeedbackPortal {
     public static Scanner sc = new Scanner(System.in);
+    public static ArrayList<HashMap<String, String>> feedback = new ArrayList<>();
 
     public static void Logo() {
-        String text = "ACME SOLUTIONS ";
+        String text = "ACME SOLUTIONS  ";
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j <= i; j++) {
@@ -46,13 +47,17 @@ public class CustomerFeedbackPortal {
             feedbackCount++;
 
             String[] parts = line.split("\\|");
-
+            HashMap<String, String> entry = new HashMap<>();
             if (parts.length >= 4) {
                 String name = parts[0].trim();
                 String product = parts[1].trim();
                 String rating = parts[2].trim();
                 String feedback = parts[3].trim();
-
+                entry.put("name", name);
+                entry.put("product", product);
+                entry.put("rating", rating);
+                entry.put("comment", feedback);
+                CustomerFeedbackPortal.feedback.add(entry);
                 System.out.println(
                         "Feedback " + feedbackCount + ": " + name + "|" + product + "|" + rating + "|" + feedback);
             } else {
@@ -149,7 +154,6 @@ public class CustomerFeedbackPortal {
                     rating_r[i][j] = 0;
                 }
             }
-
             ArrayList<String> products = new ArrayList<>();
             for (HashMap<String, String> entry : feedback) {
                 String p = entry.get("product");
@@ -164,25 +168,21 @@ public class CustomerFeedbackPortal {
                     rating_r[row][r - 1]++;
                 }
             }
-
             System.out.printf("%-12s  %3s  %3s  %3s  %3s  %3s  %6s  %8s%n", "Product", "1*", "2*", "3*", "4*", "5*",
                     "Total", "Average");
             System.out.println("----------  ----  ----  ----  ----  ----  ------  -------");
-
             int[] totstars = new int[5];
             for (int i = 0; i < products.size(); i++) {
                 int total = 0;
                 int sum = 0;
                 for (int j = 0; j < 5; j++) {
                     total += rating_r[i][j];
-                    sum += rating_r[i][j] *(j + 1);
+                    sum += rating_r[i][j] * (j + 1);
                     totstars[j] += rating_r[i][j];
                 }
-
-                
-                    double avg = 0.0;
+                double avg = 0.0;
                 if (total > 0) {
-                     avg = sum / total;
+                    avg = sum / total;
                 }
                 System.out.printf("%-12s  %3d  %3d  %3d  %3d  %3d  %6d  %8.2f%n", products.get(i), rating_r[i][0],
                         rating_r[i][1], rating_r[i][2], rating_r[i][3], rating_r[i][4], total, avg);
@@ -195,11 +195,11 @@ public class CustomerFeedbackPortal {
                     peoplestars += "* ";
                 }
                 peoplestars = peoplestars.trim();
-                String label ="";
+                String label = "";
                 if (i == 1) {
-                     label = "1 star";
+                    label = "1 star";
                 } else {
-                     label = i + "stars";
+                    label = i + "stars";
                 }
 
                 System.out.printf("%-8s | %-10s (%d)%n", label, peoplestars, count);
@@ -207,54 +207,54 @@ public class CustomerFeedbackPortal {
         }
     }
 
-    public static void Searchbyproduct(ArrayList<HashMap<String, String>> feedback){
+    public static void Searchbyproduct(ArrayList<HashMap<String, String>> feedback) {
         System.out.println("--- Search by Product ---");
         System.out.print("product to search: ");
         String searchP = sc.nextLine().trim();
 
-        ArrayList<HashMap<String,String>> matches = new ArrayList<>();
-        String matchedproductName= searchP;
-        for(HashMap<String,String> entry : feedback){
+        ArrayList<HashMap<String, String>> matches = new ArrayList<>();
+        String matchedproductName = searchP;
+        for (HashMap<String, String> entry : feedback) {
             String prod = entry.get("product");
-            if(prod.equalsIgnoreCase(searchP)){
+            if (prod.equalsIgnoreCase(searchP)) {
                 matches.add(entry);
-                matchedproductName=prod;
+                matchedproductName = prod;
             }
         }
 
-        if(matches.isEmpty()){
-            System.out.println("No feedback found for \""+searchP);
+        if (matches.isEmpty()) {
+            System.out.println("No feedback found for \"" + searchP);
 
-        }
-        else{
-            System.out.println("Found "+matches.size()+" entries for \""+matchedproductName);
-            int totalRating=0;
+        } else {
+            System.out.println("Found " + matches.size() + " entries for \"" + matchedproductName);
+            int totalRating = 0;
 
-            for(HashMap<String,String> entry:matches){
-                int rating=Integer.parseInt(entry.get("rating"));
-                totalRating+=rating;
-                System.out.printf("%-10s %-3d %s%n",entry.get("name"),rating,entry.get("comment"));
+            for (HashMap<String, String> entry : matches) {
+                int rating = Integer.parseInt(entry.get("rating"));
+                totalRating += rating;
+                System.out.printf("%-10s %-3d %s%n", entry.get("name"), rating, entry.get("comment"));
 
             }
-            double average=(double) totalRating / matches.size();
-            System.out.printf("Average rating: %.2f%n",average);
+            double average = (double) totalRating / matches.size();
+            System.out.printf("Average rating: %.2f%n", average);
         }
     }
 
-    public static void Savetofile(ArrayList<HashMap<String, String>> feedback)throws IOException{
-        BufferedWriter writer= new BufferedWriter(new FileWriter("feedback.txt"));
-        for(HashMap<String,String> entry:feedback){
-            writer.write(entry.get("name")+"|"+entry.get("product")+"|"+entry.get("rating")+"|"+entry.get("comment"));
+    public static void Savetofile(ArrayList<HashMap<String, String>> feedback) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt"));
+        for (HashMap<String, String> entry : feedback) {
+            writer.write(entry.get("name") + "|" + entry.get("product") + "|" + entry.get("rating") + "|"
+                    + entry.get("comment"));
             writer.newLine();
         }
         writer.close();
-        System.out.println("Saved "+ feedback.size()+"feedback entries to feedback.txt");
+        System.out.println("Saved " + feedback.size() + "feedback entries to feedback.txt");
     }
 
     public static void main(String[] args) {
         boolean exit = false;
-        ArrayList<HashMap<String, String>> feedback = new ArrayList<>();
-        int[][] rating_r=new int[3][5];
+
+        int[][] rating_r = new int[3][5];
         try {
             Logo();
             StartupFeedbackLoad();
@@ -273,7 +273,7 @@ public class CustomerFeedbackPortal {
                         Viewallfeedback(feedback);
                         break;
                     case 3:
-                        Ratingreport(feedback,rating_r);
+                        Ratingreport(feedback, rating_r);
                         break;
                     case 4:
                         Searchbyproduct(feedback);
