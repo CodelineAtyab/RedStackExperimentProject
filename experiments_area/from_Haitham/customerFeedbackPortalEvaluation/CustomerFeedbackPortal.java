@@ -1,15 +1,5 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class CustomerFeedbackPortal {
     static  Scanner sc = new Scanner(System.in);
@@ -181,7 +171,7 @@ public class CustomerFeedbackPortal {
                 }
             }
 
-            System.out.println("Product            1*   2*   3*   4*   5*   Total   Average");
+            System.out.println("Products           1*   2*   3*   4*   5*   Total   Average");
             System.out.println("-------           ---  ---  ---  ---  ---  -------  -------");
             for (int i = 0 ; i<uniqueCount; i++)
             {
