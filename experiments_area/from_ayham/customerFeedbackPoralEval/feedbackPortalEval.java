@@ -51,46 +51,15 @@ public class feedbackPortalEval {
         System.out.println(MENU_BORDER);
         System.out.printf("|%s|%n", "      CUSTOMER FEEDBACK PORTAL      ");
         System.out.println(MENU_BORDER);
-        printMenuOption("1. Submit Feedback");
-        printMenuOption("2. View All Feedback");
-        printMenuOption("3. Rating Report");
-        printMenuOption("4. Search by Product");
-        printMenuOption("5. Save to File");
-        printMenuOption("6. Exit");
+        System.out.printf("|   %-33s|%n", "1. Submit Feedback");
+        System.out.printf("|   %-33s|%n", "2. View All Feedback");
+        System.out.printf("|   %-33s|%n", "3. Rating Report");
+        System.out.printf("|   %-33s|%n", "4. Search by Product");
+        System.out.printf("|   %-33s|%n", "5. Save to File");
+        System.out.printf("|   %-33s|%n", "6. Exit");
         System.out.println(MENU_BORDER);
     }
 
-    // Print one menu option using a consistent width.
-    private static void printMenuOption(String option) {
-        System.out.printf("|   %-33s|%n", option);
-    }
-
-
-    // Validates and stores feedback in the full list and the product lookup map.
-    public static void addFeedback(String name, String product, int rating, String comment) {
-        if (name == null || name.trim().isEmpty() || product == null || product.trim().isEmpty()
-                || comment == null || comment.trim().isEmpty()) {
-            System.out.println("Name, product, and comment cannot be empty.");
-            return;
-        }
-        if (rating < 1 || rating > 5) {
-            System.out.println("Rating must be between 1 and 5.");
-            return;
-        }
-
-        String feedbackEntry = name.trim() + ", " + product.trim() + ", " + rating + ", " + comment.trim();
-        feedbackEntries.add(feedbackEntry);
-        indexFeedbackByProduct(feedbackEntry, product.trim());
-    }
-
-    // Adds an entry to the lookup list for its product.
-    private static void indexFeedbackByProduct(String feedbackEntry, String product) {
-        String productKey = product.toLowerCase();
-        if (!feedbackByProduct.containsKey(productKey)) {
-            feedbackByProduct.put(productKey, new ArrayList<>());
-        }
-        feedbackByProduct.get(productKey).add(feedbackEntry);
-    }
 
     // Loads saved entries, validates the entire file, then adds them to memory.
     private static void loadFeedback() {
@@ -146,69 +115,35 @@ public class feedbackPortalEval {
     }
 
 
-    // Reads a non-empty line, returning null if input ends.
-    private static String readRequiredText(Scanner scanner, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            if (!scanner.hasNextLine()) {
-                return null;
-            }
 
-            String value = scanner.nextLine().trim();
-            if (!value.isEmpty()) {
-                return value;
-            }
-            System.out.println("This field cannot be empty. Please try again.");
-        }
-    }
-
-    
-    // Reads and validates a whole-number rating from 1 through 5.
-    private static Integer readRating(Scanner scanner) {
-        while (true) {
-            System.out.print("Rating (1 to 5): ");
-            if (!scanner.hasNextLine()) {
-                return null;
-            }
-
-            String input = scanner.nextLine().trim();
-            try {
-                int rating = Integer.parseInt(input);
-                if (rating >= 1 && rating <= 5) {
-                    return rating;
-                }
-            } catch (NumberFormatException exception) {
-            }
-            System.out.println("Invalid rating. Please enter a whole number from 1 to 5.");
-        }
-    }
-
-    // Prompts for all fields and submits one feedback entry.
-    private static boolean submitFeedback(Scanner scanner) {
+    // Prompts for, validates, and stores one feedback entry.
+    private static void submitFeedback(Scanner scanner) {
         String name = readRequiredText(scanner, "Customer name: ");
-        if (name == null) {
-            return false;
+        if (name.isEmpty()) {
+            return;
         }
 
         String product = readRequiredText(scanner, "Product: ");
-        if (product == null) {
-            return false;
+        if (product.isEmpty()) {
+            return;
         }
 
-        Integer rating = readRating(scanner);
-        if (rating == null) {
-            return false;
+        int rating = readRating(scanner);
+        if (rating == 0) {
+            return;
         }
 
         String comment = readRequiredText(scanner, "Comment: ");
-        if (comment == null) {
-            return false;
+        if (comment.isEmpty()) {
+            return;
         }
 
-        addFeedback(name, product, rating, comment);
+        String feedbackEntry = name + ", " + product + ", " + rating + ", " + comment;
+        feedbackEntries.add(feedbackEntry);
+        indexFeedbackByProduct(feedbackEntry, product);
         System.out.println("Feedback submitted.");
-        return true;
     }
+
 
     // Displays all feedback entries in a numbered fixed-width table.
     private static void printAllFeedback() {
@@ -224,68 +159,11 @@ public class feedbackPortalEval {
         printFeedbackTableRow(headers, widths);
         printFeedbackTableSeparator(widths);
         for (int row = 0; row < feedbackEntries.size(); row++) {
-            String[] fields = feedbackEntries.get(row).split(",", 4);
-            String[] values = {
-                    Integer.toString(row + 1),
-                    fields[0].trim(),
-                    fields[1].trim(),
-                    fields[2].trim(),
-                    fields[3].trim()
-            };
+            String[] values = (row + 1 + ", " + feedbackEntries.get(row)).split(",", 5);
             printFeedbackTableRow(values, widths);
         }
         printFeedbackTableSeparator(widths);
     }
-
-    // Finds product feedback and reports its average.
-    private static boolean searchByProduct(Scanner scanner) {
-        System.out.println("--- Search by Product ---");
-        String productQuery = readRequiredText(scanner, "Product to search: ");
-        if (productQuery == null) {
-            return false;
-        }
-
-        ArrayList<String> matchingEntries = feedbackByProduct.get(productQuery.toLowerCase());
-        if (matchingEntries == null) {
-            System.out.printf("No feedback found for \"%s\".%n", productQuery);
-            return true;
-        }
-
-        String displayProduct = matchingEntries.get(0).split(",", 4)[1].trim();
-        System.out.printf("Found %d entries for \"%s\":%n", matchingEntries.size(), displayProduct);
-
-        int totalRating = 0;
-        for (String entry : matchingEntries) {
-            String[] fields = entry.split(",", 4);
-            int rating = Integer.parseInt(fields[2].trim());
-            totalRating += rating;
-            System.out.printf("   %-20s %d   %s%n", fields[0].trim(), rating, fields[3].trim());
-        }
-
-        System.out.printf("Average rating: %.2f%n", (double) totalRating / matchingEntries.size());
-        return true;
-    }
-
-    // Prints one row of left-aligned values using the supplied column widths.
-    private static void printFeedbackTableRow(String[] values, int[] widths) {
-        for (int column = 0; column < values.length; column++) {
-            System.out.printf("| %-" + widths[column] + "s ", values[column]);
-        }
-        System.out.println("|");
-    }
-
-    // Prints a horizontal separator matching the supplied table column widths.
-    private static void printFeedbackTableSeparator(int[] widths) {
-        for (int width : widths) {
-            System.out.print("+-");
-            for (int character = 0; character < width; character++) {
-                System.out.print("-");
-            }
-            System.out.print("-");
-        }
-        System.out.println("+");
-    }
-
 
 
     // Counts each star rating per product and displays totals and averages.
@@ -298,17 +176,16 @@ public class feedbackPortalEval {
         ArrayList<String> products = new ArrayList<>();
         for (String entry : feedbackEntries) {
             String[] fields = entry.split(",", 4);
-            String product = fields[1].trim();
-            if (!products.contains(product)) {
-                products.add(product);
+            if (!products.contains(fields[1])) {
+                products.add(fields[1]);
             }
         }
 
         int[][] ratingCounts = new int[products.size()][5];
         for (String entry : feedbackEntries) {
             String[] fields = entry.split(",", 4);
-            int productRow = products.indexOf(fields[1].trim());
-            int ratingColumn = Integer.parseInt(fields[2].trim()) - 1;
+            int productRow = products.indexOf(fields[1]);  // Find index of product in products list
+            int ratingColumn = Integer.parseInt(fields[2]) - 1;
             ratingCounts[productRow][ratingColumn]++;
         }
 
@@ -326,7 +203,7 @@ public class feedbackPortalEval {
             values[0] = products.get(row);
             for (int rating = 0; rating < 5; rating++) {
                 int count = ratingCounts[row][rating];
-                values[rating + 1] = Integer.toString(count);
+                values[rating + 1] = Integer.toString(count);  // rating values
                 totalCount += count;
                 totalScore += count * (rating + 1);
             }
@@ -335,6 +212,109 @@ public class feedbackPortalEval {
             printFeedbackTableRow(values, widths);
         }
         printFeedbackTableSeparator(widths);
+    }
+    
+
+
+    // Finds product feedback and reports its average.
+    private static boolean searchByProduct(Scanner scanner) {
+        System.out.println("--- Search by Product ---");
+        String productQuery = readRequiredText(scanner, "Product to search: ");
+        if (productQuery.isEmpty()) {
+            return false;
+        }
+
+        ArrayList<String> matchingEntries = feedbackByProduct.get(productQuery.toLowerCase());
+        if (matchingEntries == null) {
+            System.out.printf("No feedback found for \"%s\".%n", productQuery);
+            return true;
+        }
+
+        String displayProduct = matchingEntries.get(0).split(",", 4)[1];
+        System.out.printf("Found %d entries for \"%s\":%n", matchingEntries.size(), displayProduct);
+
+        int totalRating = 0;
+        for (String entry : matchingEntries) {
+            String[] fields = entry.split(",", 4);
+            int rating = Integer.parseInt(fields[2]);
+            totalRating += rating;
+            System.out.printf("   %-20s %d   %s%n", fields[0], rating, fields[3]);
+        }
+
+        System.out.printf("Average rating: %.2f%n", (double) totalRating / matchingEntries.size());
+        return true;
+    }
+
+
+    // Adds an entry to the lookup list for its product.
+    // Used when submitting or loading feedback.
+    private static void indexFeedbackByProduct(String feedbackEntry, String product) {
+        String productKey = product.toLowerCase();
+        if (!feedbackByProduct.containsKey(productKey)) {
+            feedbackByProduct.put(productKey, new ArrayList<>());
+        }
+        feedbackByProduct.get(productKey).add(feedbackEntry);
+    }
+
+
+    // Prints one row of left-aligned values using the supplied column widths.
+    // used by both tables
+    private static void printFeedbackTableRow(String[] values, int[] widths) {
+        for (int column = 0; column < values.length; column++) {
+            System.out.printf("| %-" + widths[column] + "s ", values[column].trim());
+        }
+        System.out.println("|");
+    }
+
+    // Prints a horizontal separator matching the supplied table column widths.
+    // used by both tables
+    private static void printFeedbackTableSeparator(int[] widths) {
+        for (int width : widths) {
+            System.out.print("+-");
+            for (int character = 0; character < width; character++) {
+                System.out.print("-");
+            }
+            System.out.print("-");
+        }
+        System.out.println("+");
+    }
+
+
+    // Reads non-empty text; an empty result indicates that input ended.
+    private static String readRequiredText(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            if (!scanner.hasNextLine()) {
+                return "";
+            }
+
+            String value = scanner.nextLine().trim();
+            if (!value.isEmpty()) {
+                return value;
+            }
+            System.out.println("This field cannot be empty. Please try again.");
+        }
+    }
+
+    
+    // Reads a rating from 1 through 5; zero indicates that input ended.
+    private static int readRating(Scanner scanner) {
+        while (true) {
+            System.out.print("Rating (1 to 5): ");
+            if (!scanner.hasNextLine()) {
+                return 0;
+            }
+
+            String input = scanner.nextLine().trim();
+            try {
+                int rating = Integer.parseInt(input);
+                if (rating >= 1 && rating <= 5) {
+                    return rating;
+                }
+            } catch (NumberFormatException exception) {
+            }
+            System.out.println("Invalid rating. Please enter a whole number from 1 to 5.");
+        }
     }
 
 
@@ -372,9 +352,7 @@ public class feedbackPortalEval {
 
                 switch (choice) {
                     case 1:
-                        if (!submitFeedback(scanner)) {
-                            running = false;
-                        }
+                        submitFeedback(scanner);
                         break;
                     case 2:
                         printAllFeedback();
