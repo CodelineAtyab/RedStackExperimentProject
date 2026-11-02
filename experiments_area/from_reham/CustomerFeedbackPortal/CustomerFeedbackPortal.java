@@ -1,6 +1,10 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -25,13 +29,15 @@ public class CustomerFeedbackPortal {
             try{
                 System.out.print("Enter your choice: ");
                 choice = input.nextInt();
-                if (choice > 6 || choice <1){
-                    System.out.println("Please enter a number from 1 to 6 ");
-                }
-
+                
                 switch (choice){
                     case 1: SubmitFeedback();break;
                     case 2: ViewAllFeedback();break;
+                    case 3: RatingReport();break;
+                    case 4: SearchByProduct();break;
+                    case 5: SaveAndExit(); system =false; break;
+                    case 6: system=false; System.out.println("Goodbye!");break;
+                    default:System.out.println("Please Enter a number from 1 to 6");
                 }
 
             }catch(InputMismatchException exception){
@@ -83,7 +89,7 @@ public class CustomerFeedbackPortal {
                 count ++;
             }
             if (count>0){
-                System.out.println("Loaded "+count+" feedback entries from feedback.txt");
+                System.out.println("Loaded "+count+" feedback entries from Cust_feedback.txt");
             }
             else{
                 System.out.println("No saved feedback found. Starting fresh.");
@@ -153,7 +159,7 @@ public class CustomerFeedbackPortal {
             }
             //Product
             System.out.print("Product: ");
-            String products=input.nextLine();
+            String product=input.nextLine();
             //rating
             int rating=0;
             while(true){
@@ -174,10 +180,19 @@ public class CustomerFeedbackPortal {
             }
 
             System.out.print("Comment: ");
-            String comment =input.nextLine();
             input.nextLine();
+            String comment =input.nextLine();
+
+            //Store them to the arrays 
+            names[count] = name;
+            products[count]= product;
+            ratings[count] = rating;
+            comments[count] = comment;
+            count ++;
 
             System.out.println("Thank you, "+name+"! Your feedback has been recorded.");
+        }else{
+            System.out.println("Storage is full (100 entries).");
         }
 
     }
@@ -206,5 +221,118 @@ public class CustomerFeedbackPortal {
         }
     }
 
-}
+    //View Rating Report
+    public static void RatingReport(){
 
+        //create an empty list 
+        ArrayList<String> ProductName =new ArrayList<>(); //<- we want to collect the Product names here <<not repeted>>
+
+        //Check if the product exist; do nothing  / else add it to the array list 
+        for(int i=0; i<count ;i++){
+            
+                    /* contains(): Checks if an item exists in a list
+                      /> Searches the array list and compares the item you give it with each item in the list*/
+
+            if(ProductName.contains(products[i])){ // <= Chwcks if it exists
+                //Do nothing << it exists>>
+            }else{
+                ProductName.add(products[i]); // Add it to the ArrayList
+            }
+        }
+        //Create A 2D Array 
+        int [][] ratingCounts =new int [ProductName.size()][5]; //<= We use .size to know how many items are imside it 
+
+        //Count the ratings 
+        for (int i=0 ;i<count;i++){
+            int Row =ProductName.indexOf(products[i]);
+            int column = ratings[i]-1;
+            ratingCounts[Row][column]++;
+        }
+        //Print the result 
+        for(int i=0 ; i<ProductName.size(); i++){
+            //Geting the products names out of the array list 
+                System.out.print(ProductName.get(i)+" :");  
+                double totalRatings=0.0;
+                double totalScore=0.0;
+                double avg=0.0;
+                for (int j=0 ; j<5 ; j++){
+                    totalRatings+=ratingCounts[i][j];
+                    totalScore+=ratingCounts[i][j]*(j+1);
+                    System.out.print(ratingCounts[i][j]+" ");
+                }
+                avg = totalScore / totalRatings;        
+                System.out.print(" "+totalRatings+" "+avg);
+
+                System.out.println();
+        }
+            
+        for (int column =4; column >=0; column--){
+            
+            int total =0; // to count the total stars
+
+            // sum each row 
+            for (int row =0 ; row<ratingCounts.length ;row++){
+                total=total+ratingCounts[row][column];
+            }
+
+            System.out.print((column+1)+" Stars "+"   | ");
+            for (int star = 0; star < total; star++) {
+            System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+
+    //Search by Product
+    public static void SearchByProduct(){
+        HashMap<String,ArrayList<String>> feedback =new HashMap<>();
+        System.out.print("Product to search: ");
+        input.nextLine();
+        String Search =input.nextLine().toLowerCase();
+        for (int i=0 ; i<count;i++){
+
+            String CurrentProduct = products[i].toLowerCase();
+
+            if(!feedback.containsKey(CurrentProduct)){
+                feedback.put(CurrentProduct,new ArrayList<>());                
+            }
+
+            feedback.get(CurrentProduct).add(names[i] + ", " + ratings[i] + ", " + comments[i]); 
+            
+        }
+        if (feedback.containsKey(Search)) {
+
+            ArrayList<String> result = feedback.get(Search);
+
+            System.out.println("Found " + result.size() + " entries for " + Search);
+
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println(result.get(i));
+            }
+
+        } else {
+            System.out.println("No feedback found for " + Search);
+        }
+    }
+
+    //Save and Exit
+    public static void SaveAndExit(){
+        String feedbackfiles ="C:\\Opal-RedStack\\RedStackExperimentProject\\experiments_area\\from_reham\\CustomerFeedbackPortal\\Cust_Feedback.txt";
+        try(BufferedWriter write =new BufferedWriter(new FileWriter(feedbackfiles))){
+            for (int i=0 ; i < count ; i ++){
+                write.write(names[i]);
+                write.newLine();
+                write.write(products[i]);
+                write.newLine();
+                //String.valueOf => used to convert the value to string because buffers epexts Strings not numbers
+                write.write(String.valueOf(ratings[i]));
+                write.newLine();
+                write.write(comments[i]);
+                write.newLine(); 
+            }
+                System.out.println("Saved Succsesfully");   
+
+        }catch(IOException exception){
+            System.out.println("Error Saveing feedback");
+            }
+}}
