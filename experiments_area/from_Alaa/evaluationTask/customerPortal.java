@@ -281,14 +281,14 @@ public class customerPortal {
     }
 }
     public static void main(String[] args) {
-        int rowNumber = 6 ;
-        String companyName = "RedStack";
-        for (int i = 0; i <= rowNumber; i++) {
-            for (int j = 0; j <= i; j++) {
-                    System.out.print("* "); 
-            }
-            System.out.println(); 
-        }
+        // int rowNumber = 6 ;
+        // String companyName = "RedStack";
+        // for (int i = 0; i <= rowNumber; i++) {
+        //     for (int j = 0; j <= i; j++) {
+        //             System.out.print("* "); 
+        //     }
+        //     System.out.println(); 
+        // }
 
         
         loadFromFile();
