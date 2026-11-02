@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class FeedbackPortal {
+public class CustomerFeedbackPortal {
 
     static ArrayList<String> names = new ArrayList<>();
     static ArrayList<String> products = new ArrayList<>();
