@@ -130,6 +130,10 @@ public class CustomerFeedback {
 
         System.out.print("Product: ");
         productName = inp.nextLine().trim();
+        while (productName.isEmpty()) {
+            System.out.print("Product cannot be empty. Product: ");
+            productName = inp.nextLine().trim();
+        }
 
         System.out.print("Rating (1-5): ");
         while (true) {
@@ -186,7 +190,8 @@ public class CustomerFeedback {
         }
 
         ArrayList<String> uniqueProducts = new ArrayList<>();
-        for (HashMap<String, String> entry : feedbackList) {
+        for (int i = 0; i < feedbackList.size(); i++) {
+            HashMap<String, String> entry = feedbackList.get(i);
             String currentProduct = entry.get("Product").trim();
             if (!uniqueProducts.contains(currentProduct)) {
                 uniqueProducts.add(currentProduct);
@@ -197,7 +202,8 @@ public class CustomerFeedback {
         int[][] productRatingCounts = new int[uniqueProducts.size()][5];
         int[] overallStarCounts = new int[5];
 
-        for (HashMap<String, String> entry : feedbackList) {
+        for (int i = 0; i < feedbackList.size(); i++) {
+            HashMap<String, String> entry = feedbackList.get(i);
             String currentProduct = entry.get("Product").trim();
             int productPos = uniqueProducts.indexOf(currentProduct);
             try {
