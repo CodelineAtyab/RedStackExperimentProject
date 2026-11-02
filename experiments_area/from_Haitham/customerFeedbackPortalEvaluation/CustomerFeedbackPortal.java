@@ -181,13 +181,14 @@ public class CustomerFeedbackPortal {
                 }
             }
 
-            System.out.println("Product      1*   2*   3*   4*   5*   Total   Average");
-            System.out.println("-------     ---  ---  ---  ---  ---  -------  -------");
+            System.out.println("Product            1*   2*   3*   4*   5*   Total   Average");
+            System.out.println("-------           ---  ---  ---  ---  ---  -------  -------");
             for (int i = 0 ; i<uniqueCount; i++)
             {
                 int sum = 0;
                 int totalRatings = 0;
-                System.out.print(uniqueProducts[i] + "   ");
+                int length = 15 - (uniqueProducts[i].length());
+                System.out.printf(uniqueProducts[i] + "%-"+ length +"s", " ");
                 for (int j = 0 ; j<5 ; j++)
                 {
                     sum += grid[i][j] * (j + 1);
@@ -199,6 +200,7 @@ public class CustomerFeedbackPortal {
                 System.out.printf("    %.2f", average);
                 System.out.println();
             }
+            System.out.println("------------------------------------------------------------");
             System.out.println("Ratings overview");
             for (int i = 5 ; i > 0 ; i--){
                 int count = starCounts[i-1];
