@@ -146,13 +146,13 @@ public class FeedbackPortal {
         System.out.printf("%-4s %-10s %-12s %-7s %s%n", "---", "---------", "-----------", "------",
                 "-----------------------");
 
-        for (HashMap<String, String> entry : allfeedbacks) {
+        for (HashMap<String, String> feedback : allfeedbacks) {
             System.out.printf("%-4s %-10s %-12s %-7s %s%n",
-                    entry.get("No"),
-                    entry.get("Customer"),
-                    entry.get("Product"),
-                    entry.get("Rating"),
-                    entry.get("Comment"));
+                    feedback.get("No"),
+                    feedback.get("Customer"),
+                    feedback.get("Product"),
+                    feedback.get("Rating"),
+                    feedback.get("Comment"));
         }
         System.out.println("Press any key to continue... ");
         any = sc.nextLine();
@@ -167,8 +167,8 @@ public class FeedbackPortal {
         }
 
         ArrayList<String> products = new ArrayList<>();
-        for (HashMap<String, String> entry : allfeedbacks) {
-            String prod = entry.get("Product").trim();
+        for (HashMap<String, String> feedback : allfeedbacks) {
+            String prod = feedback.get("Product").trim();
             if (!products.contains(prod)) {
                 products.add(prod);
             }
@@ -177,11 +177,11 @@ public class FeedbackPortal {
         int[][] ratingCounts = new int[products.size()][5];
         int[] starTotals = new int[5];
 
-        for (HashMap<String, String> entry : allfeedbacks) {
-            String prod = entry.get("Product").trim();
+        for (HashMap<String, String> feedback : allfeedbacks) {
+            String prod = feedback.get("Product").trim();
             int prodIndex = products.indexOf(prod);
             try {
-                int rating = Integer.parseInt(entry.get("Rating").trim());
+                int rating = Integer.parseInt(feedback.get("Rating").trim());
                 if (rating >= 1 && rating <= 5) {
                     ratingCounts[prodIndex][rating - 1]++;
                     starTotals[rating - 1]++;
@@ -277,12 +277,12 @@ public class FeedbackPortal {
         File file = new File("Info.txt");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 
-            for (HashMap<String, String> entry : allfeedbacks) {
-                writer.write(entry.get("No") + "," +
-                        entry.get("Customer") + "," +
-                        entry.get("Product") + "," +
-                        entry.get("Rating") + "," +
-                        entry.get("Comment"));
+            for (HashMap<String, String> feedback : allfeedbacks) {
+                writer.write(feedback.get("No") + "," +
+                        feedback.get("Customer") + "," +
+                        feedback.get("Product") + "," +
+                        feedback.get("Rating") + "," +
+                        feedback.get("Comment"));
                 writer.newLine();
             }
 
@@ -305,14 +305,14 @@ public class FeedbackPortal {
                 String[] parts = line.split(",", 5);
                 if (parts.length == 5) {
 
-                    HashMap<String, String> entry = new HashMap<>();
-                    entry.put("No", parts[0]);
-                    entry.put("Customer", parts[1]);
-                    entry.put("Product", parts[2]);
-                    entry.put("Rating", parts[3]);
-                    entry.put("Comment", parts[4]);
+                    HashMap<String, String> feedback = new HashMap<>();
+                    feedback.put("No", parts[0]);
+                    feedback.put("Customer", parts[1]);
+                    feedback.put("Product", parts[2]);
+                    feedback.put("Rating", parts[3]);
+                    feedback.put("Comment", parts[4]);
 
-                    allfeedbacks.add(entry);
+                    allfeedbacks.add(feedback);
 
                 }
                 line = reader.readLine();
