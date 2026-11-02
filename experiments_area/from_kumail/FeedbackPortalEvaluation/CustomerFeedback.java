@@ -2,45 +2,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 
 public class CustomerFeedback {
 
     static Scanner scanner = new Scanner(System.in);
     static ArrayList<HashMap<String, String>> feedbackEntries = new ArrayList<>();
-
-    static Map<String, Runnable> MENU = new LinkedHashMap<>();
-    static boolean exit = false;
-
-    static {
-        MENU.put("Submit Feedback", () -> SubmitFeedback());
-        MENU.put("View All Feedback", () -> ViewAllFeedback());
-        MENU.put("Rating Report", () -> RatingReport());
-        MENU.put("Search by Product", () -> SearchByProduct());
-        MENU.put("Save to File", () -> SaveToFile());
-        MENU.put("Exit", () -> {
-            SaveToFile();
-            System.out.println("Thank you!");
-            exit = true;
-        });
-    }
-
-    static void printMenu() {
-        String line = "+" + "=".repeat(41) + "+";
-        System.out.println("\n" + line);
-        System.out.println("|         CUSTOMER FEEDBACK PORTAL        |");
-        System.out.println(line);
-
-        List<String> labels = new ArrayList<>(MENU.keySet());
-        for (int i = 0; i < labels.size(); i++) {
-            System.out.printf("| %-39s |%n", (i + 1) + ". " + labels.get(i));
-        }
-
-        System.out.println(line);
-    }
 
     public static void main(String[] args) {
         printBanner();
@@ -50,26 +16,48 @@ public class CustomerFeedback {
             System.out.println("No saved feedback found. Starting fresh.");
         }
 
-        List<Runnable> actions = new ArrayList<>(MENU.values());
-
+        boolean exit = false;
         do {
-            printMenu();
+            System.out.println("\n+=========================================+");
+            System.out.println("|         CUSTOMER FEEDBACK PORTAL        |");
+            System.out.println("+=========================================+");
+            System.out.println("| 1. Submit Feedback                      |");
+            System.out.println("| 2. View All Feedback                    |");
+            System.out.println("| 3. Rating Report                        |");
+            System.out.println("| 4. Search by Product                    |");
+            System.out.println("| 5. Save to File                         |");
+            System.out.println("| 6. Exit                                 |");
+            System.out.println("+=========================================+");
             System.out.print("Enter your choice: ");
-            String input = scanner.nextLine().trim();
+            String input = scanner.nextLine();
 
-            try {
-                int choice = Integer.parseInt(input);
-                if (choice >= 1 && choice <= actions.size()) {
-                    actions.get(choice - 1).run();
-                } else {
-                    System.out.println("Invalid choice. Please enter a number from 1 to " + actions.size() + ".");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid choice. Please enter a number from 1 to " + actions.size() + ".");
+            switch (input) {
+                case "1":
+                    SubmitFeedback();
+                    break;
+                case "2":
+                    ViewAllFeedback();
+                    break;
+                case "3":
+                    RatingReport();
+                    break;
+                case "4":
+                    SearchByProduct();
+                    break;
+                case "5":
+                    SaveToFile();
+                    break;
+                case "6":
+                    exit = true;
+                    SaveToFile();
+                    System.out.println("Thank you!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
             }
+
         } while (!exit);
     }
-
 
     static void printBanner() {
         String bannerText = "ACME SOLUTIONS ";
