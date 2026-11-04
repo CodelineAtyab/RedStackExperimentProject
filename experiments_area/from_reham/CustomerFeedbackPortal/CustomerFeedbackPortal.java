@@ -50,14 +50,15 @@ public class CustomerFeedbackPortal {
 
     public static void logo(){
         int rn=6;
+        String Title="ACM SOLUTIONS";
         for (int r=0; r<rn ;r++){
 
             for(int sl=0 ; sl<=r ;sl++){
             System.out.print("*");
             }
-            for(int sp=0 ;sp<2*(rn-r)+14;sp++){
+            for(int sp=0 ;sp<2*(rn-r)+Title.length();sp++){
                 if(r==3){
-                System.out.print("   ACME SOLUTIONS   ");
+                System.out.print("   "+Title+"   ");
                 break;
                 }
                 System.out.print(" ");
