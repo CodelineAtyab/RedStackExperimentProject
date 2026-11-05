@@ -19,7 +19,7 @@ public class CustomerFeedbackPortal {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < i + 1; j++) {
 
-                System.out.print("* ");
+                System.out.print(i+" ");
 
                 if (j == i) {
 
@@ -39,7 +39,7 @@ public class CustomerFeedbackPortal {
 
                     for (int l = 0; l < j + 1; l++) {
 
-                        System.out.print(" *");
+                        System.out.print(" "+j);
                     }
 
                 }
@@ -272,7 +272,6 @@ static void RatingReport() {
         String productName = "";
         float averageRating = 0;
         HashMap<String, String> hmProducts = new HashMap<>();
-
         HashMap<String, String> hmName = new HashMap<>();
         HashMap<String, String> hmRating = new HashMap<>();
         HashMap<String, String> hmComment = new HashMap<>();
