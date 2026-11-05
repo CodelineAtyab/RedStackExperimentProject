@@ -1,5 +1,5 @@
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class CenterTicket{
     public static void main(String[] args) {
@@ -30,5 +30,9 @@ public class CenterTicket{
             }
         }
         System.out.println();
+
+        for(int i=0; i<menu.size(); i++){
+            System.out.println((i+1) + " " + menu.get(i));
+        }
     }
 }
