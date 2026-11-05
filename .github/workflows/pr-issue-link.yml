@@ -1,6 +1,6 @@
 name: PR Issue Link
 
-# Reads the issue number from the branch name (feature/<ticket-id>-<your-id>-<short-name>),
+# Reads the issue number from the branch name prefix (feature/<ticket-id>-...; anything after that is free-form),
 # adds "Closes #<id>" to the PR body and prefixes the title with "#<id>".
 # pull_request_target is used so it also works for PRs from forks; this workflow
 # never checks out or runs PR code, and PR data is only passed through env vars.
@@ -35,8 +35,8 @@ jobs:
             const { owner, repo } = context.repo;
             const number = pr.number;
 
-            // README rule: feature/<ticket-id>-<your-id>-<short-name>
-            const match = /^feature\/(\d+)-([A-Za-z0-9][A-Za-z0-9_]*)-([A-Za-z0-9][A-Za-z0-9._-]*)$/.exec(headRef);
+            // Only the feature/<ticket-id>- prefix matters; the rest of the name is flexible.
+            const match = /^feature\/(\d+)-/.exec(headRef);
 
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner, repo, issue_number: number, per_page: 100,
@@ -47,10 +47,10 @@ jobs:
               if (!existing) {
                 await github.rest.issues.createComment({
                   owner, repo, issue_number: number,
-                  body: `${marker}\nThe branch name \`${headRef.replace(/[`\r\n]/g, '')}\` does not follow the naming rule, so I could not link an issue automatically.\n\nExpected: \`feature/<ticket-id>-<your-id>-<short-name>\`, for example \`feature/64-alaa-weather-desk-converter\`.\n\nPlease see the branching steps in the README.`,
+                  body: `${marker}\nThe branch name \`${headRef.replace(/[`\r\n]/g, '')}\` does not start with \`feature/<ticket-id>-\`, so I could not link an issue automatically.\n\nExpected: a branch starting with \`feature/<ticket-id>-\`, for example \`feature/64-alaa-weather-desk-converter\`.\n\nPlease see the branching steps in the README.`,
                 });
               }
-              core.warning('Branch name does not match feature/<ticket-id>-<your-id>-<short-name>.');
+              core.warning('Branch name does not start with feature/<ticket-id>-.');
               return;
             }
 
