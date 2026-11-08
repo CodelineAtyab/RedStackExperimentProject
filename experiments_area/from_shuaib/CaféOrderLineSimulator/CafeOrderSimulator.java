@@ -26,6 +26,15 @@ public class CafeOrderSimulator {
                     System.out.println("Serving: " + queue.poll());
                 }
             }
+            else if (input.toLowerCase().startsWith("order ")) {
+                String name = input.substring(6).trim();
+                if (!name.isEmpty()) {
+                    queue.offer(name);
+                } else {
+                    System.out.println("Invalid name. Usage: order <name>");
+                    continue;
+                }
+            }
         }
 
         scanner.close();
