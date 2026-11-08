@@ -19,6 +19,13 @@ public class CafeOrderSimulator {
                 System.out.println("Exiting simulator. Goodbye!");
                 break;
             }
+            else if (input.equalsIgnoreCase("serve")) {
+                if (queue.isEmpty()) {
+                    System.out.println("Cannot serve: the queue is already empty.");
+                } else {
+                    System.out.println("Serving: " + queue.poll());
+                }
+            }
         }
 
         scanner.close();
