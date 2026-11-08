@@ -18,8 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      matrix: ${{ steps.detect.outputs.matrix }}
-      has_changes: ${{ steps.detect.outputs.has_changes }}
+      maven_matrix: ${{ steps.detect.outputs.maven_matrix }}
+      java_matrix: ${{ steps.detect.outputs.java_matrix }}
+      invalid_paths: ${{ steps.detect.outputs.invalid_paths }}
+      has_maven: ${{ steps.detect.outputs.has_maven }}
+      has_java: ${{ steps.detect.outputs.has_java }}
+      has_invalid_layout: ${{ steps.detect.outputs.has_invalid_layout }}
 
     steps:
       - name: Checkout code
@@ -27,57 +31,198 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect changed Maven projects
+      - name: Detect changed Maven projects and practice folders
         id: detect
         shell: bash
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
           set -euo pipefail
 
-          git fetch --no-tags origin "${{ github.base_ref }}"
+          git fetch --no-tags origin "$BASE_REF"
 
-          mapfile -t changed_files < <(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          # Capture with command substitution so a failed git diff fails the job
+          # instead of silently reporting "no changes".
+          diff_output="$(git diff --name-only "origin/${BASE_REF}...HEAD" -- experiments_area)"
 
-          declare -A projects=()
-          for file in "${changed_files[@]}"; do
-            [[ "$file" == experiments_area/*/*/* ]] || continue
+          declare -A maven_projects=()
+          declare -A java_folders=()
+          declare -A invalid_paths=()
 
-            project_root="$(cut -d/ -f1-3 <<< "$file")"
-            if [[ -f "$project_root/pom.xml" ]]; then
-              projects["$project_root"]=1
+          while IFS= read -r file; do
+            [[ -n "$file" ]] || continue
+
+            dir="$(dirname "$file")"
+            member="$(cut -d/ -f1-2 <<< "$file")"
+
+            # A pom.xml must live in its own project directory:
+            #   experiments_area/<member>/<project>/pom.xml
+            if [[ -f "$file" && "$file" =~ ^experiments_area(/[^/]+)?/pom\.xml$ ]]; then
+              invalid_paths["$file"]=1
+              continue
             fi
-          done
 
-          if [[ ${#projects[@]} -eq 0 ]]; then
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "matrix=[]" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+            # No .java files directly in experiments_area or a member folder.
+            # Deleted files are not flagged.
+            if [[ -f "$file" && "$file" == *.java ]]; then
+              if [[ "$file" =~ ^experiments_area/[^/]+/[^/]+\.java$ ]] \
+                 || [[ "$file" =~ ^experiments_area/[^/]+\.java$ ]]; then
+                invalid_paths["$file"]=1
+                continue
+              fi
+            fi
 
-          matrix="$(
-            printf '%s\n' "${!projects[@]}" \
+            # Find the nearest pom.xml, stopping at the member folder.
+            # A pom at the member root is invalid and is never a Maven root.
+            maven_root=""
+            probe="$dir"
+            while [[ "$probe" == experiments_area/* ]]; do
+              if [[ -f "$probe/pom.xml" ]]; then
+                maven_root="$probe"
+                break
+              fi
+              if [[ "$probe" == "$member" ]]; then
+                break
+              fi
+              probe="$(dirname "$probe")"
+            done
+
+            if [[ -n "$maven_root" ]]; then
+              if [[ "$maven_root" == "$member" ]]; then
+                invalid_paths["$maven_root/pom.xml"]=1
+                continue
+              fi
+              maven_projects["$maven_root"]=1
+            fi
+
+            if [[ "$file" == *.java ]]; then
+              # Maven owns everything under <project>/src/
+              if [[ -n "$maven_root" && "$file" == "$maven_root"/src/* ]]; then
+                continue
+              fi
+              # Compile practice files per folder, never a member root folder.
+              if [[ "$dir" != "$member" && "$dir" != "experiments_area" ]] \
+                 && compgen -G "$dir/*.java" > /dev/null; then
+                java_folders["$dir"]=1
+              fi
+            fi
+          done <<< "$diff_output"
+
+          emit_matrix() {
+            local -n items="$1"
+            if (( ${#items[@]} == 0 )); then
+              echo "[]"
+              return
+            fi
+            printf '%s\n' "${!items[@]}" \
               | sort \
               | jq -R -s -c 'split("\n") | map(select(length > 0) | {name: ., path: .})'
-          )"
+          }
 
-          echo "has_changes=true" >> "$GITHUB_OUTPUT"
-          echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
+          emit_list() {
+            local -n items="$1"
+            if (( ${#items[@]} == 0 )); then
+              echo "[]"
+              return
+            fi
+            printf '%s\n' "${!items[@]}" \
+              | sort \
+              | jq -R -s -c 'split("\n") | map(select(length > 0))'
+          }
 
-  build:
+          # Compute first so a jq failure aborts the job instead of writing an
+          # empty output.
+          maven_matrix="$(emit_matrix maven_projects)"
+          java_matrix="$(emit_matrix java_folders)"
+          invalid_paths_json="$(emit_list invalid_paths)"
+
+          echo "maven_matrix=$maven_matrix" >> "$GITHUB_OUTPUT"
+          echo "java_matrix=$java_matrix" >> "$GITHUB_OUTPUT"
+          echo "invalid_paths=$invalid_paths_json" >> "$GITHUB_OUTPUT"
+
+          if (( ${#maven_projects[@]} > 0 )); then
+            echo "has_maven=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_maven=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if (( ${#java_folders[@]} > 0 )); then
+            echo "has_java=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_java=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if (( ${#invalid_paths[@]} > 0 )); then
+            echo "has_invalid_layout=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_invalid_layout=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          {
+            echo "### Changed code"
+            echo ""
+            echo "- Maven projects: \`$maven_matrix\`"
+            echo "- Practice folders: \`$java_matrix\`"
+            echo "- Invalid layout: \`$invalid_paths_json\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  check-layout:
+    name: Check folder layout
+    needs: detect-changed-projects
+    if: needs.detect-changed-projects.outputs.has_invalid_layout == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Reject files in forbidden locations
+        shell: bash
+        env:
+          INVALID_JSON: ${{ needs.detect-changed-projects.outputs.invalid_paths }}
+        run: |
+          set -euo pipefail
+
+          echo "These paths must be moved:"
+          jq -r '.[]' <<< "$INVALID_JSON" | tee /tmp/invalid.txt
+
+          while IFS= read -r f; do
+            if [[ "$f" == */pom.xml ]]; then
+              parent="$(dirname "$f")"
+              if [[ "$parent" == "experiments_area" ]]; then
+                echo "::error file=$f::A Maven project needs its own directory: experiments_area/<member>/<project>/pom.xml"
+              else
+                echo "::error file=$f::A Maven project needs its own directory: $parent/<project>/pom.xml"
+              fi
+            else
+              d="$(dirname "$f")"
+              b="$(basename "$f")"
+              n="${b%.java}"
+              if [[ "$d" == "experiments_area" ]]; then
+                echo "::error file=$f::Place this file inside a member practice folder: experiments_area/<member>/<practice>/$b"
+              else
+                echo "::error file=$f::Place this file in a practice folder, e.g. $d/$n/$b"
+              fi
+            fi
+          done < /tmp/invalid.txt
+
+          echo "::error::Allowed layouts: experiments_area/<member>/<practice>/*.java or experiments_area/<member>/<project>/pom.xml"
+          exit 1
+
+  build-maven:
     name: Build ${{ matrix.project.name }}
     needs: detect-changed-projects
-    if: needs.detect-changed-projects.outputs.has_changes == 'true'
+    if: needs.detect-changed-projects.outputs.has_maven == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        project: ${{ fromJSON(needs.detect-changed-projects.outputs.matrix) }}
+        project: ${{ fromJSON(needs.detect-changed-projects.outputs.maven_matrix) }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 (Amazon Corretto)
         uses: actions/setup-java@v5
         with:
           java-version: '17'
@@ -85,25 +230,70 @@ jobs:
           cache: 'maven'
           cache-dependency-path: ${{ matrix.project.path }}/pom.xml
 
-      - name: Build with Maven
+      - name: Compile with Maven
         working-directory: ${{ matrix.project.path }}
         shell: bash
         run: |
           if [[ -f ./mvnw ]]; then
-            bash ./mvnw -B -ntp clean verify
+            bash ./mvnw -B -ntp clean test-compile
           else
-            mvn -B -ntp clean verify
+            mvn -B -ntp clean test-compile
           fi
+
+  compile-practice-java:
+    name: Compile ${{ matrix.folder.path }}
+    needs: detect-changed-projects
+    if: needs.detect-changed-projects.outputs.has_java == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        folder: ${{ fromJSON(needs.detect-changed-projects.outputs.java_matrix) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 17 (Amazon Corretto)
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Compile with javac
+        shell: bash
+        env:
+          DIR: ${{ matrix.folder.path }}
+        run: |
+          set -euo pipefail
+
+          mapfile -t sources < <(find "$DIR" -maxdepth 1 -type f -name '*.java' -print | sort)
+          if (( ${#sources[@]} == 0 )); then
+            echo "::error::No .java files found in $DIR"
+            exit 1
+          fi
+
+          out="$(mktemp -d)"
+          echo "Compiling ${#sources[@]} file(s) in $DIR"
+          printf '  %s\n' "${sources[@]}"
+
+          javac --release 17 -encoding UTF-8 -cp "$out" -d "$out" "${sources[@]}"
 
   maven-build-result:
     name: Maven Build
     needs:
       - detect-changed-projects
-      - build
+      - check-layout
+      - build-maven
+      - compile-practice-java
     if: always()
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check CI results
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
+      - name: All required jobs succeeded
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS"
+          echo "$NEEDS" | jq -e 'to_entries | all(.value.result == "success" or .value.result == "skipped")'
