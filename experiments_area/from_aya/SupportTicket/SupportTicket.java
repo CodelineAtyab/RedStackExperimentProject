@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class SupportTicketQueue {
+public class SupportTicket{
 
     public static void main(String[] args) {
         
