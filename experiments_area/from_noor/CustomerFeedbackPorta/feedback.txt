@@ -1,0 +1,6 @@
+Noor|Laptop|5|Very good
+Sara|Mouse|4|Easy to use
+Ali|Keyboard|5|Nice design
+Huda|Laptop|3|Good but slow
+Omar|Headphones|4|Clear sound
+Maha|Charger|5|Works perfectly
