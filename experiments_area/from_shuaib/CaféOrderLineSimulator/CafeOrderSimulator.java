@@ -13,7 +13,7 @@ public class CafeOrderSimulator {
             System.out.println("\nAvailable commands: order <name>  |  serve  |  quit");
 
             System.out.print("Enter command: ");
-            String input = scanner.nextLine().trim();
+            String input = inputBuffer.nextLine().trim();
 
             if (input.equalsIgnoreCase("quit")) {
                 System.out.println("Exiting simulator. Goodbye!");
@@ -35,8 +35,18 @@ public class CafeOrderSimulator {
                     continue;
                 }
             }
+            else {
+                System.out.println("Unknown command. Please try again.");
+                continue;
+            }
+
+            if (queue.isEmpty()) {
+                System.out.println("Queue is empty.        | Waiting: 0");
+            } else {
+                System.out.println("Queue: " + queue + "    | Waiting: " + queue.size());
+            }
         }
 
-        scanner.close();
+        inputBuffer.close();
     }
 }
