@@ -1,0 +1,5 @@
+mohammed|iphone|4|no comment
+Ali|ipad|3|hello
+mm|aa|5|
+aa|ll|4|
+mohammed|airpods|4|good
