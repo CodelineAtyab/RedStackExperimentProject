@@ -1,4 +1,4 @@
-public class Feedback {
+public abstract class Feedback {
     private int id;
     private String customerName;
     private String message;
@@ -46,4 +46,5 @@ public class Feedback {
             System.out.println("Invalid rating: " + rating);
         }
     }
+    public abstract String getSummary();
 }
