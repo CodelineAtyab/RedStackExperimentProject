@@ -29,7 +29,7 @@ public class CafeOrder {
              // then add the name in tail of queue
              queue.offer(name);
 
-         } else if (command.equals(" serve ")) {
+         } else if (command.equals("serve")) {
 
              if (queue.isEmpty()) {
                  System.out.println("Cannot serve: the queue is already empty.");
@@ -48,7 +48,12 @@ public class CafeOrder {
          } else {
              System.out.println(" Invalid command.");
          }
-         System.out.println("Queue: " + queue + " | waiting: " + queue.size());
+         if (queue.isEmpty()) {
+             System.out.println("Queue is empty. | Waiting: 0");
+         } else {
+             System.out.println("Queue: " + queue + " | Waiting: " + queue.size());
+         }
+
          System.out.println();
 
 
