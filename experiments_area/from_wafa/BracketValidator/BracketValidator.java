@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 public class BracketValidator {
 
-    static Scanner inputBuffer = new Scanner(System.in);
     public static void main(String[] args) {
+        Scanner inputBuffer = new Scanner(System.in);
 
         int expressioncheck = Integer.parseInt(inputBuffer.nextLine());
 
         for (int repeate = 0; repeate < expressioncheck; repeate++) {
            
-            Deque<Character> browserHistory = new LinkedList<>();
+            Deque<String> browserHistory = new LinkedList<>();
             String expression = inputBuffer.nextLine();
             boolean isValid = true;
 
@@ -19,7 +19,7 @@ public class BracketValidator {
                 char ch = expression.charAt(i);
 
                 if (ch == '(' || ch == '{') {
-                    browserHistory.push(ch);
+                    browserHistory.push(String.valueOf(ch));
                 } 
                 else if (ch == ')' || ch == '}') {
                     
@@ -28,8 +28,8 @@ public class BracketValidator {
                         break;
                     }
                     
-                    char charOfStack = browserHistory.peek();
-                    if ((ch == ')' && charOfStack == '(') || (ch == '}' && charOfStack == '{')) {
+                    String charOfStack = browserHistory.peek();
+                    if ((ch == ')' && charOfStack.equals("(")) || (ch == '}' && charOfStack.equals("{"))) {
                         browserHistory.pop();
                     } else {
                         isValid = false;
@@ -44,5 +44,7 @@ public class BracketValidator {
                 System.out.println(expression + " -> Invalid");
             }
         }
+        
+        inputBuffer.close();
     }
 }
