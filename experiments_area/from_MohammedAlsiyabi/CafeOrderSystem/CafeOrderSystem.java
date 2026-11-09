@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-    public class CaféOrderSystem {
+    public class CafeOrderSystem {
         private final Queue<String> queue = new LinkedList<>();
 
         public void order(String name) {
@@ -24,7 +24,7 @@ import java.util.Scanner;
         }
 
         public static void main(String[] args) {
-            CaféOrderSystem cafe = new CaféOrderSystem();
+            CafeOrderSystem cafe = new CafeOrderSystem();
 
             System.out.println("Commands: order <name>, serve, quit");
 
