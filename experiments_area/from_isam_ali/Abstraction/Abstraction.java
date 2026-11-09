@@ -42,7 +42,7 @@ public abstract class Abstraction {
     }
 
     public void setMessage(String message) {
-        if (message != null && message.length() > 0) {
+        if (message.isEmpty()) {
             this.message = message;
         } else {
             System.out.println("Message cannot be empty");
