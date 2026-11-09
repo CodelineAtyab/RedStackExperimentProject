@@ -11,6 +11,7 @@ public class EmailFeedback extends Feedback{
         return emailAddress;
     }
 
+    @Override
     public String getSummary(){
         return "[Email] " + getCustemerName() + "<" + getEmailAddress() + ">: " + getMessage() + " (" + getRating() + "/)";
     }
