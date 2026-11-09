@@ -30,7 +30,7 @@ public class Feedback {
     }
 
     public void setMessage(String message) {
-        if(this.message.length() == 0){
+        if(message.length() == 0){
             System.out.println("Message cannot be empty");
         }
         else{
@@ -39,11 +39,11 @@ public class Feedback {
     }
 
     public void setRating(int rating) {
-        if(this.rating >= 1 && this.rating <=5){
+        if(rating >= 1 && rating <=5){
             this.rating = rating;
         }
         else{
-            System.out.println("Invalid rating: " + this.rating);
+            System.out.println("Invalid rating: " + rating);
         }
     }
 }
