@@ -1,4 +1,4 @@
-public class Feedback {
+public abstract class Feedback {
 
     private int id;
     private String customerName;
@@ -46,4 +46,5 @@ public class Feedback {
             this.rating = rating;
         }
     }
+    public abstract String getSummary();
 }
