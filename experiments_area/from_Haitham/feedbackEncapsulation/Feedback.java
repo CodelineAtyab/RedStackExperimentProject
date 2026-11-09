@@ -1,10 +1,10 @@
-public class feedback {
+public class Feedback {
     private int id;
     private String customerName;
     private String message;
     private int rating;
 
-    public feedback(int id, String customerName, String message, int rating){
+    public Feedback(int id, String customerName, String message, int rating){
         this.id = id;
         this.customerName = customerName;
         this.rating = 1;
