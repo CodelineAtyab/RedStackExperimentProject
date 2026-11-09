@@ -1,24 +1,23 @@
-public class PhoneFeedback extends Feedback{
-
+public class PhoneFeedback extends Feedback {
     private String phoneNumber;
-    private int callMinute;
+    private int callMinutes;
 
-    public PhoneFeedback(int id, String customerName, String message, int rating, String phoneNumber, int callMinute) {
-        super(id,customerName,message,rating);
+    public PhoneFeedback(int id, String customerName, String message, int rating, String phoneNumber, int callMinutes) {
+        super(id, customerName, message, rating);
         this.phoneNumber = phoneNumber;
-        this.callMinute = callMinute;
+        this.callMinutes = callMinutes;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public int getCallMinute() {
-        return callMinute;
+    public int getCallMinutes() {
+        return callMinutes;
     }
 
     @Override
-    public String getSummary(){
-        return "[Phone] " + getCustemerName() + getPhoneNumber() + ", " + getCallMinute() + " min: " + getMessage() + " (" + getRating() + "/)";
+    public String getSummary() {
+        return "[Phone] " + getCustomerName() + " " + getPhoneNumber() + ", " + getCallMinutes() + " min: " + getMessage() + " (" + getRating() + "/5)";
     }
 }
