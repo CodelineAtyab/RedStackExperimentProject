@@ -8,7 +8,7 @@ public class InheritanceMain {
         System.out.println(w.getSummary());
         System.out.println(e.getSummary());
         System.out.println(p.getSummary());
-        
+
         p.setRating(9);
     }
 }
