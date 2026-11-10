@@ -24,11 +24,11 @@ public class TemperatureConverter{
     kelvinResult = c + 273.15;
 
     //display output--> Print both results.
-    System.out.print("Fahrenheit: ");
-    System.out.print(fahrenheitResult);
+    System.out.println("Fahrenheit: "+fahrenheitResult);
+    //System.out.print(fahrenheitResult);
 
-    System.out.print(" / Kelvin: ");
-    System.out.print(kelvinResult);
+    System.out.println("Kelvin: "+kelvinResult);
+    //System.out.print(kelvinResult);
 
     }
 }
