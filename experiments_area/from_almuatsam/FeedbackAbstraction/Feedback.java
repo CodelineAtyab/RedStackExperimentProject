@@ -1,16 +1,17 @@
-public class FeedbackEncap {
+public abstract class Feedback {
+
     private int id;
     private String customerName;
     private String message;
     private int rating;
 
-
-    public FeedbackEncap(int id, String customerName, String message, int rating) {
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
         this.customerName = customerName;
-        this.message = ""; 
-        setMessage(message);
+        this.message = "";
         this.rating = 1;
+
+        setMessage(message);
         setRating(rating);
     }
 
@@ -31,10 +32,10 @@ public class FeedbackEncap {
     }
 
     public void setMessage(String message) {
-        if (message != null && !message.isEmpty()) {
+        if (message != null && !message.trim().isEmpty()) {
             this.message = message;
         } else {
-            System.out.println("Invalid message. Please provide a non-empty message.");
+            System.out.println("Message cannot be empty");
         }
     }
 
@@ -42,7 +43,9 @@ public class FeedbackEncap {
         if (rating >= 1 && rating <= 5) {
             this.rating = rating;
         } else {
-            System.out.println("Invalid rating: " + rating + ". Please provide a rating between 1 and 5.");
-        } 
+            System.out.println("Invalid rating: " + rating);
+        }
     }
+
+    public abstract String getSummary();
 }
