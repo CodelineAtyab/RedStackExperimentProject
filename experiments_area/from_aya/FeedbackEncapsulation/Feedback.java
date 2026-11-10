@@ -1,4 +1,3 @@
-package com.FeedbackEncapsulation;
 
 public class Feedback {
 
@@ -6,7 +5,6 @@ public class Feedback {
     public Feedback(int id,String customerName,String message,int rating){
         this.id =id;
         this.customerName =customerName;
-        this.rating = 1;
         setMessage(message);//check if it is empty
         setRating(rating);//check if the rating 1-5
     }
@@ -47,7 +45,7 @@ public class Feedback {
     }
 
     public void setMessage(String message) {
-        if (message.length() != 0) {
+        if (!message.isEmpty()) {
             this.message = message;
         } else {
             System.out.println("Message cannot be empty");
