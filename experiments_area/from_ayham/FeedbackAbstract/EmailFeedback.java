@@ -1,0 +1,20 @@
+public class EmailFeedback extends FeedbackAbstract {
+
+    private String emailAddress;
+    
+    public EmailFeedback(int id, String customerName, String message, int rating, String emailAddress) {
+        super(id, customerName, message, rating);
+        this.emailAddress = emailAddress;
+    }
+
+
+    @Override
+    public String getSummary() {
+        return "Email Feedback from " + getCustomerName() + " (" + getEmailAddress() + "): " + getMessage() + " (Rating: " + getRating() + ")";
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+    
+}

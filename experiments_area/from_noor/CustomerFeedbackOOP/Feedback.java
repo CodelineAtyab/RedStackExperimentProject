@@ -1,26 +1,27 @@
 public class Feedback {
+
     private int id;
     private String customerName;
     private String message;
     private int rating;
-
-    public Feedback(int id, String customerName, String message, int rating){
+    
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
         this.customerName = customerName;
         this.rating = 1;
+
         setMessage(message);
         setRating(rating);
     }
-
+    
+    
     public int getId() {
-        return id;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public String getMessage() {
+    return id;
+}
+ public String getCustomerName() {
+    return customerName;
+} 
+ public String getMessage() {
         return message;
     }
 
@@ -29,7 +30,7 @@ public class Feedback {
     }
 
     public void setMessage(String message) {
-        if (message.isEmpty()) {
+        if (message.length() == 0) {
             System.out.println("Message cannot be empty");
         } else {
             this.message = message;
@@ -43,4 +44,7 @@ public class Feedback {
             System.out.println("Invalid rating: " + rating);
         }
     }
+  
+
+ 
 }

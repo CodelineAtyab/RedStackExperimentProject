@@ -1,4 +1,4 @@
-public class Feedback {
+public abstract class Feedback {
     private int id;
     private String customername;
     private String message;
@@ -46,10 +46,5 @@ public class Feedback {
         }
     }
 
-    public static void main(String[] args) {
-        Feedback f = new Feedback(1, "Aisha", "Great service", 5);
-        f.setRating(9);
-        f.setMessage("");
-        System.out.println(f.getCustomername() + " | " + f.getMessage() + " | " + f.getRating());
-    }
+    public abstract String getSummary();
 }
