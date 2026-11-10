@@ -1,4 +1,4 @@
-public class PhoneFeedback extends FeedbackAbstract {
+public class PhoneFeedback extends Feedback {
     private String phoneNumber;
     private int callMinutes;
 
