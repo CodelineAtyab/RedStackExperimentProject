@@ -1,3 +1,4 @@
+package models;
 public class LGTVRemote extends RemoteCover {
 
     @Override

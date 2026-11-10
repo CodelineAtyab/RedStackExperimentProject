@@ -1,3 +1,4 @@
+package models;
 public class LGACRemote extends RemoteCover {
     @Override
     public String getInfoFromScreenDisplay() {

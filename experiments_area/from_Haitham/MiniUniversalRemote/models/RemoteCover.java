@@ -1,3 +1,4 @@
+package models;
 public abstract class RemoteCover {
     public abstract String getInfoFromScreenDisplay();
     public abstract Boolean turnOn();
