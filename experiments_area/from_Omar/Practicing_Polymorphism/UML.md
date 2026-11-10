@@ -1,39 +1,39 @@
-+---------------------------------------------------------------+
-|                        <<abstract>>                           |
-|                           Feedback                            |
-+---------------------------------------------------------------+
-| - id: int                                                     |
-| - customerName: String                                        |
-| - message: String                                             |
-| - rating: int                                                 |
-+---------------------------------------------------------------+
-| + Feedback(id, customerName, message, rating)                 |
-| + getId(): int                                                |
-| + getCustomerName(): String                                   |
-| + getMessage(): String                                        |
-| + setMessage(message: String): void                           |
-| + getRating(): int                                            |
-| + setRating(rating: int): void                                |
-| + {abstract} getSummary(): String                             |
-| + toString(): String                                          |
-+---------------------------------------------------------------+
-^                          ^                          ^
-|                          |                          |
-+--------------------+   +---------------------+   +---------------------+
-|  WebFormFeedback   |   |   EmailFeedback     |   |   PhoneFeedback     |
-+--------------------+   +---------------------+   +---------------------+
-|                    |   | - emailAddress: Str |   | - phoneNumber: Str  |
-|                    |   |                     |   | - callMinutes: int  |
-+--------------------+   +---------------------+   +---------------------+
-| + getSummary():Str |   | + getSummary():Str  |   | + getSummary():Str  |
-+--------------------+   +---------------------+   +---------------------+
+```mermaid
+classDiagram
+    class FeedbackPortal {
+        -ArrayList~Feedback~ allFeedback
+        +addFeedback(Feedback feedback) : void
+        +printReport() : void
+        +getAverageRating() : double
+    }
 
-                      +--------------------+
-                      |   FeedbackPortal   |
-                      +--------------------+
-                      | - allFeedback: List|
-                      +--------------------+
-                      | + addFeedback(...) |
-                      | + printReport()    |
-                      | + getAverageRating()|
-                      +--------------------+
+    class Feedback {
+        <<abstract>>
+        -int id
+        -String customerName
+        -String message
+        -int rating
+        +getRating() : int
+        +getSummary()* : String
+        +toString() : String
+    }
+
+    class WebFormFeedback {
+        +getSummary() : String
+    }
+
+    class EmailFeedback {
+        -String emailAddress
+        +getSummary() : String
+    }
+
+    class PhoneFeedback {
+        -String phoneNumber
+        -int callMinutes
+        +getSummary() : String
+    }
+
+    FeedbackPortal o-- "*" Feedback
+    Feedback <|-- WebFormFeedback
+    Feedback <|-- EmailFeedback
+    Feedback <|-- PhoneFeedback
