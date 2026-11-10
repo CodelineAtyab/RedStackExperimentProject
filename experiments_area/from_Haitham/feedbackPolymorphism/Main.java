@@ -8,7 +8,8 @@ public class Main {
         f.addFeedback(new EmailFeedback(2, "Omar", "Slow reply", 3, "omar@mail.com"));
         f.addFeedback(new PhoneFeedback(3, "Salma", "Helpful agent", 4, "99112233", 7));
         f.printReport();
-        System.out.println(f.getAverageRating());
+        double avg = f.getAverageRating();
+        System.out.printf("%.1f",avg);
 
     }
 }
