@@ -1,11 +1,11 @@
-public abstract class Abstraction {
+public abstract class Feedback {
 
     private int id;
     private String customerName;
     private int rating;
     private String message;
 
-    public Abstraction(int id, String customerName, String message, int rating) {
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
         this.customerName = customerName;
 
@@ -42,30 +42,11 @@ public abstract class Abstraction {
     }
 
     public void setMessage(String message) {
-        if (message.isEmpty()) {
-            this.message = message;
-        } else {
+        // Reject when empty (or null); otherwise save it.
+        if (message == null || message.isEmpty()) {
             System.out.println("Message cannot be empty");
+        } else {
+            this.message = message;
         }
-    }
-
-    public static void main(String[] args) {
-        
-
-        FormFeedback f = new FormFeedback(1, "Aisha", "Great service", 5);
-        System.out.println(f.getSummary());
-    }
-}
-
-class FormFeedback extends Abstraction {
-
-    public FormFeedback(int id, String customerName, String message, int rating) {
-        super(id, customerName, message, rating);
-    }
-
-    @Override
-    public String getSummary() {
-        return "[Web] " + getCustomerName() + ": " + getMessage()
-                + " (" + getRating() + "/5)";
     }
 }
