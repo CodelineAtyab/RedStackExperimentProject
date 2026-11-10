@@ -13,7 +13,7 @@ public class LGACRemote extends RemoteCover {
     @Override
     public void getInfoFromScreen() {
         System.out.println("==== LG AC Remote ====");
-        System.out.printf("Power: %-3s | Temperature: %d°C (Cooling Mode)%n", (isOn ? "ON" : "OFF"), temperature);
+        System.out.printf("Power: %-3s | Temperature: %d C (Cooling Mode)%n", (isOn ? "ON" : "OFF"), temperature);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LGACRemote extends RemoteCover {
             if (temperature < 30) {
                 temperature++;
             }
-            System.out.printf("Temperature Up -> %d°C%n", temperature);
+            System.out.printf("Temperature Up -> %d C%n", temperature);
         } else {
             validatePower("increase temperature");
         }
@@ -46,7 +46,7 @@ public class LGACRemote extends RemoteCover {
             if (temperature > 16) {
                 temperature--;
             }
-            System.out.printf("Temperature Down -> %d°C%n", temperature);
+            System.out.printf("Temperature Down -> %d C%n", temperature);
         } else {
             validatePower("decrease temperature");
         }
