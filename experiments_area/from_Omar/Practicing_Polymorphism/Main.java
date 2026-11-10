@@ -10,11 +10,20 @@ public class Main {
         EmailFeedback e = new EmailFeedback(2, "Omar", "Slow reply", 3, "omar@mail.com");
         PhoneFeedback p = new PhoneFeedback(3, "Salma", "Helpful agent", 4, "99112233", 7);
 
-        portal.AddFeedback(f);
-        portal.AddFeedback(e);
-        portal.AddFeedback(p);
+        portal.addFeedback(f);
+        portal.addFeedback(e);
+        portal.addFeedback(p);
 
         portal.printReport();
         System.out.printf("Average Rating: %.1f\n", portal.getAverageRating());
+
+        /*
+         * POLYMORPHISM EXPLANATION:
+         * Runtime polymorphism occurs when portal.printReport() iterates over the
+         * ArrayList<Feedback> and calls System.out.println(feedback). Even though the
+         * collection only references elements as abstract 'Feedback' types, Java dynamically
+         * resolves and invokes the specific overridden toString() and getSummary() implementations
+         * belonging to WebFormFeedback, EmailFeedback, or PhoneFeedback at runtime.
+         */
     }
 }

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 public class FeedbackPortal{
     private ArrayList<Feedback> allFeedback = new ArrayList<>();
 
-    public void AddFeedback(Feedback feedback){
+    public void addFeedback(Feedback feedback){
         allFeedback.add(feedback);
     }
 
@@ -12,7 +12,7 @@ public class FeedbackPortal{
         }else{
             for(Feedback feedback: allFeedback){
 
-                System.out.println(feedback);
+                System.out.println(feedback); //automatically invokes toString()
             }
         }
     }

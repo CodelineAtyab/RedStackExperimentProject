@@ -1,13 +1,13 @@
 public abstract class Feedback {
     private int id;
-    private String customername;
+    private String customerName;
     private String message;
     private int rating;
 
 
-    public Feedback(int id, String customername, String message, int rating) {
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
-        this.customername = customername;
+        this.customerName = customerName;
         this.rating = 1;
         setRating(rating);
         setMessage(message);
@@ -18,8 +18,8 @@ public abstract class Feedback {
         return id;
     }
 
-    public String getCustomername() {
-        return customername;
+    public String getCustomerName() {
+        return customerName;
     }
 
     public String getMessage() {
@@ -50,6 +50,6 @@ public abstract class Feedback {
 
     @Override
     public String toString() {
-        return getSummary();
+        return "#"+id+" "+ getSummary();
     }
 }
