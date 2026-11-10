@@ -1,52 +1,45 @@
 public class LGACRemote extends RemoteCover {
-    @Override
-    public String getInfoFromScreenDisplay() {
-        return "State: ON  Temperature: %d".formatted(temp);    }
+
+    private static String DEVICE = "LG AC";
+
+    private boolean powerOn = false;
+    private int temperature = 24;
 
     @Override
-    public Boolean turnOn() {
-        turnPowerToggle();
+    public String getInfoFromScreen() {
+        return "Device: %s | Power: %s | Temperature: %d "
+                .formatted(DEVICE, powerOn ? "ON" : "OFF", temperature);
+    }
+
+    @Override
+    public void turnOn() {
         System.out.println("Turning ON...");
-        return true;
+        setPower(true);
     }
 
     @Override
-    public Boolean turnOff() {
-        turnPowerToggle();
+    public void turnOff() {
         System.out.println("Turning OFF...");
-        return true;
+        setPower(false);
     }
 
     @Override
-    public Integer turnCounterUp() {
-        return increaseTemperature();
+    public int turnCounterUp() {
+        return ++temperature;
     }
 
     @Override
-    public Integer turnCounterDown() {
-        return decreaseTemperature();
-    }
-    @Override
-    public void placeButton() {
-        System.out.println("==== LG AC Remote ====");
-        System.out.println("AC buttons: Power, Temp Up/Down");
-    }
-    private Integer increaseTemperature() {
-        return ++temp;
+    public int turnCounterDown() {
+        return --temperature;
     }
 
-    private Integer decreaseTemperature() {
-        return --temp;
+    @Override
+    public void placeButtons() {
+        System.out.println("==== " + DEVICE + " Remote ====");
+        System.out.println("Buttons: Power, Temp Up, Temp Down");
     }
-    public Boolean turnPowerToggle() {
-        if (!toggle) {
-            toggle = true;
-        } else {
-            toggle = false;
-        }
-        return toggle;
+
+    private void setPower(boolean on) {
+        powerOn = on;
     }
-    private Boolean toggle = false;
-    private Integer temp = 0;
 }
-

@@ -1,49 +1,45 @@
 public class LGTVRemote extends RemoteCover {
 
-    @Override
-    public String getInfoFromScreenDisplay() {
-        return "Channel #: [%d] Volume %%: [%d]".formatted(channel, 55);    }
+    private static String DEVICE = "LG TV";
+
+    private boolean powerOn = false;
+    private int channel = 1;
 
     @Override
-    public Boolean turnOn() {
-        turnPowerToggle();
+    public String getInfoFromScreen() {
+        return "Device: %s | Power: %s | Channel: %d"
+                .formatted(DEVICE, powerOn ? "ON" : "OFF", channel);
+    }
+
+    @Override
+    public void turnOn() {
         System.out.println("Turning ON...");
-        return true;
+        setPower(true);
     }
 
     @Override
-    public Boolean turnOff() {
-        turnPowerToggle();
+    public void turnOff() {
         System.out.println("Turning OFF...");
-        return true;
+        setPower(false);
     }
 
     @Override
-    public Integer turnCounterUp() {
+    public int turnCounterUp() {
         return ++channel;
     }
 
     @Override
-    public Integer turnCounterDown() {
+    public int turnCounterDown() {
         return --channel;
     }
+
     @Override
-    public void placeButton() {
-        System.out.println("==== LG TV Remote ====");
-        System.out.println("TV buttons: Power, Channel Up/Down");
+    public void placeButtons() {
+        System.out.println("==== " + DEVICE + " Remote ====");
+        System.out.println("Buttons: Power, Channel Up, Channel Down");
     }
 
-    public Boolean turnPowerToggle() {
-        if (!toggle) {
-            toggle = true;
-        } else {
-            toggle = false;
-        }
-        return toggle;
+    private void setPower(boolean on) {
+        powerOn = on;
     }
-    
-
-    private Boolean toggle = false;
-    private int channel = 0;
 }
-

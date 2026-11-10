@@ -1,9 +1,9 @@
 public abstract class RemoteCover {
-    public abstract String getInfoFromScreenDisplay();
-    public abstract Boolean turnOn();
-    public abstract Boolean turnOff();
 
-    public abstract Integer turnCounterUp();
-    public abstract Integer turnCounterDown();
-    public abstract void placeButton();
+    public abstract String getInfoFromScreen();
+    public abstract void turnOn();
+    public abstract void turnOff();
+    public abstract int turnCounterUp();
+    public abstract int turnCounterDown();
+    public abstract void placeButtons();
 }
