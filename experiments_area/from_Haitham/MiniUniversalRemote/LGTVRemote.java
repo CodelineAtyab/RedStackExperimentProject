@@ -2,18 +2,19 @@ public class LGTVRemote extends RemoteCover {
 
     @Override
     public String getInfoFromScreenDisplay() {
-        return "Channel #:"+channel+"  Volume %%:" + 55;
-    }
+        return "Channel #: [%d] Volume %%: [%d]".formatted(channel, 55);    }
 
     @Override
     public Boolean turnOn() {
         turnPowerToggle();
+        System.out.println("Turning ON...");
         return true;
     }
 
     @Override
     public Boolean turnOff() {
         turnPowerToggle();
+        System.out.println("Turning OFF...");
         return true;
     }
 
@@ -26,9 +27,13 @@ public class LGTVRemote extends RemoteCover {
     public Integer turnCounterDown() {
         return --channel;
     }
+    @Override
+    public void placeButton() {
+        System.out.println("==== LG TV Remote ====");
+        System.out.println("TV buttons: Power, Channel Up/Down");
+    }
 
     public Boolean turnPowerToggle() {
-        System.out.println("Check the existing state");
         if (!toggle) {
             toggle = true;
         } else {
@@ -36,6 +41,7 @@ public class LGTVRemote extends RemoteCover {
         }
         return toggle;
     }
+    
 
     private Boolean toggle = false;
     private int channel = 0;
