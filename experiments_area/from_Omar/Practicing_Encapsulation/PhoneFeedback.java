@@ -18,5 +18,5 @@ public class PhoneFeedback extends Feedback {
 
     @Override
     public String getSummary() {
-        return "[Phone] " + super.getCustomername() + " (" + this.phoneNumber + "), " + this.callMinutes + " min: " + getMessage() + " (" + getRating() + "/5)";   }
+        return "#" + getId() + " [Phone] " + super.getCustomername() + " " + this.phoneNumber + ", " + this.callMinutes + " min: " + getMessage() + " (" + getRating() + "/5)";   }
 }

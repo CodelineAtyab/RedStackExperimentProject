@@ -6,6 +6,6 @@ public class WebFormFeedback extends Feedback {
 
     @Override
     public String getSummary() {
-        return "[Web] " + getCustomername() + ": " + getMessage() + " (" + getRating() + "/5)";
+        return "#" + getId() + " [Web] " + getCustomername() + ": " + getMessage() + " (" + getRating() + "/5)";
     }
 }
