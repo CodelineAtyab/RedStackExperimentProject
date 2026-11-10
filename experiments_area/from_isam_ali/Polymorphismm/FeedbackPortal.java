@@ -11,7 +11,7 @@ public class FeedbackPortal {
 
     public void printReport() {
         if (allfeedbacks.isEmpty()) {
-            System.out.println("No feedbacks found");
+            System.out.println("No feedbacks yet");
             return;
 
         } else {
