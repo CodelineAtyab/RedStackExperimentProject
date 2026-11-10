@@ -10,6 +10,14 @@ public class Main {
         f.printReport();
         double avg = f.getAverageRating();
         System.out.printf("%.1f",avg);
+        /*
+        the overriding happened in getSummary method of the parent class.
+        because each child class has it own way of printing the summary.
+        
+        it also happened in the feedback parent class where i overrid 
+        toSting function to print get summary in the format i want.
+        
+        */
 
     }
 }
