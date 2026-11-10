@@ -52,8 +52,14 @@ public abstract class Feedback {
             System.out.println("Invalid rating: " + rating);
         }
     }
+    
+    
 
     // Abstract method: subclasses must provide their own summary
     public abstract String getSummary();
 
+    public String toString(){
+        return getSummary();
+    }
+    
 }
