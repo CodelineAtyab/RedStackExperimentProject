@@ -1,4 +1,4 @@
-package com.FeedbackPortal.models;
+package com.FeedbackPortal;
 
 public class Feedback {
 
