@@ -1,6 +1,12 @@
+import java.util.ArrayList;
+
 public class FeedbackPortal {
 
-    private ArrayList<Feedback> allFeedback = new ArrayList<>();
+    private ArrayList<Feedback> allFeedback;
+
+    public FeedbackPortal() {
+        allFeedback = new ArrayList<>();
+    }
 
     public void addFeedback(Feedback feedback){
         allFeedback.add(feedback);
