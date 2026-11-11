@@ -1,4 +1,4 @@
-public class EmailFeedback extends FeedbackAbstract {
+public class EmailFeedback extends Feedback {
 
     private String emailAddress;
     
