@@ -1,11 +1,11 @@
-public class FeedbackEncap {
+public abstract class Feedback {
     private int id;
     private String customerName;
     private String message;
     private int rating;
 
 
-    public FeedbackEncap(int id, String customerName, String message, int rating) {
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
         this.customerName = customerName;
         this.message = ""; 
@@ -44,5 +44,12 @@ public class FeedbackEncap {
         } else {
             System.out.println("Invalid rating: " + rating + ". Please provide a rating between 1 and 5.");
         } 
+    }
+
+    public abstract String getSummary();
+
+    @Override 
+    public String toString() {
+        return "Feedback [id=" + id + "," + getSummary() + "]";
     }
 }

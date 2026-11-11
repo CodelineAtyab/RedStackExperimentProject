@@ -1,16 +1,16 @@
-public abstract class FeedbackAbstract {
+public class Feedback {
+
     private int id;
     private String customerName;
     private String message;
     private int rating;
 
-
-    public FeedbackAbstract(int id, String customerName, String message, int rating) {
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
         this.customerName = customerName;
-        this.message = ""; 
-        setMessage(message);
         this.rating = 1;
+
+        setMessage(message);
         setRating(rating);
     }
 
@@ -31,10 +31,10 @@ public abstract class FeedbackAbstract {
     }
 
     public void setMessage(String message) {
-        if (message != null && !message.isEmpty()) {
-            this.message = message;
+        if (message == null || message.trim().isEmpty()) {
+            System.out.println("Message cannot be empty");
         } else {
-            System.out.println("Invalid message. Please provide a non-empty message.");
+            this.message = message;
         }
     }
 
@@ -42,9 +42,7 @@ public abstract class FeedbackAbstract {
         if (rating >= 1 && rating <= 5) {
             this.rating = rating;
         } else {
-            System.out.println("Invalid rating: " + rating + ". Please provide a rating between 1 and 5.");
-        } 
+            System.out.println("Invalid rating: " + rating);
+        }
     }
-
-    public abstract String getSummary();
 }
