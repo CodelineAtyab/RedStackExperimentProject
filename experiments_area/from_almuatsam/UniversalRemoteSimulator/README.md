@@ -57,15 +57,12 @@ Both remotes share an abstract parent class called `RemoteCover`.
 UniversalRemoteSimulator/
 │
 ├── src/
-│   ├── remotes/
-│   │   ├── RemoteCover.java
-│   │   ├── LGTVRemote.java
-│   │   └── LGACRemote.java
-│   │
-│   └── Main.java
+│   ├── Main.java
+│   ├── RemoteCover.java
+│   ├── LGTVRemote.java
+│   └── LGACRemote.java
 │
-├── README.md
-└── out/
+└── README.md
 ```
 
 ## Requirements
