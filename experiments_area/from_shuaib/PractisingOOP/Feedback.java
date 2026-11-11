@@ -47,4 +47,10 @@ public abstract class Feedback {
         }
     }
     public abstract String getSummary();
+
+    @Override
+    public String toString() {
+        return "#" + id + " " + getSummary();
+    }
+
 }
