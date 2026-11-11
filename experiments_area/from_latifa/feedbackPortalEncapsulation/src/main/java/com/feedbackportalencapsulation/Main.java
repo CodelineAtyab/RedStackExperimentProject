@@ -1,6 +1,6 @@
 package com.feedbackportalencapsulation;
 
-import com.feedbackportalencapsulation.models.Feedback;
+import com.feedbackportalencapsulation.Feedback;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
