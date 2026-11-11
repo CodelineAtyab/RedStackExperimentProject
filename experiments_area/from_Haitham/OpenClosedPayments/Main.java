@@ -12,5 +12,6 @@ public class Main {
         for (PaymentMethod pay : paying){
             checkout.checkout(pay,amount);
         }
+        //Adding cash on delivery did not touch checkout and payment method because it only add a class and override the function
     }
 }
