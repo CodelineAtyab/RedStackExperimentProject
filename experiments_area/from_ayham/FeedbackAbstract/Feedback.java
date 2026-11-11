@@ -1,11 +1,11 @@
-public abstract class FeedbackAbstract {
+public abstract class Feedback {
     private int id;
     private String customerName;
     private String message;
     private int rating;
 
 
-    public FeedbackAbstract(int id, String customerName, String message, int rating) {
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
         this.customerName = customerName;
         this.message = ""; 
@@ -47,4 +47,9 @@ public abstract class FeedbackAbstract {
     }
 
     public abstract String getSummary();
+
+    @Override 
+    public String toString() {
+        return "Feedback [id=" + id + "," + getSummary() + "]";
+    }
 }
