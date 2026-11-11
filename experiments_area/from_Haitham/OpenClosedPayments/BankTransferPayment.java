@@ -1,7 +1,7 @@
 public class BankTransferPayment extends PaymentMethod {
     @Override 
     public void pay(double amount){
-        System.out.println("Paid OMR <"+amount +"> by bank transfer");
+        System.out.printf("Paid OMR <%.2f> by bank transfer",amount);
         
     }
     

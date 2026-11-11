@@ -1,7 +1,7 @@
 public class WalletPayment extends PaymentMethod {
     @Override 
     public void pay(double amount){
-        System.out.println("Paid OMR <"+amount +"> by Wallet");
+        System.out.printf("Paid OMR <%.2f> by Wallet",amount);
         
     }
 }

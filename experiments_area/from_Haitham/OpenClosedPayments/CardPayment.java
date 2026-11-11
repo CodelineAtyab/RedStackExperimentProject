@@ -1,7 +1,7 @@
 public class CardPayment extends PaymentMethod {
     @Override 
     public void pay(double amount){
-        System.out.println("Paid OMR <"+amount +"> by card");
+        System.out.printf("Paid OMR <%.2f> by Card",amount);
     }
     
 }
