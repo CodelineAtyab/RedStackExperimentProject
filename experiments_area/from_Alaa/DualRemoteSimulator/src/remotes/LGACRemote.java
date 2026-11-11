@@ -66,12 +66,11 @@ public class LGACRemote extends RemoteCover {
     }
 
     // Private helper methods
-    private void increaseTemperature() { //why private
+    private void increaseTemperature() {
         if (temperature < 30) {
             temperature++;
         }
     }
-
     private void decreaseTemperature() {
         if (temperature > 16) {
             temperature--;

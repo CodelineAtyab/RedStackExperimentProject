@@ -65,8 +65,7 @@ public class LGTVRemote extends RemoteCover {
         printStatus();
     }
 
-    // Private helper methods
-
+    // Private helper methods, so no external class can change such values
     private void increaseChannel() {
         channel++;
     }

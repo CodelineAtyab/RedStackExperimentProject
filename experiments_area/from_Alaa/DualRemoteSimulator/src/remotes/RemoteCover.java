@@ -1,10 +1,12 @@
+
 package remotes;
 
 public abstract class RemoteCover {
 
-        // Every remote must implement these methods
-        //void because they return nothing
-        public abstract void getInfoFromScreen(); //Abstraction, creating a method without showing the implementation
+        // Every remote must implement these methods.
+        // void means these methods do not return a value.
+
+        public abstract void getInfoFromScreen();
 
         public abstract void turnOn();
 
@@ -16,5 +18,3 @@ public abstract class RemoteCover {
 
         public abstract void placeButtons();
 }
-
-
