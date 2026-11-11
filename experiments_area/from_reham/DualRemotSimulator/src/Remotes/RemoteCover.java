@@ -1,3 +1,4 @@
+package Remotes;
 public abstract class RemoteCover {
     /*
     abstract class -> a class that acts as a blueprint. 
@@ -7,7 +8,7 @@ public abstract class RemoteCover {
 
     abstract -> The child class must implemet it 
     */
-    public abstract void getInfoFromScreen(); //Display information
+    public abstract String getInfoFromScreen(); //Display information
     public abstract void turnOn(); //Turn on 
     public abstract void turnOff(); //Turn off
     public abstract void turnCounterUp(); //Increase Counter 
