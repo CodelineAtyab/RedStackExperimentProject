@@ -5,8 +5,9 @@ public class Feedback {
     public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
         this.customerName = customerName;
-        this.message = message;
-        this.rating = rating;
+        this.rating = 1;
+        setMessage(message);
+        setRating(rating);
     }
     public int getId(){
         return id;
