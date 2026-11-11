@@ -1,4 +1,3 @@
-package remotes;
 public class LGTVRemote extends RemoteCover {
 
     private boolean powerOn;          // power state
