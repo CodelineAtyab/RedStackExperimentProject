@@ -2,13 +2,21 @@ public class Main {
 
     public static void main(String[] args) {
 
+        FeedbackPortal portal = new FeedbackPortal();
+
         WebFormFeedback w = new WebFormFeedback(1, "Aisha", "Great service", 5);
         EmailFeedback e = new EmailFeedback(2, "Omar", "Slow reply", 3, "omar@mail.com");
         PhoneFeedback p = new PhoneFeedback(3, "Salma", "Helpful agent", 4, "99112233", 7);
 
-        System.out.println(w.getSummary());
-        System.out.println(e.getSummary());
-        System.out.println(p.getSummary());
+        portal.addFeedback(w);
+        portal.addFeedback(e);
+        portal.addFeedback(p);
+
+        // Polymorphism: the portal only knows these as Feedback, but each
+        // object runs its own getSummary() when printReport() prints it.
+        portal.printReport();
+
+        System.out.println("Average rating: " + String.format("%.1f", portal.getAverageRating()));
 
         // setRating() is declared in Feedback, not in PhoneFeedback.
         // 9 is outside 1 to 5, so the inherited validation rejects it.
