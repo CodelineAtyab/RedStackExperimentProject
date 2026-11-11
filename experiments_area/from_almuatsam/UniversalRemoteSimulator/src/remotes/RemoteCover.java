@@ -1,5 +1,3 @@
-package remotes;
-
 public abstract class RemoteCover {
 
     public abstract void getInfoFromScreen();
