@@ -1,4 +1,4 @@
-public class WebFormFeedback extends FeedbackAbstract {
+public class WebFormFeedback extends Feedback {
     public WebFormFeedback(int id, String customerName, String message, int rating) {
         super(id, customerName, message, rating);
     }
