@@ -1,6 +1,3 @@
-
-package remotes;
-
 public abstract class RemoteCover {
 
         // Every remote must implement these methods.

@@ -1,6 +1,3 @@
-
-package remotes;
-
 public class LGTVRemote extends RemoteCover {
 
     // Private fields (encapsulation)

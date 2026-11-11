@@ -1,7 +1,3 @@
-import remotes.RemoteCover;
-import remotes.LGTVRemote;
-import remotes.LGACRemote;
-
 public class Main {
 
     public static void main(String[] args) {

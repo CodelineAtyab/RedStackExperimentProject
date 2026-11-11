@@ -1,6 +1,3 @@
-
-package remotes;
-
 public class LGACRemote extends RemoteCover {
 
     // Private fields (encapsulation)
