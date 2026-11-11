@@ -1,6 +1,6 @@
 public class Checkout {
 
-    public static void checkout(PaymentMethod method, double amount){
+    public void checkout(PaymentMethod method, double amount){
         System.out.println("Checkout: " + amount + " OMR");
         method.pay(amount);
         System.out.println("Thank you");
