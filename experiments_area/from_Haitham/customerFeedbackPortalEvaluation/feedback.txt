@@ -1,7 +1,0 @@
-Haitham|Phone|5|good
-Ahmed|Book|3|Boring
-Khalid|Book|5|Very good
-Kumail|Playstation|5|good quality
-Kumail|Playstation|1|good quality
-Kumail|Playstation|2|good quality
-Kumail|Playstation|4|good quality

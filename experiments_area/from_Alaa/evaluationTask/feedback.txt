@@ -1,3 +1,0 @@
-alaa|RouterX|3|bad
-reham|RouterX|5|nice
-noor|Switch1|1|meh
