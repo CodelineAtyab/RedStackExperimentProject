@@ -1,5 +1,3 @@
-package remotes;
-
 public class LGACRemote extends RemoteCover {
 
     private static final int MIN_TEMP = 16;   // lower limit
