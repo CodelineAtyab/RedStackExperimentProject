@@ -8,15 +8,16 @@ public class RemoteCoverMain {
 
         public static void main(String[] args) {
 
-                RemoteCover lgtvRemote = new LGTVRemote();
+                RemoteCover lgtvRemote = new LGACRemote(false);
 
-                
+                System.out.println(lgtvRemote.getInfoFromScreen());
+
+                lgtvRemote.turnon();
+                System.out.println(lgtvRemote.getInfoFromScreen());
 
                 lgtvRemote.turnCounterUp();
-                lgtvRemote.turnCounterUp();
-                System.out.println("TV is "+lgtvRemote.togglePower());
-                System.out.println(lgtvRemote.turnon());
-
+                lgtvRemote.turnCounterDown();
+                lgtvRemote.turnoff();
         
                 System.out.println(lgtvRemote.getInfoFromScreen());
 

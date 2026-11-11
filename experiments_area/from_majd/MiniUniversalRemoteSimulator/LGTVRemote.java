@@ -1,76 +1,86 @@
 import java.util.Scanner;
 
 public class LGTVRemote extends RemoteCover {
-    
 
+    public LGTVRemote(Boolean displayText) {
 
-    public LGTVRemote(){
-
-System.out.println("==== LG TV Remote ====\n\n\n\n");
+        this.displayText = displayText;
+        System.out.println("==== LG TV Remote ====");
 
     }
 
-
-
-
-
     @Override
     public String getInfoFromScreen() {
-        return "Channel #: [%d] Volume %%:[%d]".formatted(channelCounter<0?0:channelCounter,55);
+        if (displayText)
+            return "Power: " + (tvPowerState ? "ON" : "OFF") + " | Channel: " + channelCounter;
+        else
+            return "Channel #: [%d] Volume %%:[%d]".formatted(channelCounter < 0 ? 0 : channelCounter, 55);
     }
 
     @Override
     public int turnCounterDown() {
-        return --channelCounter;
+        if (displayText) {
+            System.out.println("Channel Down -> " + (--channelCounter));
+            return channelCounter;
+        }
+
+        else
+            return --channelCounter;
     }
 
     @Override
     public Boolean turnoff() {
-     togglePower();
-        return true ;
+        if (displayText)
+            System.out.println("Turning OFF...");
+        togglePower();
+        return true;
     }
-
 
     @Override
     public int turnCounterUp() {
-        return ++channelCounter;
-    }
 
+        if (displayText) {
+            System.out.println("Channel Up -> " + (++channelCounter));
+            return channelCounter;
+
+        } else
+            return ++channelCounter;
+    }
 
     @Override
     public Boolean turnon() {
-togglePower();
-        return true ;
+        if (displayText)
+        System.out.println("Turning ON...");
+        
+
+        togglePower();
+    
+
+        return true;
     }
 
-
-    private Boolean togglePower(){
-        System.out.println("Check the existing state");
-        if(!tvPowerState)
-            tvPowerState=true;
+    private Boolean togglePower() {
+        // System.out.println("Check the existing state");
+        if (!tvPowerState)
+            tvPowerState = true;
         else
-            tvPowerState=false;
+            tvPowerState = false;
 
         return tvPowerState;
     }
 
-
     @Override
     public void channelChanger(int inputValue) {
-        
 
-
-        if(inputValue==1)
+        if (inputValue == 1)
             turnCounterUp();
-        else if(inputValue==0)
+        else if (inputValue == 0)
             turnCounterDown();
 
-        
     }
 
+    private Boolean tvPowerState = false;
+    private Boolean displayText = false;
 
-
-
-    private Boolean tvPowerState=false;
-    private int channelCounter=0;
+    private int channelCounter = 1;
 }

@@ -2,9 +2,11 @@ import java.util.Scanner;
 
 public class LGACRemote extends RemoteCover  {
     
-    public LGACRemote(){
+    public LGACRemote(Boolean displayText){
 
-System.out.println("==== LG AC Remote ====\n\n\n\n");
+                this.displayText = displayText;
+
+System.out.println("==== LG AC Remote ====");
 
 
     }
@@ -12,46 +14,60 @@ System.out.println("==== LG AC Remote ====\n\n\n\n");
 
     @Override
     public String getInfoFromScreen() {
-        return "Channel #: [%d] Volume %%:[%d]".formatted(channelCounter<0?0:channelCounter,55);
-
+  if (displayText)
+            return "Power: " + (tvPowerState ? "ON" : "OFF") + " | Channel: " + channelCounter;
+        else
+            return "Channel #: [%d] Volume %%:[%d]".formatted(channelCounter < 0 ? 0 : channelCounter, 55);
     }
 
     @Override
     public Boolean turnon() {
-togglePower();
+  if (displayText)
+        System.out.println("Turning ON...");
+        
+
+        togglePower();
+    
+
         return true;
     }
 
 
     @Override
     public Boolean turnoff() {
-      togglePower();
+         if (displayText)
+            System.out.println("Turning OFF...");
+        togglePower();
         return true;
     }
 
 
     @Override
     public int turnCounterDown() {
-        // TODO Auto-generated method stub
-        if(channelCounter<0)
-            return channelCounter=0;
+          if (displayText) {
+            System.out.println("Channel Down -> " + (--channelCounter));
+            return channelCounter;
+        }
+
         else
-        return --channelCounter;
+            return --channelCounter;
     }
 
 @Override
 public int turnCounterUp() {
-            if(channelCounter<0)
-            return channelCounter=0;
-        else
-    return ++channelCounter;
+      if (displayText) {
+            System.out.println("Channel Up -> " + (++channelCounter));
+            return channelCounter;
+
+        } else
+            return ++channelCounter;
 }
 
 
 
 
  private Boolean togglePower(){
-        System.out.println("Check the existing state");
+        // System.out.println("Check the existing state");
         if(!tvPowerState)
             tvPowerState=true;
         else
@@ -76,8 +92,9 @@ public int turnCounterUp() {
     }
 
         private Boolean tvPowerState=false;
-        private int channelCounter=0;
+    private Boolean displayText = false;
 
+    private int channelCounter = 1;
 }
 
 
