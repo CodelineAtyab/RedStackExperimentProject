@@ -1,7 +1,7 @@
 public class Battery {
     private int level;
 
-    private Battery(){
+    Battery(){
         this.level = 100;
     }
 
