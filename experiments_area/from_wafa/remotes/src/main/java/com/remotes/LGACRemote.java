@@ -3,7 +3,7 @@ package com.remotes;
 public class LGACRemote extends RemoteCover {
     @Override
     public String getInfoFromScreen() {
-        // Use ternary to show "ON" / "OFF" and adjust spacing to match the example
+    
         String displayScreen = "Power: %s | Channel: %d".formatted(PowerState ? "ON " : "OFF", Counter);
         return displayScreen;
     }
