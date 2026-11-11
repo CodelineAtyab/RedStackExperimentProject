@@ -74,7 +74,7 @@ UniversalRemoteSimulator/
 From the project root directory, run:
 
 ```bash
-javac -d out src/Main.java src/remotes/*.java
+javac -d out src/*.java
 ```
 
 ## How to Run
