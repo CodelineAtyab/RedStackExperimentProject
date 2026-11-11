@@ -38,7 +38,7 @@ public class Smartphone {
 
     public void makeCall(int minutes){
         if(this.simCard == null){
-            System.out.println("no SIM card");
+            System.out.println(model+"no SIM card");
         }else {
             battery.drain(minutes*2);
             System.out.println(model + " called for " + minutes + " min using " + simCard.getNumber()

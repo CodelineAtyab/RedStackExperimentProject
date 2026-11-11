@@ -13,5 +13,9 @@ public class Main {
         phone2.printStatus();
         phone1.printStatus();
         System.out.println("SIM still exists: " + sim.getNumber());
+        /*
+        Battery is a composition relationship because if we distroy smartphone class the battery class will disappear.
+        SimCard is a aggregation relationship because it wont disappear when we destroy smartphone class.
+         */
     }
 }
