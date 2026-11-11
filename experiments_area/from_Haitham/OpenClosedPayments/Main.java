@@ -6,6 +6,7 @@ public class Main {
         paying.add(new BankTransferPayment());
         paying.add(new CardPayment());
         paying.add(new WalletPayment());
+        paying.add(new CashOnDeliveryPayment());
         double amount = 25.0;
         Checkout checkout = new Checkout();
         for (PaymentMethod pay : paying){
