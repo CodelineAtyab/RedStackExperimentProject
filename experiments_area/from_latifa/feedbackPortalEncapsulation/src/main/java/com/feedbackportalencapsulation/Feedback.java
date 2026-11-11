@@ -1,4 +1,4 @@
-package com.feedbackportalencapsulation.models;
+package com.feedbackportalencapsulation;
 
 public class Feedback {
 
