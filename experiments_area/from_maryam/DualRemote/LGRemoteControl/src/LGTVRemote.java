@@ -1,5 +1,4 @@
 
-package remotes;
 public class LGTVRemote extends RemoteCover {
 
     // here to stores the power , channel and volume of the TV
