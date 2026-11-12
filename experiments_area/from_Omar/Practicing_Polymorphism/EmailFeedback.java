@@ -1,3 +1,4 @@
+
 public class EmailFeedback extends Feedback{
     private String emailAddress;
 
@@ -13,5 +14,5 @@ public class EmailFeedback extends Feedback{
 
     @Override
     public String getSummary() {
-        return "[Email] " + super.getCustomername() + " (" + this.emailAddress + "): " + getMessage() + " (" + getRating() + "/5)";    }
+        return " [Email] " + super.getCustomerName() + " <" + this.emailAddress + ">: " + getMessage() + " (" + getRating() + "/5)";    }
 }
