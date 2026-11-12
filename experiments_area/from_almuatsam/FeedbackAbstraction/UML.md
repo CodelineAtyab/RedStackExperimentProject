@@ -2,6 +2,13 @@
 
 ```mermaid
 classDiagram
+    class FeedbackPortal {
+        -ArrayList~Feedback~ allFeedback
+        +addFeedback(Feedback) void
+        +printReport() void
+        +getAverageRating() double
+    }
+
     class Feedback {
         <<abstract>>
         -int id
@@ -15,6 +22,7 @@ classDiagram
         +setMessage(String) void
         +setRating(int) void
         +getSummary() String*
+        +toString() String
     }
 
     class WebFormFeedback {
@@ -40,4 +48,5 @@ classDiagram
     Feedback <|-- WebFormFeedback
     Feedback <|-- EmailFeedback
     Feedback <|-- PhoneFeedback
+    FeedbackPortal o-- "*" Feedback
 ```
