@@ -1,4 +1,3 @@
-package Remotes;
 public class LGTVRemote extends RemoteCover{
 
     private boolean PowerState=false;
