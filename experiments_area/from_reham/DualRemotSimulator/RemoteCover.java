@@ -1,3 +1,4 @@
+
 public abstract class RemoteCover {
     /*
     abstract class -> a class that acts as a blueprint. 
