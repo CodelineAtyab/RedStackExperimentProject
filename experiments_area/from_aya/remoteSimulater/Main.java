@@ -1,6 +1,3 @@
-import remote.RemoteCover;
-import remote.LGTVRemote;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -14,6 +11,5 @@ public class Main {
         remote.turnCounterDown();
         remote.turnOff();
 
-    
     }
 }
