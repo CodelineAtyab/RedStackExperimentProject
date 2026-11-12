@@ -26,11 +26,11 @@ public class LGACRemote extends RemoteCover {
         return decreaseTemperature();
     }
 
-    private Integer increaseTemperature() {
+    public Integer increaseTemperature() {
         return ++temperatureCounter;
     }
 
-    private Integer decreaseTemperature() {
+    public Integer decreaseTemperature() {
         return --temperatureCounter;
     }
 
