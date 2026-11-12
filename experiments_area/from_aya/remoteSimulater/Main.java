@@ -1,7 +1,5 @@
-package com.remoteSimulater;
-import com.remoteSimulater.remote.RemoteCover;
-import com.remoteSimulater.remote.LGTVRemote;
-
+import remote.RemoteCover;
+import remote.LGTVRemote;
 
 public class Main {
 
@@ -15,7 +13,6 @@ public class Main {
         remote.turnCounterUp();
         remote.turnCounterDown();
         remote.turnOff();
-
 
     }
 }
