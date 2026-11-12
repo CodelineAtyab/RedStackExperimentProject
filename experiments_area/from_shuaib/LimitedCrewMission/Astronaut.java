@@ -1,6 +1,6 @@
 public class Astronaut {
     private String name;
-    private static MAX_ASTRONAUTS = 4;
+    private static final int MAX_ASTRONAUTS = 4;
     private static int recruitedCount = 0;
 
     private Astronaut(String name){

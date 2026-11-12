@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Spaceship {
     private String name;
     private LifeSupport lifeSupport;
@@ -14,7 +16,7 @@ public class Spaceship {
     public void boardCrew(Astronaut astronaut){
         if(astronaut == null){
             System.out.println(name + ": no astronaut to board");
-        } else if (crew.sizee() < CAPACITY) {
+        } else if (crew.size() < CAPACITY) {
             crew.add(astronaut);
             System.out.println("Boarded " + astronaut.getName() + " on " + name + " (seat " + crew.size() + " of 3)");
         } else{
@@ -22,13 +24,11 @@ public class Spaceship {
         }
     }
 
-    public void printManifest(){
-        if(crew.isEmpty()){
-            System.out.println(name + "crew: None");
-        }
-
-        for(int i=0; i<= crew.size(); i++){
-            System.out.print(name + " crew: ");
+    public void printManifest() {
+        System.out.print(name + " crew: ");
+        if (crew.isEmpty()) {
+            System.out.println("none");
+        } else {
             for (int i = 0; i < crew.size(); i++) {
                 System.out.print(crew.get(i).getName());
                 if (i < crew.size() - 1) {
