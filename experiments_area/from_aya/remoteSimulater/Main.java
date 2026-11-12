@@ -1,4 +1,4 @@
-
+package com.remoteSimulater;
 import com.remoteSimulater.remote.RemoteCover;
 import com.remoteSimulater.remote.LGTVRemote;
 
