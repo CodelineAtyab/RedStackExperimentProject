@@ -1,6 +1,5 @@
 package remotes;
-
-public class LGACRemote extends RemoteCover{
+public class LGACRemote extends RemoteCover {
 
 
     // store the state of AC, temperature and coolingMode
