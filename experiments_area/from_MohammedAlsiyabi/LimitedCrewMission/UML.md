@@ -27,5 +27,4 @@ classDiagram
     Spaceship "1" o-- "0..3" Astronaut : holds
 ```
 
-`$` = static member, `~` = package-private.
 
