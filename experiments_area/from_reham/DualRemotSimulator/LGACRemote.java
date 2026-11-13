@@ -1,3 +1,4 @@
+
 public class LGACRemote extends RemoteCover{
    
     private boolean PowerState=false;
