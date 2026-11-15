@@ -1,0 +1,55 @@
+# Dual-Remote Simulator
+
+A small Java program that simulates an LG TV remote and an LG AC remote.
+
+Requires JDK 17 or newer.
+
+## Compile
+
+Open a terminal inside DualRemoteSimulator and run:
+
+```bash
+javac -Xlint:unchecked -d out src/remotes/RemoteCover.java src/remotes/LGTVRemote.java src/remotes/LGACRemote.java src/Main.java
+```
+
+## Run
+
+Run the TV example:
+
+```bash
+java -cp out Main TV
+```
+
+Run the AC example:
+
+```bash
+java -cp out Main AC
+```
+
+Run the default remote:
+
+```bash
+java -cp out Main
+```
+
+To change the default, replace `new LGTVRemote()` with
+`new LGACRemote()` on the RemoteCover variable declaration in Main.java.
+Then compile again and run without an argument.
+
+## OOP concepts
+
+- Encapsulation: each remote keeps its state and helper methods private.
+- Abstraction: RemoteCover declares six abstract methods.
+- Inheritance: LGTVRemote and LGACRemote extend RemoteCover.
+- Polymorphism: Main uses one RemoteCover variable. The same method calls
+  run different implementations depending on the selected object.
+
+## Behaviour
+
+The TV starts on channel 1 with a fixed volume of 20.
+The channel cannot go below 1.
+
+The AC starts at 24 C in Cooling mode.
+
+Both devices start switched off. Counter changes work only when powered on.
+Each action displays the device, power state and counter value.
