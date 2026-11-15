@@ -44,10 +44,7 @@ public class Smartphone {
             simNumber = simCard.getNumber();
         }
 
-        System.out.println(
-                model + " | Battery: " + battery.getLevel() +
-                        "% | SIM: " + simNumber
-        );
+        System.out.println(model + " | Battery: " + battery.getLevel() +"% | SIM: " + simNumber);
 
     }
 }
