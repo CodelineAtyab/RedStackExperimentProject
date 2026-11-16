@@ -6,7 +6,7 @@ import kong.unirest.JsonNode;
 
 class Main {
 
-    private static final String TOMTOM_API_KEY = "qifGKamAMAtuCdimsnGzXKi7fxBUuQZt"; //API KEY
+    private static final String TOMTOM_API_KEY = ""; //API KEY
 
     private static void fetchAndPrintDistance(String source, String originCoord, String destination, String destCoord) {
         String url = "https://api.tomtom.com/routing/1/calculateRoute/" + originCoord + ":" + destCoord + "/json";
