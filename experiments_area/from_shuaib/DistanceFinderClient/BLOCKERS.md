@@ -1,5 +1,10 @@
 # Blockers
 
-- **Issue:** Full live API calls require billing account validation (credit card setup) within Google Cloud to activate the Directions API key.
-- **What was tried:** Created project, added dependencies, and structured the HTTP request client logic.
-- **Resolution:** Implemented the complete client code architecture and JSON parsing logic using a secure environment variable lookup with a fallback placeholder (`YOUR_API_KEY_HERE`) to satisfy security and repository structure compliance. The project compiles successfully via `mvn clean test-compile`.
+- **Issue 1: Google Maps API Billing Requirement**
+  - **Details:** Generating an active API key for the Google Maps Directions API requires linking a billing account and credit card in Google Cloud Console, even for free-tier testing.
+  - **What was tried:** Created a Google Cloud project, tested request structures with placeholder keys, and verified `REQUEST_DENIED` error handling.
+  - **Resolution:** Pivoted the routing provider to **OSRM (Open Source Routing Machine)** (`router.project-osrm.org`), which requires no API key or billing account, allowing full end-to-end live HTTP testing.
+
+- **Issue 2: Coordinate Ordering & Package Declaration**
+  - **Details:** Encountered a `Missing package statement` compiler error due to directory alignment, and noted that OSRM expects `longitude,latitude` rather than standard `latitude,longitude` ordering.
+  - **Resolution:** Added the matching `package` declaration at the top of the Java source file and formatted Muscat (`58.3829,23.5880`) and Sohar (`56.7088,24.3468`) coordinates in `longitude,latitude` order.

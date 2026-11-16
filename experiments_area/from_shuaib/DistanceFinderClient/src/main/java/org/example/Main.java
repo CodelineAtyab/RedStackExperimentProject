@@ -9,59 +9,46 @@ import kong.unirest.core.json.JSONObject;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        String origin = "Muscat";
-        String destination = "Sohar";
 
-        String apiKey = System.getenv("MAPS_API_KEY");
-        if (apiKey == null || apiKey.trim().isEmpty()) {
-            apiKey = "YOUR_API_KEY_HERE";
-        }
+        //muscat to suhar coordinates
+        String coordinates = "58.3829,23.5880;56.7088,24.3468";
 
-        try{
-            HttpResponse<JsonNode> response = Unirest.get("https://maps.googleapis.com/maps/api/directions/json")
-                    .queryString("origin", origin)
-                    .queryString("destination", destination)
-                    .queryString("mode", "driving")
-                    .queryString("departure_time", "now")
-                    .queryString("key", apiKey)
+        try {
+            HttpResponse<JsonNode> response = Unirest.get("http://router.project-osrm.org/route/v1/driving/" + coordinates)
+                    .queryString("overview", "false")
                     .asJson();
 
             if (response.getStatus() != 200) {
-                System.out.println("Error: Received HTTP status " + response.getStatus() + " from Google Maps server.");
+                System.out.println("Error: Received HTTP status " + response.getStatus() + " from routing server.");
                 return;
             }
 
             JSONObject jsonResponse = response.getBody().getObject();
-            String status = jsonResponse.optString("status", "UNKNOWN");
+            String code = jsonResponse.optString("code", "Error");
 
-            if (!"OK".equals(status)) {
-                String errorMessage = jsonResponse.optString("error_message", "No error message provided.");
-                System.out.println("Google Maps API Error [Status: " + status + "]: " + errorMessage);
+            //verify response
+            if (!"Ok".equals(code)) {
+                System.out.println("Routing API Error: Could not find a route.");
                 return;
             }
 
+            //distance in meters
             JSONArray routes = jsonResponse.getJSONArray("routes");
             if (routes.length() == 0) {
-                System.out.println("No driving route found between " + origin + " and " + destination + ".");
+                System.out.println("No driving route found.");
                 return;
             }
 
             JSONObject route = routes.getJSONObject(0);
-            JSONArray legs = route.getJSONArray("legs");
-            if (legs.length() == 0) {
-                System.out.println("No route legs available.");
-                return;
-            }
+            double distanceMeters = route.getDouble("distance");
 
-            JSONObject leg = legs.getJSONObject(0);
-            JSONObject distanceObj = leg.getJSONObject("distance");
-
-            double distanceMeters = distanceObj.getDouble("value");
+            //distance in Km
             double distanceKm = distanceMeters / 1000.0;
 
-            System.out.printf("Distance from %s to %s: %.1f km%n", origin, destination, distanceKm);
-        }
-        catch (Exception e){
+            // Print output
+            System.out.printf("Distance from Muscat to Sohar: %.1f km%n", distanceKm);
+
+        } catch (Exception e) {
             System.out.println("An unexpected error occurred: " + e.getMessage());
         }
     }
