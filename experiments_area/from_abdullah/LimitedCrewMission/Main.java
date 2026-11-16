@@ -2,15 +2,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // The constructor is private, and recruit stops creating objects after four.
+        
         Astronaut a1 = Astronaut.recruit("Noor");
         Astronaut a2 = Astronaut.recruit("Sara");
         Astronaut a3 = Astronaut.recruit("Omar");
         Astronaut a4 = Astronaut.recruit("Zaid");
         Astronaut a5 = Astronaut.recruit("Hana");
 
-        // Composition: the ship creates and keeps its own life support.
-        // Aggregation: astronauts exist separately and can board another ship.
+       
         Spaceship falcon = new Spaceship("Falcon");
 
         falcon.boardCrew(a1);

@@ -1,0 +1,11 @@
+[33mcommit 3e8c62ae252ea3392317336c7aa19bb22e45d5d5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/453-abdullah-LimitedCrewMission[m[33m)[m
+Author: AYS-115 <abdullahalhajri2537@gmail.com>
+Date:   Thu Nov 12 15:48:54 2026 +0400
+
+    feature/453-abdullah-LimitedCrewMission
+
+ .../LimitedCrewMission/Astronaut.java              | 33 [32m++++++++++++++[m
+ .../LimitedCrewMission/LifeSupport.java            |  6 [32m+++[m
+ .../from_abdullah/LimitedCrewMission/Main.java     | 35 [32m++++++++++++++[m
+ .../LimitedCrewMission/Spaceship.java              | 53 [32m++++++++++++++++++++++[m
+ 4 files changed, 127 insertions(+)
