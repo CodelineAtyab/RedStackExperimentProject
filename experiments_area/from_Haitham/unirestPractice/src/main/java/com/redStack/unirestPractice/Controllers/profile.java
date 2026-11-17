@@ -11,7 +11,7 @@ public class profile {
     public record Greeting(String name, List<Favourite> favourites) { }
 
     @GetMapping("/profile")
-    Greeting greet(String name){
+    Greeting Profile(String name){
         List<Favourite> favouritesList = List.of(
                 new Favourite(1, "Coffee"),
                 new Favourite(2, "Books"),
