@@ -6,34 +6,43 @@ import kong.unirest.JsonNode;
 
 class Main {
 
-    private static final String TOMTOM_API_KEY = ""; //API KEY
+    private static final String GOOGLE_API_KEY = ""; // Your Google Maps API Key
 
-    private static void fetchAndPrintDistance(String source, String originCoord, String destination, String destCoord) {
-        String url = "https://api.tomtom.com/routing/1/calculateRoute/" + originCoord + ":" + destCoord + "/json";
+    private static void PrintDistance(String source, String originCoord, String destination, String destCoord) {
+        String url = "https://maps.googleapis.com/maps/api/distancematrix/json";
 
         try {
             HttpResponse<JsonNode> response = Unirest.get(url)
-                    .queryString("key", TOMTOM_API_KEY)
+                    .queryString("origins", originCoord)
+                    .queryString("destinations", destCoord)
+                    .queryString("key", GOOGLE_API_KEY)
                     .asJson();
 
             if (response.isSuccess() && response.getBody() != null) {
-                // Extract length in meters from the JSON response and convert to kilometers
-                int lengthInMeters = response.getBody().getObject()
-                        .getJSONArray("routes")
-                        .getJSONObject(0)
-                        .getJSONObject("summary")
-                        .getInt("lengthInMeters");
+                var jsonBody = response.getBody().getObject();
+                String status = jsonBody.optString("status", "UNKNOWN");
 
-                double distanceKm = lengthInMeters / 1000.0;
+                if ("OK".equals(status)) {
+                    int lengthInMeters = jsonBody.getJSONArray("rows")
+                            .getJSONObject(0)
+                            .getJSONArray("elements")
+                            .getJSONObject(0)
+                            .getJSONObject("distance")
+                            .getInt("value");
 
-                // Printf for format printing
-                System.out.printf("Distance from %s to %s: %.1f km%n", source, destination, distanceKm);
+                    double distanceKm = lengthInMeters / 1000.0;
+                    System.out.printf("Distance from %s to %s: %.1f km%n", source, destination, distanceKm);
+                } else {
+                    // This will print the exact reason from Google (e.g., REQUEST_DENIED, OVER_QUERY_LIMIT)
+                    System.err.println("Google Maps API returned status: " + status);
+                    System.err.println("Full response: " + jsonBody.toString());
+                }
             } else {
-                System.err.println("API Error for " + source + " to " + destination);
+                System.err.println("HTTP Error calling API for " + source + " to " + destination);
             }
 
         } catch (Exception e) {
-            System.err.println("Error calling TomTom API: " + e.getMessage());
+            System.err.println("Error parsing Google Maps API response: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -46,9 +55,9 @@ class Main {
         String seebCoord = "23.6703,58.1891";
 
         // 1. Muscat to Sohar
-        fetchAndPrintDistance("Muscat", muscatCoord, "Sohar", soharCoord);
+        PrintDistance("Muscat", muscatCoord, "Sohar", soharCoord);
 
         // 2. Ruwi to Seeb
-        fetchAndPrintDistance("Ruwi", ruwiCoord, "Seeb", seebCoord);
+        PrintDistance("Ruwi", ruwiCoord, "Seeb", seebCoord);
     }
 }

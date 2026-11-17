@@ -16,7 +16,7 @@
 
 
     <dependencies>
-        <!-- Unirest HTTP Client. code for sending http requests to server. Preventing the need to wrie complicated code-->
+        <!-- Unirest HTTP Client. code for sending http requests to server. Preventing the need to write complicated code-->
         <dependency>
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
