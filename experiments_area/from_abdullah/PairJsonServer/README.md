@@ -1,62 +1,35 @@
-# Pair JSON server and feedback client
+# Pair JSON Exchange - #522
 
-Java 17. These projects cover the local implementation of #522 and #523.
-Partner tests still need two computers.
+Java 17, Spring Boot server and Unirest client.
 
-## Start the server
+## Server
 
-Open a terminal inside PairJsonServer:
+In PairJsonServer:
 
 ```powershell
 mvn clean test-compile
 mvn spring-boot:run
 ```
 
-Keep the server running. It uses port 8080. Open this address in a browser:
+Keep the server terminal open. View:
 http://localhost:8080/profile?name=Sara
 
-The console lists bean names and confirms profileController was found.
+## Client
 
-## Run the clients
-
-Open a second terminal inside PairJsonClient:
+In a second terminal, inside PairJsonClient:
 
 ```powershell
 mvn clean test-compile
 mvn -q exec:java
-mvn -q exec:java "-Dmain.class=FeedbackClient"
 ```
 
-The first command runs ProfileClient; the second runs FeedbackClient.
-FeedbackClient performs POST twice, GET, PUT, GET, DELETE and GET.
-It prints the parsed JSON and HTTP status after each request.
-It adds real in-memory feedback each time it runs.
-
-## Connect to a partner
-
-Replace the example address with the partner's actual network address:
+To use a partner's real server address and a different name:
 
 ```powershell
 mvn -q exec:java "-Dexec.args=http://192.168.1.20:8080 Abdullah"
-mvn -q exec:java "-Dmain.class=FeedbackClient" "-Dexec.args=http://192.168.1.20:8080"
 ```
 
-Each client also has its default serverAddress in one place in the code.
-localhost means this computer, not the partner's computer.
-Both computers must be able to reach the server's port.
+The address above is an example. localhost means the client's own computer.
+The two computers must be able to reach the server's port.
 
-## Postman
-
-Import Feedback.postman_collection.json from PairJsonServer.
-It uses the collection variable baseUrl, initially http://localhost:8080.
-Start with an empty server list (restart the server if needed).
-Run the collection in order. It captures created IDs automatically.
-The final extra requests check unknown IDs and clean up the test data.
-
-A local CLI run can also execute the same collection; see TEST_RESULTS.md.
-
-## Notes
-
-NOTES.md records design choices, sources, blockers and partner-test status.
-TEST_RESULTS.md records actual local results.
-No external API, API key or paid account is used.
+See NOTES.md and TEST_RESULTS.md. Partner testing remains pending.

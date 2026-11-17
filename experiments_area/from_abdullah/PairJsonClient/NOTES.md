@@ -1,8 +1,8 @@
-# Client notes
+# Client notes - #522
 
-See ../PairJsonServer/NOTES.md for bean and HTTP explanations, partner status and blockers.
-See ../PairJsonServer/TEST_RESULTS.md for local verification.
+ProfileClient uses Unirest to request /profile with a name query parameter.
+It reads the JSON object, gets the favourites array and loops through it.
+The server address can be changed using the first command-line argument.
 
-ProfileClient reads the name and favourites array from JSON and prints each item.
-FeedbackClient sends JSON text with Content-Type: application/json and reads the replies as JSON.
-Both clients accept the server address as their first command-line argument.
+See ../PairJsonServer/NOTES.md for partner status and blockers.
+See ../PairJsonServer/TEST_RESULTS.md for local results.
