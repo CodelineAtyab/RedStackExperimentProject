@@ -11,20 +11,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 
-public class Main {
 
-    private static final String GEOCODE_URL = "https://api.tomtom.com/search/2/geocode/{query}.json";
-    private static final String ROUTE_URL = "https://api.tomtom.com/routing/1/calculateRoute/{locations}/json";
+public class Main {
+    private static final String ROUTES_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
     public static void main(String[] args) {
         printDistance("Muscat", "Sohar");
         printDistance("Ruwi", "Seeb");
         Unirest.shutDown();
     }
-
-    // Reads the key from the environment, or from a .env file in the project root
     static String loadApiKey() {
-        String fromEnv = System.getenv("TOMTOM_API_KEY");
+        String fromEnv = System.getenv("GOOGLE_API_KEY");
         if (fromEnv != null && !fromEnv.isBlank()) {
             return fromEnv;
         }
@@ -33,8 +30,8 @@ public class Main {
             try {
                 for (String line : Files.readAllLines(file)) {
                     line = line.trim();
-                    if (line.startsWith("TOMTOM_API_KEY=")) {
-                        return line.substring("TOMTOM_API_KEY=".length()).trim().replace("\"", "");
+                    if (line.startsWith("GOOGLE_API_KEY=")) {
+                        return line.substring("GOOGLE_API_KEY=".length()).trim().replace("\"", "");
                     }
                 }
             } catch (IOException e) {
@@ -44,50 +41,30 @@ public class Main {
         return null;
     }
 
-    // Turns a place name into "lat,lon". Returns null (after printing a message) on failure.
-    static String geocode(String place, String apiKey) {
-        HttpResponse<JsonNode> response = Unirest.get(GEOCODE_URL)
-                .routeParam("query", place)
-                .queryString("key", apiKey)
-                .queryString("countrySet", "OM")
-                .queryString("limit", 1)
-                .asJson();
-
-        if (!response.isSuccess()) {
-            System.out.println("Could not find '" + place + "' (HTTP " + response.getStatus() + "): "
-                    + response.getBody());
-            return null;
-        }
-
-        JSONArray results = response.getBody().getObject().optJSONArray("results");
-        if (results == null || results.length() == 0) {
-            System.out.println("No location found for '" + place + "'");
-            return null;
-        }
-
-        JSONObject position = results.getJSONObject(0).getJSONObject("position");
-        return position.getDouble("lat") + "," + position.getDouble("lon");
+    static JSONObject waypoint(String place) {
+        return new JSONObject().put("address", place + ", Oman");
     }
 
     static void printDistance(String source, String destination) {
         String apiKey = loadApiKey();
         if (apiKey == null || apiKey.isBlank()) {
-            System.out.println("Error: set TOMTOM_API_KEY in the environment or in a .env file in the project root.");
+            System.out.println("Error: set GOOGLE_API_KEY in the environment or in a .env file in the project root.");
             return;
         }
 
         try {
-            String from = geocode(source, apiKey);
-            String to = geocode(destination, apiKey);
-            if (from == null || to == null) {
-                return;
-            }
+            JSONObject body = new JSONObject()
+                    .put("origin", waypoint(source))
+                    .put("destination", waypoint(destination))
+                    .put("travelMode", "DRIVE")
+                    .put("routingPreference", "TRAFFIC_AWARE")   
+                    .put("regionCode", "om");
 
-            HttpResponse<JsonNode> response = Unirest.get(ROUTE_URL)
-                    .routeParam("locations", from + ":" + to)
-                    .queryString("key", apiKey)
-                    .queryString("traffic", true)       // live traffic
-                    .queryString("travelMode", "car")
+            HttpResponse<JsonNode> response = Unirest.post(ROUTES_URL)
+                    .header("Content-Type", "application/json")
+                    .header("X-Goog-Api-Key", apiKey)
+                    .header("X-Goog-FieldMask", "routes.distanceMeters")
+                    .body(body.toString())
                     .asJson();
 
             if (!response.isSuccess()) {
@@ -102,7 +79,7 @@ public class Main {
                 return;
             }
 
-            long meters = routes.getJSONObject(0).getJSONObject("summary").getLong("lengthInMeters");
+            long meters = routes.getJSONObject(0).getLong("distanceMeters");
             System.out.println(String.format(Locale.US,
                     "Distance from %s to %s: %.1f km", source, destination, meters / 1000.0));
 
