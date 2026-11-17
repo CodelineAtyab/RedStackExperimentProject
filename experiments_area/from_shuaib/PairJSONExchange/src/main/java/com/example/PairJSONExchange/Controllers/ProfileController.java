@@ -14,11 +14,11 @@ public class ProfileController {
 
     @GetMapping(path = "/profile")
     public Profile getProfile(@RequestParam(value = "name", defaultValue = "Sara") String name) {
-        List<FavoriteItem> favorite = Arrays.asList(
+        List<FavoriteItem> favourites = Arrays.asList(
                 new FavoriteItem(1, "Coffee"),
                 new FavoriteItem(2, "Books"),
                 new FavoriteItem(3, "Football")
         );
-        return new Profile(name, favorite);
+        return new Profile(name, favourites);
     }
 }
