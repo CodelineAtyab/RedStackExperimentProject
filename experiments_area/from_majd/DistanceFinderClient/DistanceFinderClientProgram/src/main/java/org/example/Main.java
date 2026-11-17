@@ -6,43 +6,56 @@ import kong.unirest.JsonNode;
 
 class Main {
 
-    private static final String GOOGLE_API_KEY = ""; // Your Google Maps API Key
+    private static final String GOOGLE_API_KEY = ""; // Put your Google Maps API Key here
 
     private static void PrintDistance(String source, String originCoord, String destination, String destCoord) {
-        String url = "https://maps.googleapis.com/maps/api/distancematrix/json";
+        // Updated to use the new Routes API endpoint
+        String url = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
         try {
-            HttpResponse<JsonNode> response = Unirest.get(url)
-                    .queryString("origins", originCoord)
-                    .queryString("destinations", destCoord)
-                    .queryString("key", GOOGLE_API_KEY)
+            // The Routes API requires a JSON body instead of query parameters,
+            // and expects coordinates wrapped in location/latLng format.
+            String[] originParts = originCoord.split(",");
+            String[] destParts = destCoord.split(",");
+
+            String jsonBodyString = String.format(
+                    "{" +
+                            "  \"origin\": { \"location\": { \"latLng\": { \"latitude\": %s, \"longitude\": %s } } }," +
+                            "  \"destination\": { \"location\": { \"latLng\": { \"latitude\": %s, \"longitude\": %s } } }," +
+                            "  \"travelMode\": \"DRIVE\"" +
+                            "}",
+                    originParts[0], originParts[1], destParts[0], destParts[1]
+            );
+
+            HttpResponse<JsonNode> response = Unirest.post(url)
+                    .header("Content-Type", "application/json")
+                    .header("X-Goog-Api-Key", GOOGLE_API_KEY)
+                    .header("X-Goog-FieldMask", "routes.distanceMeters")
+                    .body(jsonBodyString)
                     .asJson();
 
             if (response.isSuccess() && response.getBody() != null) {
                 var jsonBody = response.getBody().getObject();
-                String status = jsonBody.optString("status", "UNKNOWN");
 
-                if ("OK".equals(status)) {
-                    int lengthInMeters = jsonBody.getJSONArray("rows")
+                // The Routes API returns a "routes" array containing the distance in meters
+                if (jsonBody.has("routes") && !jsonBody.getJSONArray("routes").isEmpty()) {
+                    int lengthInMeters = jsonBody.getJSONArray("routes")
                             .getJSONObject(0)
-                            .getJSONArray("elements")
-                            .getJSONObject(0)
-                            .getJSONObject("distance")
-                            .getInt("value");
+                            .getInt("distanceMeters");
 
                     double distanceKm = lengthInMeters / 1000.0;
                     System.out.printf("Distance from %s to %s: %.1f km%n", source, destination, distanceKm);
                 } else {
-                    // This will print the exact reason from Google (e.g., REQUEST_DENIED, OVER_QUERY_LIMIT)
-                    System.err.println("Google Maps API returned status: " + status);
+                    System.err.println("No routes found between " + source + " and " + destination);
                     System.err.println("Full response: " + jsonBody.toString());
                 }
             } else {
-                System.err.println("HTTP Error calling API for " + source + " to " + destination);
+                System.err.println("HTTP Error calling Routes API for " + source + " to " + destination);
+                System.err.println("Response: " + response.getBody());
             }
 
         } catch (Exception e) {
-            System.err.println("Error parsing Google Maps API response: " + e.getMessage());
+            System.err.println("Error calling Routes API: " + e.getMessage());
             e.printStackTrace();
         }
     }
