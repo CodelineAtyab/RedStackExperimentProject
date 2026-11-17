@@ -1,5 +1,3 @@
-package com.teamredstack.distancefinder;
-
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -9,48 +7,65 @@ import kong.unirest.json.JSONObject;
 
 public class DistanceFinder {
 
-    private static final String GEOCODE_URL = "https://nominatim.openstreetmap.org/search";
-    private static final String ROUTE_URL = "https://router.project-osrm.org/route/v1/driving/";
+    private static final String URL = "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix";
+    private static final String KEY_VARIABLE = "API_key";
 
     public static void main(String[] args) {
-        String source = "Muscat";
-        String destination = "Sohar";
+        String source = "Muscat, Oman";
+        String destination = "Sohar, Oman";
+
+        String apiKey = System.getenv(KEY_VARIABLE);
+        if (apiKey == null || apiKey.isBlank()) {
+            System.out.println("No API key found. Set the environment variable " + KEY_VARIABLE + " first.");
+            return;
+        }
+
+        String requestBody = """
+                {
+                  "origins": [ { "waypoint": { "address": "%s" } } ],
+                  "destinations": [ { "waypoint": { "address": "%s" } } ],
+                  "travelMode": "DRIVE",
+                  "routingPreference": "TRAFFIC_AWARE"
+                }
+                """.formatted(source, destination);
 
         try {
-            double[] from = findCoordinates(source);
-            if (from == null) {
-                System.out.println("Could not find a place called " + source);
-                return;
-            }
-            // Nominatim asks for max one request per second
-            Thread.sleep(1100);
-            double[] to = findCoordinates(destination);
-            if (to == null) {
-                System.out.println("Could not find a place called " + destination);
-                return;
-            }
-
-            // OSRM wants longitude first, then latitude
-            String coordinates = from[1] + "," + from[0] + ";" + to[1] + "," + to[0];
-            HttpResponse<JsonNode> response = Unirest.get(ROUTE_URL + coordinates)
-                    .queryString("overview", "false")
+            HttpResponse<JsonNode> response = Unirest.post(URL)
+                    .header("Content-Type", "application/json")
+                    .header("X-Goog-Api-Key", apiKey)
+                    .header("X-Goog-FieldMask", "originIndex,destinationIndex,distanceMeters,duration,condition")
+                    .body(requestBody)
                     .asJson();
 
             if (response.getStatus() != 200) {
                 System.out.println("Server answered with HTTP status " + response.getStatus());
+                System.out.println(response.getBody());
                 return;
             }
 
-            JSONObject body = response.getBody().getObject();
-            String code = body.optString("code");
-            if (!code.equals("Ok")) {
-                System.out.println("OSRM returned code " + code);
+            JSONArray results = response.getBody().getArray();
+            if (results.length() == 0) {
+                System.out.println("No result returned.");
                 return;
             }
 
-            double meters = body.getJSONArray("routes").getJSONObject(0).getDouble("distance");
+            JSONObject element = results.getJSONObject(0);
+            String condition = element.optString("condition");
+            if (!condition.equals("ROUTE_EXISTS")) {
+                System.out.println("No route found between " + source + " and " + destination
+                        + " (condition " + condition + ")");
+                return;
+            }
+
+            int meters = element.getInt("distanceMeters");
+            double km = meters / 1000.0;
+
+            // duration comes back like "9876s"
+            String durationText = element.optString("duration", "0s").replace("s", "");
+            long minutes = Math.round(Double.parseDouble(durationText) / 60.0);
+
             System.out.println("Distance from " + source + " to " + destination + ": "
-                    + String.format("%.1f", meters / 1000.0) + " km");
+                    + String.format("%.1f", km) + " km (about " + minutes + " min with traffic)");
         } catch (UnirestException e) {
             System.out.println("Could not reach the server: " + e.getMessage());
         } catch (Exception e) {
@@ -58,26 +73,5 @@ public class DistanceFinder {
         } finally {
             Unirest.shutDown();
         }
-    }
-
-    // Turns a place name into {latitude, longitude}, or null if nothing was found
-    private static double[] findCoordinates(String place) {
-        HttpResponse<JsonNode> response = Unirest.get(GEOCODE_URL)
-                .header("User-Agent", "DistanceFinderClient-learning-project")
-                .queryString("q", place)
-                .queryString("format", "json")
-                .queryString("limit", "1")
-                .queryString("countrycodes", "om")
-                .asJson();
-
-        if (response.getStatus() != 200) {
-            return null;
-        }
-        JSONArray results = response.getBody().getArray();
-        if (results.length() == 0) {
-            return null;
-        }
-        JSONObject first = results.getJSONObject(0);
-        return new double[] {first.getDouble("lat"), first.getDouble("lon")};
     }
 }
