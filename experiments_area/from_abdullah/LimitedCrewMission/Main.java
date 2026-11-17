@@ -9,7 +9,8 @@ public class Main {
         Astronaut a4 = Astronaut.recruit("Zaid");
         Astronaut a5 = Astronaut.recruit("Hana");
 
-       
+        // Composition: the ship creates and keeps its own life support.
+        // Aggregation: astronauts exist separately and can board another ship.
         Spaceship falcon = new Spaceship("Falcon");
 
         falcon.boardCrew(a1);
