@@ -14,8 +14,8 @@ public class profile {
     Greeting Profile(String name){
         List<Favourite> favouritesList = List.of(
                 new Favourite(1, "Coffee"),
-                new Favourite(2, "Books"),
-                new Favourite(3, "Football")
+                new Favourite(2, "Coding"),
+                new Favourite(3, "Watching Movies")
         );
         return new Greeting(name,favouritesList);
     }
