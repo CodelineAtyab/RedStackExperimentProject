@@ -1,5 +1,7 @@
 package com.example.PairJSONExchange;
 
+import java.util.List;
+
 public class Profile {
     private String name;
     private List <FavoriteItem> favorite;
