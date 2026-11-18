@@ -1,18 +1,39 @@
 
-Partner: HaithamAlbusaidi  --  Haitham-Albusaidi
+What is a Bean?
+A bean is an object created and managed by the Spring Framework inside the application context.
+
+ HTTP Methods
+
+- GET: Retrieves feedback from the server.
+- POST: Creates new feedback.
+- PUT: Updates existing feedback.
+- DELETE: Removes feedback.
+- QUERY: Sends search conditions in the request body to retrieve matching data.
+
+Missing ID behaviour: Return 404 Not Found when the feedback ID does not exist.
+
+Postman
+
+Tested all four endpoints successfully:
+- POST: Added two feedback entries.
+- GET: Retrieved both entries.
+- PUT: Updated the first feedback message.
+- GET: Confirmed the updated message.
+- DELETE: Removed the first feedback.
+- GET: Confirmed only one entry remained.
+
+Unirest
+
+Tested POST, GET, PUT and DELETE using my Java Unirest client.
+
+Successfully received JSON responses from the server.
+
+Tested with my partner in both directions.
+
+Partner:
+HaithamAlbusaidi
+Haitham-Albusaidi
 
 
-Round 1
-Haitham started his Spring Boot server, then I connected using my Unirest client, final Successfully received JSON and displayed the name and favourite items.
-
-Round 2
-I started my Spring Boot server, then Haitham connected using his Unirest client, final Successfully received JSON data.
-
-Testing
-Changed the name and favourite items, and confirmed that the client displayed the updated data correctly.
-
-
-No blockers...
-
-Harder Than Expected
-Connecting to another computer using its IPv4 address, normal way no need hard friend Haitham
+No blockers.
+Harder than expected: Connecting to another computer using its IPv4 address.
