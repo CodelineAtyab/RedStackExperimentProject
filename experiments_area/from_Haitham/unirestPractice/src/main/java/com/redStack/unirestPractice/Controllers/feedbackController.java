@@ -23,4 +23,26 @@ public class feedbackController
     public List<Feedback> getfeedback(){
         return feedbackList;
     }
+
+    @PutMapping(path = "/{id}")
+    public Feedback update(@PathVariable int id,@RequestBody Feedback newFeedback){
+        for (int i = 0; i < feedbackList.size(); i++) {
+            if(feedbackList.get(i).id().equals(id)){
+                Feedback xx = new Feedback(feedbackList.get(i).id(), feedbackList.get(i).name(), newFeedback.message());
+                feedbackList.set(i,xx);
+                return xx;
+            }
+        }return null;
+    }
+    @DeleteMapping(path = "/{id}")
+    public List<Feedback> delete(@PathVariable int id) {
+        for (int i = 0; i < feedbackList.size(); i++) {
+            if(feedbackList.get(i).id().equals(id)){
+                feedbackList.remove(i);
+                return feedbackList;
+            }
+        }
+        return null;
+    }
 }
+
