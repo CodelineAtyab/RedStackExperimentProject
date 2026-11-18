@@ -8,7 +8,7 @@ import kong.unirest.json.JSONObject;
 
 public class Main {
     public static void main(String[] args) {
-        String serverUrl = "http://localhost:8080/profile?name=Sara";
+        String serverUrl = "http://192.168.100.38:8080/profile?name=Sara";
 
         try {
             HttpResponse<JsonNode> response = Unirest.get(serverUrl).asJson();
