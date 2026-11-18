@@ -1,5 +1,3 @@
-package com.redDesck.desk.api;
-
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -9,7 +7,7 @@ import kong.unirest.json.JSONObject;
 public class UnirestRequest {
     public static void main(String[] args) {
         // 1. Send GET request to your friend's server
-        HttpResponse<JsonNode> response = Unirest.get("http://192.168.100.124:8080/profile?name=Sara").asJson();
+        HttpResponse<JsonNode> response = Unirest.get("http://192.168.100.124:8080/profile?name=alaa").asJson();
 
         // 2. Read the response as a JSONObject
         JSONObject jsonObject = response.getBody().getObject();
