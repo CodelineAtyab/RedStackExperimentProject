@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class profile {
+public class ProfileController {
     public record Favourite(int id, String title) {}
     public record GreetFile(String name, List<Favourite> favourites) { }
 
