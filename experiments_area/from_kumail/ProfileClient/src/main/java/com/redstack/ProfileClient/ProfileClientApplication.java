@@ -4,7 +4,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 
-public class ProfileClient {
+public class ProfileClientApplication {
 
     public static void main(String[] args) {
 
