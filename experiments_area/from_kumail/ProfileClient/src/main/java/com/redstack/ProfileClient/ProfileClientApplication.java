@@ -3,43 +3,62 @@ package com.redstack.ProfileClient;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import kong.unirest.json.JSONObject;
-import kong.unirest.json.JSONArray;
 
 public class ProfileClientApplication {
 
-	private static final String SERVER_URL = "http://192.168.100.33:8080";
+    public static void main(String[] args) {
 
-	public static void main(String[] args) {
+        String BURL = "http://192.168.100.69:8080";
 
-		try {
-			HttpResponse<JsonNode> response = Unirest.get(SERVER_URL + "/profile").queryString("name", "Kumail").asJson();
+        try {
 
-			if (response.getStatus() != 200) {
-				System.out.println("Server returned status: " + response.getStatus());
-				return;
-			}
+            HttpResponse<JsonNode> post1 = Unirest.post(BURL + "/feedback")
+                    .header("Content-Type", "application/json")
+                    .body("{\"name\":\"Sara\",\"message\":\"Great service\"}")
+                    .asJson();
 
-			JSONObject profile = response.getBody().getObject();
+            System.out.println("Created: " + post1.getBody());
 
-			String name = profile.getString("name");
-			System.out.println("Name: " + name);
+            HttpResponse<JsonNode> post2 = Unirest.post(BURL + "/feedback")
+                    .header("Content-Type", "application/json")
+                    .body("{\"name\":\"Ahmed\",\"message\":\"Good coffee\"}")
+                    .asJson();
 
-			JSONArray favourites = profile.getJSONArray("favourites");
+            System.out.println("Created: " + post2.getBody());
 
-			for (int i = 0; i < favourites.length(); i++) {
-				JSONObject item = favourites.getJSONObject(i);
+            HttpResponse<JsonNode> get1 = Unirest.get(BURL + "/feedback")
+                    .asJson();
 
-				int id = item.getInt("id");
-				String title = item.getString("title");
+            System.out.println("All feedback: " + get1.getBody());
 
-				System.out.println(id + " - " + title);
-			}
+            HttpResponse<JsonNode> put = Unirest.put(BURL + "/feedback/1")
+                    .header("Content-Type", "application/json")
+                    .body("{\"message\":\"Great service, thank you\"}")
+                    .asJson();
 
-		} catch (Exception e) {
-			System.out.println("Could not connect to the server.");
-		} finally {
-			Unirest.shutDown();
-		}
-	}
+            System.out.println("Updated: " + put.getBody());
+
+            HttpResponse<JsonNode> get2 = Unirest.get(BURL + "/feedback")
+                    .asJson();
+
+            System.out.println("After update: " + get2.getBody());
+
+            HttpResponse<JsonNode> delete = Unirest.delete(BURL + "/feedback/1")
+                    .asJson();
+
+            System.out.println("Deleted: " + delete.getBody());
+
+            HttpResponse<JsonNode> get3 = Unirest.get(BURL + "/feedback")
+                    .asJson();
+
+            System.out.println("Remaining: " + get3.getBody());
+
+        } catch (Exception e) {
+
+            System.out.println("Error: " + e.getMessage());
+
+        } finally {
+            Unirest.shutDown();
+        }
+    }
 }
