@@ -1,6 +1,5 @@
 package com.reddesk.desk_api;
 
-import com.reddesk.desk_api.controllers.GreetingsController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
