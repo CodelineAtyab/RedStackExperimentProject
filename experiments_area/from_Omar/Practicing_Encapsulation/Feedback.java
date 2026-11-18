@@ -1,13 +1,13 @@
-public abstract class Feedback {
+public class Feedback {
     private int id;
-    private String customername;
+    private String customerName;
     private String message;
     private int rating;
 
 
-    public Feedback(int id, String customername, String message, int rating) {
+    public Feedback(int id, String customerName, String message, int rating) {
         this.id = id;
-        this.customername = customername;
+        this.customerName = customerName;
         this.rating = 1;
         setRating(rating);
         setMessage(message);
@@ -19,7 +19,7 @@ public abstract class Feedback {
     }
 
     public String getCustomername() {
-        return customername;
+        return customerName;
     }
 
     public String getMessage() {
@@ -46,5 +46,10 @@ public abstract class Feedback {
         }
     }
 
-    public abstract String getSummary();
+    public static void main(String[] args) {
+        Feedback f = new Feedback(1, "Aisha", "Great service", 5);
+        f.setRating(9);
+        f.setMessage("");
+        System.out.println(f.getCustomername() + " | " + f.getMessage() + " | " + f.getRating());
+    }
 }
