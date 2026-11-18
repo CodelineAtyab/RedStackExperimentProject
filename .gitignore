@@ -1,3 +1,6 @@
+# ------------------------------------------------------------------------------
+# Java
+# ------------------------------------------------------------------------------
 # Compiled class file
 *.class
 
@@ -10,7 +13,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.nar
@@ -22,6 +25,98 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
-.idea/
 
+# ------------------------------------------------------------------------------
+# IntelliJ IDEA
+# ------------------------------------------------------------------------------
+# IDE project settings and per-user workspace data
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# IntelliJ build output
+out/
+
+# IntelliJ plugins / misc
+atlassian-ide-plugin.xml
+*.hprof
+
+# ------------------------------------------------------------------------------
+# VS Code
+# ------------------------------------------------------------------------------
+# Ignore everything, then opt back in to config that is useful to share.
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# ------------------------------------------------------------------------------
+# Maven (also covers Maven projects opened in IntelliJ)
+# ------------------------------------------------------------------------------
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Keep the Maven wrapper committed (the *.jar rule above would hide it)
+!.mvn/wrapper/maven-wrapper.jar
+
+# ------------------------------------------------------------------------------
+# Gradle (Spring Boot projects generated with Gradle)
+# ------------------------------------------------------------------------------
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ------------------------------------------------------------------------------
+# Spring Boot
+# ------------------------------------------------------------------------------
+# Spring Boot / Spring Initializr generated artifacts
+HELP.md
+spring-shell.log
+*.original
+*.rej
+
+# Keep source build folders if an IDE creates them inside src
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# STS / Eclipse-based Spring tooling
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# ------------------------------------------------------------------------------
+# Environment / secrets (never commit)
+# ------------------------------------------------------------------------------
 .env
+.env.*
+!.env.example
+
+# Local Spring config overrides
+application-local.properties
+application-local.yml
+application-local.yaml
+
+# ------------------------------------------------------------------------------
+# OS / editor noise
+# ------------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
