@@ -11,7 +11,7 @@ public class ProfileClientApp {
 
     // 1. Keep http://localhost:8091 to test against your own server first.
     // 2. During Round 1 with Spy, replace this with Spy's server IP and port (e.g. "http://192.168.100.x:8091").
-    private static final String SERVER_BASE_URL = "http://192.168.100.203:8091";
+    private static final String SERVER_BASE_URL = "http://192.168.100.203:8080";
     private static final String QUERY_NAME = "Omar";
 
     public static void main(String[] args) {
