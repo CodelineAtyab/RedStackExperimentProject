@@ -13,3 +13,6 @@ Changed the name and favourite items, and confirmed that the client displayed th
 
 
 No blockers...
+
+Harder Than Expected
+Connecting to another computer using its IPv4 address, normal way no need hard friend Haitham
