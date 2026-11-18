@@ -1,0 +1,1 @@
+Both tests succeeded on both ip addresses

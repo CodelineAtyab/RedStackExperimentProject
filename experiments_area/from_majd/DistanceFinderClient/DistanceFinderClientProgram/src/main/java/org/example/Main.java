@@ -28,9 +28,9 @@ class Main {
             );
 
             HttpResponse<JsonNode> response = Unirest.post(url)
-                    .header("Content-Type", "application/json")
-                    .header("X-Goog-Api-Key", GOOGLE_API_KEY)
-                    .header("X-Goog-FieldMask", "routes.distanceMeters")
+                    .header("Content-Type", "application/json") //the type of datas
+                    .header("X-Goog-Api-Key", GOOGLE_API_KEY) // the api key
+                    .header("X-Goog-FieldMask", "routes.distanceMeters") //the data must be in meters
                     .body(jsonBodyString)
                     .asJson();
 
