@@ -1,25 +1,21 @@
-# NOTES - Pair JSON Exchange (#522)
+# Pair JSON Exchange
 
-**Partner:** Salim Albalushi 
+**My name:** Mohammed  
+**Partner’s GitHub name:** Salim
 
-## What I built
-- `ProfileServer`: Spring Boot server, `GET /profile?name=<name>` returns JSON with `name` and `favourites` (3 items).
-- `ProfileClient`: Unirest client, sends a GET with `name`, reads the JSON and prints:
-  ```
-  Name: Mohammed
-  1 - Coffee
-  2 - Books
-  3 - Football
-  ```
-- JSON shape: the agreed one (`name`, `favourites`, `id`, `title`).
+## Agreed JSON shape
 
-## Round 1: my client -> Salim's server
-- Salim's address and port: `<ip>:8080`
-- Result: `<worked / did not work>`
-- I changed the name and the data on his server and the client printed the new values: `<yes / no>`
+The server responds to `GET /profile?name=<name>` with a JSON object containing:
 
-## Round 2: Salim's client -> my server
-- My address and port: `<ip>:8080`
-- Result: `<worked / did not work>`
-- I changed the name and the data on my server and his client printed the new values: `<yes / no>`
+- `name`: the requested name
+- `favourites`: an array of objects, each with an `id` and `title`
 
+## Round 1: Partner’s server, my client
+
+- **Server run by:** Salim
+- **Client run by:** Mohammed
+
+## Round 2: My server, partner’s client
+
+- **Server run by:** Mohammed
+- **Client run by:** Salim
