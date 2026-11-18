@@ -1,0 +1,52 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class CafeOrderSimulator {
+    public static void main(String[] args) {
+        Queue<String> queue = new LinkedList<>();
+        Scanner inputBuffer = new Scanner(System.in);
+
+        System.out.println("=== Café Order-Line Simulator ===");
+
+        while (true) {
+            System.out.println("\nAvailable commands: order <name>  |  serve  |  quit");
+
+            System.out.print("Enter command: ");
+            String input = inputBuffer.nextLine().trim();
+
+            if (input.equalsIgnoreCase("quit")) {
+                System.out.println("Exiting simulator. Goodbye!");
+                break;
+            }
+            else if (input.equalsIgnoreCase("serve")) {
+                if (queue.isEmpty()) {
+                    System.out.println("Cannot serve: the queue is already empty.");
+                } else {
+                    System.out.println("Serving: " + queue.poll());
+                }
+            }
+            else if (input.toLowerCase().startsWith("order ")) {
+                String name = input.substring(6).trim();
+                if (!name.isEmpty()) {
+                    queue.offer(name);
+                } else {
+                    System.out.println("Invalid name. Usage: order <name>");
+                    continue;
+                }
+            }
+            else {
+                System.out.println("Unknown command. Please try again.");
+                continue;
+            }
+
+            if (queue.isEmpty()) {
+                System.out.println("Queue is empty.        | Waiting: 0");
+            } else {
+                System.out.println("Queue: " + queue + "    | Waiting: " + queue.size());
+            }
+        }
+
+        inputBuffer.close();
+    }
+}
