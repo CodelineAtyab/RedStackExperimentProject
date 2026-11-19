@@ -1,0 +1,307 @@
+{
+  "info": {
+    "name": "Abdullah - Profile and Feedback CRUD",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/profile?name=Sara"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Profile JSON\", function () { var p = pm.response.json(); pm.expect(p.name).to.eql(\"Sara\"); pm.expect(p.favourites.length).to.eql(3); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "1 - Add Sara",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/feedback",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Sara\",\"message\":\"Great service\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+              "pm.collectionVariables.set(\"firstId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 - Add Omar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/feedback",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Omar\",\"message\":\"Helpful staff\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+              "pm.collectionVariables.set(\"secondId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 - Read both",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/feedback"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"List has 2 items\", function () { pm.expect(pm.response.json().length).to.eql(2); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 - Update Sara",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/feedback/{{firstId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"message\":\"Great service, thank you\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Message changed, name kept\", function () { var f = pm.response.json(); pm.expect(f.name).to.eql(\"Sara\"); pm.expect(f.message).to.eql(\"Great service, thank you\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5 - Read change",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/feedback"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Changed entry is in list\", function () { pm.expect(pm.response.json().some(function (f) { return f.id == pm.collectionVariables.get(\"firstId\") && f.message === \"Great service, thank you\"; })).to.eql(true); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6 - Delete Sara",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/feedback/{{firstId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Deleted ID returned\", function () { pm.expect(pm.response.json().deleted).to.eql(Number(pm.collectionVariables.get(\"firstId\"))); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "7 - Read one remaining",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/feedback"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"List has 1 items\", function () { pm.expect(pm.response.json().length).to.eql(1); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missing ID update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/feedback/999999",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"message\":\"Missing\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missing ID delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/feedback/999999"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cleanup Omar",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/feedback/{{secondId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Check empty list",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/feedback"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"List has 0 items\", function () { pm.expect(pm.response.json().length).to.eql(0); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
