@@ -1,47 +1,44 @@
-package org.example;
+package org.example.services;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.example.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequestMapping("/employees")
+@Service
+public class EmployeeService {
 
-
-public class EmployeeController {
-
+    // In-memory data now lives in the service
     private final List<Employee> employees = new ArrayList<>();
 
-    // 1. POST /employees
-    @PostMapping
-    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
+    public ResponseEntity<Employee> create(Employee employee) {
         employees.add(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(employee);
     }
 
-    // 2. GET /employees
-    @GetMapping
     public List<Employee> getAll() {
         return employees;
     }
 
-    // 3. GET /employees/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getOne(@PathVariable String id) {
-        return employees.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst()
-                .<ResponseEntity<?>>map(ResponseEntity::ok)
-                .orElse(notFound(id));
+    public ResponseEntity<?> getOne(String id) {
+        Employee found = null;
+        for (Employee e : employees) {
+            if (e.getId().equals(id)) {
+                found = e;
+                break;
+            }
+        }
+        if (found == null) {
+            return notFound(id);
+        }
+        return ResponseEntity.ok(found);
     }
 
-    // 4. PUT /employees/{id}
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody Employee updated) {
+    public ResponseEntity<?> update(String id, Employee updated) {
         for (int i = 0; i < employees.size(); i++) {
             if (employees.get(i).getId().equals(id)) {
                 updated.setId(id);
@@ -52,9 +49,7 @@ public class EmployeeController {
         return notFound(id);
     }
 
-    // 5. DELETE /employees/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteOne(@PathVariable String id) {
+    public ResponseEntity<?> deleteOne(String id) {
         boolean removed = employees.removeIf(e -> e.getId().equals(id));
         if (!removed) {
             return notFound(id);
@@ -62,9 +57,7 @@ public class EmployeeController {
         return ResponseEntity.ok(Map.of("message", "Employee " + id + " was removed."));
     }
 
-
-    @DeleteMapping
-    public ResponseEntity<?> deleteAll(@RequestParam(required = false) String confirm) {
+    public ResponseEntity<?> deleteAll(String confirm) {
         if (!"true".equals(confirm)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message",
@@ -78,6 +71,4 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("message", "No employee with id " + id + " exists."));
     }
-
-
 }
