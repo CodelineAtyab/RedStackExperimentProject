@@ -2,10 +2,10 @@ package com.example.employee_api.Controller;
 
 import java.util.List;
 
-import com.example.employee_api.CustomerService;
-import com.example.employee_api.FeedbackService;
 import com.example.employee_api.Model.Customer;
 import com.example.employee_api.Model.Feedback;
+import com.example.employee_api.Service.CustomerService;
+import com.example.employee_api.Service.FeedbackService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
