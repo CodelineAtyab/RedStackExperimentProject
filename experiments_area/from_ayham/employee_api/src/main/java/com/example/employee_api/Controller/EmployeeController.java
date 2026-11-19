@@ -1,20 +1,18 @@
 // .\mvnw.cmd spring-boot:run
-
-// GET http://localhost:8080/employees          list all
-// POST http://localhost:8080/employees          add one:  {"id":"emp-1","name":"Alex"}
-// GET http://localhost:8080/employees/emp-1     get one by ID
-// PUT http://localhost:8080/employees/emp-1     update one by ID
-// DELETE http://localhost:8080/employees/emp-1   delete one by ID
-// DELETE http://localhost:8080/employees?confirm=true         delete all employees 
+//
+// GET http://localhost:8080/employees
+// POST http://localhost:8080/employees {"id":"emp-1","name":"Alex"}
+// GET http://localhost:8080/employees/emp-1
+// PUT http://localhost:8080/employees/emp-1
+// DELETE http://localhost:8080/employees/emp-1
+// DELETE http://localhost:8080/employees?confirm=true
 
 package com.example.employee_api.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import com.example.employee_api.Exceptions.EmployeeNotFoundException;
 import com.example.employee_api.Model.Employee;
+import com.example.employee_api.Service.EmployeeService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,59 +26,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private List<Employee> employees = new ArrayList<>();
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employees;
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable String id) {
-        for (Employee employee : employees) {
-            if (Objects.equals(employee.getId(), id)) {
-                return employee;
-            }
-        }
-        throw new EmployeeNotFoundException("Employee with ID " + id + " not found.");
+        return employeeService.getEmployeeById(id);
     }
 
     @PostMapping
     public Employee createEmployee(@RequestBody Employee newEmployee) {
-        employees.add(newEmployee);
-        return newEmployee;
+        return employeeService.createEmployee(newEmployee);
     }
 
     @PutMapping("/{id}")
     public Employee updateEmployee(@PathVariable String id, @RequestBody Employee updatedEmployee) {
-        for (int i = 0; i < employees.size(); i++) {
-            if (Objects.equals(employees.get(i).getId(), id)) {
-                updatedEmployee.setId(id);
-                employees.set(i, updatedEmployee);
-                return updatedEmployee;
-            }
-        }
-        throw new EmployeeNotFoundException("Employee with ID " + id + " not found.");
+        return employeeService.updateEmployee(id, updatedEmployee);
     }
 
     @DeleteMapping("/{id}")
     public String deleteEmployee(@PathVariable String id) {
-        boolean exists = employees.stream().anyMatch(employee -> Objects.equals(employee.getId(), id));
-        if (!exists) {
-            throw new EmployeeNotFoundException("Employee with ID " + id + " not found.");
-        }
-
-        employees.removeIf(employee -> Objects.equals(employee.getId(), id));
-        return "Employee with ID " + id + " deleted successfully.";
+        return employeeService.deleteEmployee(id);
     }
 
     @DeleteMapping
     public String deleteAllEmployees(@RequestParam(required = false, defaultValue = "false") boolean confirm) {
-        if (!confirm) {
-            return "Deletion cancelled. Send confirm=true to delete all employees.";
-        }
-
-        employees.clear();
-        return "All employees deleted successfully.";
+        return employeeService.deleteAllEmployees(confirm);
     }
 }
