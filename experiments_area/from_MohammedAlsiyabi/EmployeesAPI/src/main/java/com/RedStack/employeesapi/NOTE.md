@@ -28,6 +28,6 @@ so I never write `new EmployeeService()`.
 
 ## Submission details
 - Author: Mohammed
-- Folder: `experiments_area/from_mohammed/<project-name>/`
+- Folder: `experiments_area/from_mohammed/<EmployeesAPI>/`
 - Branch: `feature/594-mohammed-service-layer`
 - PR: `Closes #594`
