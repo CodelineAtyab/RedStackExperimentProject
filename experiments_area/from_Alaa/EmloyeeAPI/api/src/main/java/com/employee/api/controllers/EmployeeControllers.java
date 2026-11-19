@@ -93,7 +93,7 @@ public class EmployeeControllers {
     public ResponseEntity<String> deleteAllEmployees(
             @RequestParam(defaultValue = "false") boolean confirm) {
 
-        // If confirmation is not true, do not delete anything
+        // If confirmation is not true do not delete anything.
         if (!confirm) {
             return ResponseEntity.badRequest()
                     .body("Deletion not allowed. Please use ?confirm=true to delete all employees.");
