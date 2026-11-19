@@ -1,0 +1,3 @@
+aya|TV|4|good
+sara|TV|2|bad
+manal|Router|5|nice

@@ -1,0 +1,58 @@
+# ==============================
+# Maven
+# ==============================
+
+**/target/
+.mvn/wrapper/maven-wrapper.jar
+
+# ==============================
+# Java
+# ==============================
+
+*.class
+*.log
+
+# ==============================
+# IntelliJ IDEA
+# ==============================
+
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ==============================
+# Eclipse / STS
+# ==============================
+
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# ==============================
+# NetBeans
+# ==============================
+
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+**/build/
+
+# ==============================
+# VS Code
+# ==============================
+
+.vscode/
+
+# ==============================
+# Operating System
+# ==============================
+
+.DS_Store
+Thumbs.db
