@@ -1,6 +1,6 @@
-package com.reddesk.desk_api.services;
+package com.reddesk.desk_api.Services;
 
-import com.reddesk.desk_api.models.Employee;
+import com.reddesk.desk_api.Models.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

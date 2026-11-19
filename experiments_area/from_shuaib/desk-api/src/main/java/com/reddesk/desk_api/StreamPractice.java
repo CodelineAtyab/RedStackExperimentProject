@@ -1,6 +1,6 @@
 package com.reddesk.desk_api;
 
-import com.reddesk.desk_api.models.Employee;
+import com.reddesk.desk_api.Models.Employee;
 
 import java.util.List;
 import java.util.Optional;

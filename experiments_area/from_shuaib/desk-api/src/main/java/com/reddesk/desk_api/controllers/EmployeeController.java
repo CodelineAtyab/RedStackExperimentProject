@@ -1,7 +1,7 @@
 package com.reddesk.desk_api.controllers;
 
-import com.reddesk.desk_api.models.Employee;
-import com.reddesk.desk_api.services.EmployeeService;
+import com.reddesk.desk_api.Models.Employee;
+import com.reddesk.desk_api.Services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

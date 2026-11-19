@@ -1,4 +1,4 @@
-package com.reddesk.desk_api.models;
+package com.reddesk.desk_api.Models;
 
 public class Employee {
     private String id;
