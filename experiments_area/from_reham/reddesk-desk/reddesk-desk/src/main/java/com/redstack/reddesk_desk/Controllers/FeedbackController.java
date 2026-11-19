@@ -5,6 +5,8 @@ import com.redstack.reddesk_desk.Feedback;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -49,6 +51,20 @@ public class FeedbackController {
         }
         return null;
 
+    }
+
+    @DeleteMapping("/feedback/{id}")
+    public String deleteFeedback(@PathVariable int id) {
+
+        for (Feedback feedback : feedbacks) {
+
+            if (feedback.id != null && feedback.id == id) {
+                feedbacks.remove(feedback);
+                return "Feedback deleted successfully";
+            }
+        }
+
+        return "Feedback not found";
     }
 }
 
