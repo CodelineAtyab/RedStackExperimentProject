@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +26,10 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployee(@PathVariable String id) {
@@ -47,7 +47,6 @@ public class EmployeeController {
                 .body(employeeService.createEmployee(employee));
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable String id,
                                             @RequestBody Employee updated) {
@@ -57,7 +56,6 @@ public class EmployeeController {
         }
         return notFound(id);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable String id) {

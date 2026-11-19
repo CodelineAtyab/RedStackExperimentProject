@@ -1,22 +1,23 @@
-package com.example.employee_api;
+package com.Employee.FeedbackCustomerAPI;
 
-public class Employee {
-    private int id;
+public class Customer {
+
+    private String id;
     private String name;
 
-    public Employee() {
+    public Customer() {
     }
 
-    public Employee(int id, String name) {
+    public Customer(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -27,4 +28,5 @@ public class Employee {
     public void setName(String name) {
         this.name = name;
     }
+
 }
