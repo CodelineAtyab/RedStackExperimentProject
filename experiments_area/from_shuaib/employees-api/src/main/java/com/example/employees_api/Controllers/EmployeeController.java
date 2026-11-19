@@ -1,82 +1,52 @@
 package com.example.employees_api.Controllers;
 
 import com.example.employees_api.Models.Employee;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+import com.example.employees_api.Services.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/employees")
+@RequestMapping("/employees")
 public class EmployeeController {
 
-    private List<Employee> employees = new ArrayList<>();
-
-    @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee){
-        employees.add(employee);
-        return employee;
-    }
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping
-    public List<Employee> getAllEmployees(){
-        return employees;
+    public List<Employee> getAll() {
+        return employeeService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getEmployeeById(@PathVariable String id) {
-        Optional<Employee> employee = employees.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst();
-
-        if (employee.isPresent()) {
-            return ResponseEntity.ok(employee.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Employee with id " + id + " not found.");
-        }
+    public Employee getById(@PathVariable String id) {
+        return employeeService.getById(id);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmployee(@PathVariable String id, @RequestBody Employee updatedEmployee) {
-        Optional<Employee> existingEmployeeOpt = employees.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst();
+    @PostMapping
+    public Employee create(@RequestBody Employee employee) {
+        return employeeService.create(employee);
+    }
 
-        if (existingEmployeeOpt.isPresent()) {
-            Employee employee = existingEmployeeOpt.get();
-            employee.setName(updatedEmployee.getName());
-            employee.setRole(updatedEmployee.getRole());
-            return ResponseEntity.ok(employee);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Employee with id " + id + " not found for update.");
-        }
+    @PatchMapping("/{id}")
+    public Employee update(@PathVariable String id, @RequestBody Employee employee) {
+        return employeeService.update(id, employee);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable String id) {
-        boolean removed = employees.removeIf(e -> e.getId().equals(id));
-
-        if (removed) {
-            return ResponseEntity.ok("Employee with id " + id + " removed successfully.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Employee with id " + id + " not found for deletion.");
-        }
+    public boolean deleteById(@PathVariable String id) {
+        return employeeService.deleteById(id);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteAllEmployees(@RequestParam(required = false) boolean confirm) {
-        if (!confirm) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Deletion aborted. You must pass ?confirm=true to delete all employees.");
-        }
-
-        employees.clear();
-        return ResponseEntity.ok("All employees have been deleted.");
+    public void deleteAll() {
+        employeeService.deleteAll();
     }
 }
