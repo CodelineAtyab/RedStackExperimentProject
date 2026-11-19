@@ -33,11 +33,17 @@ public class FeedbackController {
     // GET /feedback/{id}
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable String id) {
-        return feedbackList.stream()
-                .filter(f -> f.getId().equals(id))
-                .findFirst()
-                .<ResponseEntity<?>>map(ResponseEntity::ok)
-                .orElse(notFound(id));
+        Feedback found = null;
+        for (Feedback f : feedbackList) {
+            if (f.getId().equals(id)) {
+                found = f;
+                break;
+            }
+        }
+        if (found == null) {
+            return notFound(id);
+        }
+        return ResponseEntity.ok(found);
     }
 
     // PUT /feedback/{id}
