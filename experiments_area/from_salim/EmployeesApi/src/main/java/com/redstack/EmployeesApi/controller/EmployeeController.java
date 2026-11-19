@@ -1,94 +1,54 @@
 package com.redstack.EmployeesApi.controller;
 
+import com.redstack.EmployeesApi.service.EmployeeService;
 import com.redstack.EmployeesApi.model.Employee;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
-@RequestMapping(path = "/employees")
+@RequestMapping("/employees")
 public class EmployeeController {
-    ArrayList<Employee> listOfEmployees = new ArrayList<>();
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping
-    public ArrayList<Employee> getAllEmployees() {
-        return listOfEmployees;
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getSpecificEmployee(@PathVariable String id) {
-        Optional<Employee> foundEmployee = listOfEmployees.stream()
-                .filter(currentEmployee -> currentEmployee.id.equals(id))
-                .findFirst();
-
-        if (foundEmployee.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message", "Employee " + id + " not found"));
-        }
-
-        return ResponseEntity.ok(foundEmployee.get());
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable String id) {
+        return employeeService.getEmployeeById(id);
     }
 
     @PostMapping
-    public Employee registerEmployee(@RequestBody Employee incomingEmployee) {
-        listOfEmployees.add(incomingEmployee);
-        return incomingEmployee;
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeService.createEmployee(employee);
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updateEmployee(
+    @PutMapping("/{id}")
+    public Employee updateEmployee(
             @PathVariable String id,
-            @RequestBody Employee incomingEmployee) {
-
-        for (int index = 0; index < listOfEmployees.size(); index++) {
-            Employee currentEmployee = listOfEmployees.get(index);
-
-            if (currentEmployee.id.equals(id)) {
-                incomingEmployee.id = id;
-                listOfEmployees.set(index, incomingEmployee);
-                return ResponseEntity.ok(incomingEmployee);
-            }
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", "Employee " + id + " not found"));
+            @RequestBody Employee employee) {
+        return employeeService.updateEmployee(id, employee);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteSpecificEmployee(@PathVariable String id) {
-        for (int index = 0; index < listOfEmployees.size(); index++) {
-            Employee currentEmployee = listOfEmployees.get(index);
-
-            if (currentEmployee.id.equals(id)) {
-                listOfEmployees.remove(index);
-                return ResponseEntity.ok(
-                        Map.of("message", "Employee " + id + " deleted"));
-            }
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", "Employee " + id + " not found"));
+    @DeleteMapping("/{id}")
+    public String deleteEmployee(@PathVariable String id) {
+        return employeeService.deleteEmployee(id);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteAllEmployees(
+    public String deleteAllEmployees(
             @RequestParam(required = false) String confirm) {
-
-        if (!"true".equals(confirm)) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of(
-                            "message",
-                            "Nothing deleted. Add ?confirm=true to confirm."));
-        }
-
-        listOfEmployees.clear();
-
-        return ResponseEntity.ok(
-                Map.of("message", "All employees deleted"));
+        return employeeService.deleteAllEmployees(confirm);
     }
-
 }
