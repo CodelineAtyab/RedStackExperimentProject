@@ -1,6 +1,10 @@
 package com.teamred.employees;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teamred.employees.service.EmployeeService;
@@ -23,34 +26,57 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @PostMapping
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        return employeeService.createEmployee(employee);
-    }
-
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployee(@PathVariable String id) {
-        return employeeService.getEmployee(id);
+        Optional<Employee> found = employeeService.getEmployee(id);
+        if (found.isPresent()) {
+            return ResponseEntity.ok(found.get());
+        }
+        return notFound(id);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(employeeService.createEmployee(employee));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable String id,
                                             @RequestBody Employee updated) {
-        return employeeService.updateEmployee(id, updated);
+        Optional<Employee> result = employeeService.updateEmployee(id, updated);
+        if (result.isPresent()) {
+            return ResponseEntity.ok(result.get());
+        }
+        return notFound(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable String id) {
-        return employeeService.deleteEmployee(id);
+    public ResponseEntity<String> deleteEmployee(@PathVariable String id) {
+        if (employeeService.deleteEmployee(id)) {
+            return ResponseEntity.ok("Employee " + id + " deleted");
+        }
+        return notFound(id);
     }
 
+
     @DeleteMapping
-    public ResponseEntity<?> deleteAllEmployees(@RequestParam(required = false) String confirm) {
-        return employeeService.deleteAllEmployees(confirm);
+    public ResponseEntity<String> deleteAllEmployees() {
+        int count = employeeService.deleteAllEmployees();
+        return ResponseEntity.ok("All employees deleted (" + count + " removed)");
+    }
+
+    private <T> ResponseEntity<T> notFound(String id) {
+        @SuppressWarnings("unchecked")
+        ResponseEntity<T> response = (ResponseEntity<T>) ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Employee " + id + " not found");
+        return response;
     }
 }
