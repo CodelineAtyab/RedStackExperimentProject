@@ -5,6 +5,7 @@ import com.redstack.reddesk_desk.Feedback;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
@@ -29,6 +30,11 @@ public class FeedbackController {
 
         return newFeedback;
 
+    }
+
+    @GetMapping("/feedback")
+    public ArrayList<Feedback> getFeedbacks(){
+        return feedbacks;
     }
 }
 
