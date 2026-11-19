@@ -6,8 +6,6 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// GET/POST structure adapted from trainer CustomerController at f3710cf.
-// PUT, DELETE, linked feedback and error handling are new for issue #550.
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
