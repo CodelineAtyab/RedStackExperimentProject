@@ -2,10 +2,9 @@ package com.redstack.reddesk_desk.Controllers;
 import java.util.ArrayList;
 
 import com.redstack.reddesk_desk.Feedback;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -35,6 +34,21 @@ public class FeedbackController {
     @GetMapping("/feedback")
     public ArrayList<Feedback> getFeedbacks(){
         return feedbacks;
+    }
+
+    @PutMapping("/feedback/{id}")
+    public Feedback updateFeedback(
+            @PathVariable int id,
+            @RequestBody Feedback updateFeedback
+    ){
+        for(Feedback feedback:feedbacks){
+            if (feedback.id != null && feedback.id == id){
+                feedback.message=updateFeedback.message;
+                return feedback;
+            }
+        }
+        return null;
+
     }
 }
 
