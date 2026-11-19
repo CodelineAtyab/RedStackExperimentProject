@@ -60,7 +60,7 @@ public class FeedbackController {
 
             if (feedback.id != null && feedback.id == id) {
                 feedbacks.remove(feedback);
-                return "Feedback deleted successfully";
+                return "Feedback deleted successfully" ;
             }
         }
 
