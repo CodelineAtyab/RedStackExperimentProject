@@ -26,3 +26,12 @@ Written by me: Everything else.
 no Blockers
 
 Postman test:
+
+
+Issue #594:
+
+Service: It's a layer in the app that hold the logic of the app.
+
+we sue it to keep the code organized, Makes code reusable and Easier to test and fix.
+
+@Autowired is a tag that connect the service to the controller without needing to create the connection ourselves
