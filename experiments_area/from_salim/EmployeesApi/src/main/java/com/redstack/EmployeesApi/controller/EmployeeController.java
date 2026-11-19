@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
@@ -20,35 +21,75 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable String id) {
-        return employeeService.getEmployeeById(id);
+    public ResponseEntity<?> getEmployeeById(@PathVariable String id) {
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+
+        if (employee.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Employee " + id + " not found"));
+        }
+
+        return ResponseEntity.ok(employee.get());
     }
 
     @PostMapping
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeService.createEmployee(employee);
+    public ResponseEntity<Employee> createEmployee(
+            @RequestBody Employee employee) {
+        Employee createdEmployee = employeeService.createEmployee(employee);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(createdEmployee);
     }
 
-    @PutMapping("/{id}")
-    public Employee updateEmployee(
+    //@PutMapping("/{id}")
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateEmployee(
             @PathVariable String id,
-            @RequestBody Employee employee) {
-        return employeeService.updateEmployee(id, employee);
+            @RequestBody Employee updatedEmployee) {
+
+        Optional<Employee> employee =
+                employeeService.updateEmployee(id, updatedEmployee);
+
+        if (employee.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Employee " + id + " not found"));
+        }
+
+        return ResponseEntity.ok(employee.get());
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEmployee(@PathVariable String id) {
-        return employeeService.deleteEmployee(id);
+    public ResponseEntity<?> deleteEmployee(@PathVariable String id) {
+        Optional<Employee> employee = employeeService.deleteEmployee(id);
+
+        if (employee.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Employee " + id + " not found"));
+        }
+
+        return ResponseEntity.ok(
+                Map.of("message", "Employee " + id + " deleted"));
     }
 
     @DeleteMapping
-    public String deleteAllEmployees(
+    public ResponseEntity<?> deleteAllEmployees(
             @RequestParam(required = false) String confirm) {
-        return employeeService.deleteAllEmployees(confirm);
+
+        boolean deleted = employeeService.deleteAllEmployees(confirm);
+
+        if (!deleted) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of(
+                            "message",
+                            "Nothing deleted. Add ?confirm=true to confirm."));
+        }
+
+        return ResponseEntity.ok(
+                Map.of("message", "All employees deleted"));
     }
 }

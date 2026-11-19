@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -16,11 +17,10 @@ public class EmployeeService {
         return employees;
     }
 
-    public Employee getEmployeeById(String id) {
+    public Optional<Employee> getEmployeeById(String id) {
         return employees.stream()
                 .filter(employee -> employee.id.equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public Employee createEmployee(Employee employee) {
@@ -28,34 +28,35 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee updateEmployee(String id, Employee updatedEmployee) {
-        return employees.stream()
-                .filter(employee -> employee.id.equals(id))
-                .findFirst()
-                .map(employee -> {
-                    employee.name = updatedEmployee.name;
-                    return employee;
-                })
-                .orElse(null);
-    }
+    public Optional<Employee> updateEmployee(String id, Employee changes) {
+        Optional<Employee> foundEmployee = getEmployeeById(id);
 
-    public String deleteEmployee(String id) {
-        boolean removed = employees.removeIf(
-                employee -> employee.id.equals(id));
-
-        if (removed) {
-            return "Employee deleted";
+        if (foundEmployee.isEmpty()) {
+            return Optional.empty();
         }
 
-        return "Employee not found";
+        Employee employee = foundEmployee.get();
+
+        if (changes.name != null) {
+            employee.name = changes.name;
+        }
+
+        return Optional.of(employee);
     }
 
-    public String deleteAllEmployees(String confirm) {
+    public Optional<Employee> deleteEmployee(String id) {
+        Optional<Employee> foundEmployee = getEmployeeById(id);
+
+        foundEmployee.ifPresent(employees::remove);
+        return foundEmployee;
+    }
+
+    public boolean deleteAllEmployees(String confirm) {
         if (!"true".equals(confirm)) {
-            return "Nothing deleted. Add ?confirm=true to confirm.";
+            return false;
         }
 
         employees.clear();
-        return "All employees deleted";
+        return true;
     }
 }
