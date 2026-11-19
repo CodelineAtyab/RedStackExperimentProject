@@ -1,10 +1,9 @@
 package org.example;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -15,16 +14,10 @@ public class EmployeeService {
         return employeeList;
     }
 
-    public ResponseEntity<Employee> getById(String id) {
-        Employee found = employeeList.stream()
+    public Optional<Employee> findById(String id) {
+        return employeeList.stream()
                 .filter(e -> e.id().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if (found == null) {
-            return ResponseEntity.status(404).build();
-        }
-        return ResponseEntity.ok(found);
+                .findFirst();
     }
 
     public Employee create(Employee employee) {
@@ -32,31 +25,26 @@ public class EmployeeService {
         return employee;
     }
 
-    public ResponseEntity<Employee> update(String id, Employee incoming) {
+    public Optional<Employee> update(String id, Employee incoming) {
         for (int i = 0; i < employeeList.size(); i++) {
             if (employeeList.get(i).id().equals(id)) {
                 Employee updated = new Employee(id, incoming.name(), incoming.role());
                 employeeList.set(i, updated);
-                return ResponseEntity.ok(updated);
+                return Optional.of(updated);
             }
         }
-        return ResponseEntity.status(404).build();
+        return Optional.empty();
     }
 
-    public ResponseEntity<String> deleteById(String id) {
-        boolean removed = employeeList.removeIf(e -> e.id().equals(id));
-        if (!removed) {
-            return ResponseEntity.status(404).body("Employee with ID " + id + " not found.");
+    public boolean deleteById(String id) {
+        Optional<Employee> match = findById(id);
+        if (match.isEmpty()) {
+            return false;
         }
-        return ResponseEntity.ok("Successfully deleted employee with ID: " + id);
+        return employeeList.removeIf(e -> e.id().equals(id));
     }
 
-    public ResponseEntity<String> deleteAll(boolean confirm) {
-        if (!confirm) {
-            return ResponseEntity.status(400)
-                    .body("Bad Request: Deleting all employees requires confirmation (?confirm=true).");
-        }
+    public void deleteAll() {
         employeeList.clear();
-        return ResponseEntity.ok("All employees have been successfully deleted.");
     }
 }
