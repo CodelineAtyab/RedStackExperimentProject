@@ -37,11 +37,26 @@ I also needed to understand how Spring Boot handles HTTP response statuses, espe
 I researched these concepts using online resources and used AI assistance to help me understand the syntax, explore possible solutions, and resolve implementation issues.
 
 Through this task, I gained a better understanding of:
+
 - Java Streams and filtering collections.
 - Using `@PathVariable` and `@RequestParam`.
 - Handling missing resources.
 - HTTP response status codes, particularly 200, 400, and 404.
 - Implementing REST API endpoints in Spring Boot.
 
+## 5. Git and Troubleshooting
 
+While pushing my changes to the remote repository, I encountered a Git synchronization issue because the remote branch had changes that were not present in my local branch.
 
+I resolved this by using:
+
+```bash
+git pull --rebase origin feature/549-alaa-EmloyeeAPI-Part1
+```
+
+This fetched the latest changes from the remote branch and rebased my local commits on top of them, allowing me to synchronize my branch before pushing my changes again.
+
+This helped me understand how Git rebase works and how to resolve synchronization issues when working with remote branches.
+
+## 6. Testing Evidence
+ To be found in /api/Results
