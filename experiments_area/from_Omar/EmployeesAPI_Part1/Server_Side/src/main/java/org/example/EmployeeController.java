@@ -1,75 +1,45 @@
 package org.example;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final List<Employee> employeeList = new ArrayList<>();
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employeeList;
+        return employeeService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable String id) {
+        return employeeService.getById(id);
     }
 
     @PostMapping
     public Employee createEmployee(@RequestBody Employee employee) {
-        employeeList.add(employee);
-        return employee;
+        return employeeService.create(employee);
     }
-
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable String id) {
-        Employee found = employeeList.stream()
-                .filter(e -> e.id().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if (found == null) {
-            return ResponseEntity.status(404).build();
-        }
-        return ResponseEntity.ok(found);
-    }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable String id, @RequestBody Employee incoming) {
-        for (int i = 0; i < employeeList.size(); i++) {
-            if (employeeList.get(i).id().equals(id)) {
-
-                Employee updated = new Employee(id, incoming.name(), incoming.role());
-                employeeList.set(i, updated);
-                return ResponseEntity.ok(updated);
-            }
-        }
-        return ResponseEntity.status(404).build();
+        return employeeService.update(id, incoming);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable String id) {
-        boolean removed = employeeList.removeIf(e -> e.id().equals(id));
-        if (!removed) {
-            return ResponseEntity.status(404).body("Employee with ID " + id + " not found.");
-        }
-        return ResponseEntity.ok("Successfully deleted employee with ID: " + id);
+        return employeeService.deleteById(id);
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteAllEmployees(@RequestParam(required = false) boolean confirm) {
-        if (!confirm) {
-            return ResponseEntity.status(400)
-                    .body("Bad Request: Deleting all employees requires confirmation (?confirm=true).");
-        }
-        employeeList.clear();
-        return ResponseEntity.ok("All employees have been successfully deleted.");
+        return employeeService.deleteAll(confirm);
     }
-
-
-
-
 }
