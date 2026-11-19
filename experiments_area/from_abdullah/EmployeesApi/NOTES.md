@@ -28,3 +28,32 @@ after testing.
 ## Blockers
 
 Local build and server testing are pending.
+
+
+## Part 2 — #550
+
+### Decisions
+
+- Missing customers and feedback return 404 with a message.
+- Unknown customerId values return 400 on feedback POST and PUT.
+- A customer with feedback cannot be deleted: the server returns 409.
+- Their feedback must be deleted before deleting the customer.
+- PUT keeps the ID from the URL.
+- GET /customers/{id}/feedback returns only that customer's feedback.
+- Existing customers with no feedback receive an empty array.
+
+### Implementation reference
+
+The Customer model and basic GET/POST structure follow the trainer's
+desk-api example. Customer lookup was adapted to return 404.
+Customer PUT/DELETE and feedback endpoints were added for Part 2
+with AI assistance and should be reviewed and understood before submission.
+
+### Testing
+
+Pending. Replace this section with actual requests, status codes and
+responses after running Postman.
+
+### Blockers
+
+Build and endpoint testing are pending.
