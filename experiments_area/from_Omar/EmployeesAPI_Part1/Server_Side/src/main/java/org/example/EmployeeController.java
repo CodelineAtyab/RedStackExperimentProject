@@ -42,7 +42,7 @@ public class EmployeeController {
         for (int i = 0; i < employeeList.size(); i++) {
             if (employeeList.get(i).id().equals(id)) {
 
-                Employee updated = new Employee(id, incoming.name(), incoming.role());
+                Employee updated = new Employee(id, incoming.name());
                 employeeList.set(i, updated);
                 return ResponseEntity.ok(updated);
             }
