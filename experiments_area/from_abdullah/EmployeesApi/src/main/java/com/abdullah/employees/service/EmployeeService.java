@@ -3,11 +3,8 @@ package com.abdullah.employees.service;
 import com.abdullah.employees.Employee;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class EmployeeService {
@@ -24,46 +21,40 @@ public class EmployeeService {
     }
 
     public Employee getEmployee(String id) {
-        return findEmployee(id);
+        return employees.stream()
+                .filter(employee -> id.equals(employee.getId()))
+                .findFirst()
+                .orElse(null);
     }
 
     public Employee updateEmployee(String id, Employee updatedEmployee) {
-        Employee employee = findEmployee(id);
-        employee.setName(updatedEmployee.getName());
+        Employee employee = getEmployee(id);
 
+        if (employee == null) {
+            return null;
+        }
+
+        employee.setName(updatedEmployee.getName());
         return employee;
     }
 
-    public Map<String, String> deleteEmployee(String id) {
-        Employee employee = findEmployee(id);
-        employees.remove(employee);
+    public boolean deleteEmployee(String id) {
+        Employee employee = getEmployee(id);
 
-        return Map.of("message", "Employee " + id + " removed");
+        if (employee == null) {
+            return false;
+        }
+
+        employees.remove(employee);
+        return true;
     }
 
-    public Map<String, String> deleteAllEmployees(String confirm) {
+    public boolean deleteAllEmployees(String confirm) {
         if (!"true".equals(confirm)) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Nothing deleted. Use ?confirm=true to delete all employees."
-            );
+            return false;
         }
 
         employees.clear();
-
-        return Map.of("message", "All employees removed");
-    }
-
-    private Employee findEmployee(String id) {
-        for (Employee employee : employees) {
-            if (id.equals(employee.getId())) {
-                return employee;
-            }
-        }
-
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Employee " + id + " not found"
-        );
+        return true;
     }
 }
