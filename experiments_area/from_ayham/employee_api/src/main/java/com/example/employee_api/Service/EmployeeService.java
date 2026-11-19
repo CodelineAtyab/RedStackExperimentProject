@@ -3,8 +3,8 @@ package com.example.employee_api.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-import com.example.employee_api.Exceptions.EmployeeNotFoundException;
 import com.example.employee_api.Model.Employee;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +16,10 @@ public class EmployeeService {
         return employees;
     }
 
-    public Employee getEmployeeById(String id) {
+    public Optional<Employee> getEmployeeById(String id) {
         return employees.stream()
                 .filter(employee -> Objects.equals(employee.getId(), id))
-                .findFirst()
-                .orElseThrow(() -> new EmployeeNotFoundException(
-                        "Employee with ID " + id + " not found."));
+                .findFirst();
     }
 
     public Employee createEmployee(Employee newEmployee) {
@@ -29,17 +27,25 @@ public class EmployeeService {
         return newEmployee;
     }
 
-    public Employee updateEmployee(String id, Employee updatedEmployee) {
-        Employee existingEmployee = getEmployeeById(id);
+    public Optional<Employee> updateEmployee(String id, Employee updatedEmployee) {
+        Optional<Employee> existingEmployee = getEmployeeById(id);
+        if (existingEmployee.isEmpty()) {
+            return Optional.empty();
+        }
+
         updatedEmployee.setId(id);
-        employees.set(employees.indexOf(existingEmployee), updatedEmployee);
-        return updatedEmployee;
+        employees.set(employees.indexOf(existingEmployee.get()), updatedEmployee);
+        return Optional.of(updatedEmployee);
     }
 
-    public String deleteEmployee(String id) {
-        Employee employee = getEmployeeById(id);
+    public Optional<Employee> deleteEmployee(String id) {
+        Optional<Employee> employee = getEmployeeById(id);
+        if (employee.isEmpty()) {
+            return Optional.empty();
+        }
+
         employees.removeIf(existingEmployee -> Objects.equals(existingEmployee.getId(), id));
-        return "Employee with ID " + employee.getId() + " deleted successfully.";
+        return employee;
     }
 
     public String deleteAllEmployees(boolean confirm) {
