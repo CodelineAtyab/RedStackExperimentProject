@@ -1,0 +1,4 @@
+Kumail|IPHONE|5|Good
+Ali|SAMSUNG|3|Nothing
+Ahmed|Hawawi|2|Not Good
+Salim|IPHONE|5|Very Good

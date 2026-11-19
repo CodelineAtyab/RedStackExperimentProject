@@ -1,0 +1,4 @@
+Sara|Router X|4|Fast and stable connection
+Ali|Router X|5|Easy setup
+Huda|Modem Pro|2|Fast and stable connection
+Ahmed|PC|5|nice
