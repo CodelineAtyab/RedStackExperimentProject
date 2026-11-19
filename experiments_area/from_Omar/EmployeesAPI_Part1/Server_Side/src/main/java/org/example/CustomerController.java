@@ -8,7 +8,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-
     private final Datastore store;
 
     public CustomerController(Datastore store) {
