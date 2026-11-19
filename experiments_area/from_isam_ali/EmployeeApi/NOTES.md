@@ -46,3 +46,4 @@ Part 1 (#549, Employees API) is already merged. The Employees endpoints still wo
   Fix: I added the empty constructor, the getters and setters, and stored the values in the constructor.
 - Harder than expected: understanding that Spring needs an empty constructor and getters/setters on a model class
   to turn the JSON body into an object.
+- 
