@@ -100,3 +100,50 @@ responses after running Postman.
 ### Blockers
 
 Build and endpoint testing are pending.
+
+
+## ResponseEntity and Streams — #595
+
+### ResponseEntity
+
+ResponseEntity lets the controller return a response body and an
+HTTP status together. The service finds or changes employees,
+and the controller chooses the response based on the result.
+
+### 201 compared with 202
+
+201 Created means the request succeeded and created a resource.
+202 Accepted means the request was accepted, but processing has
+not finished yet.
+
+My POST adds the employee immediately, so I use 201 Created.
+
+Source:
+https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.2
+https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.3
+
+### Stream practice
+
+filter keeps the employees that match a condition, such as names
+starting with S.
+
+map changes each employee into another value, such as their name.
+
+findFirst returns the first match inside an Optional. I check
+whether it contains an employee before using get().
+
+### Existing safeguard
+
+Delete all still requires the exact query value confirm=true.
+Without it, the API returns 400 and keeps the employees.
+
+### Testing
+
+Pending: record actual Postman statuses and response bodies here.
+Also include the actual output from StreamPractice.
+
+### Blockers
+
+Testing is pending. Record any exact errors here.
+After successful testing, replace this with No blockers and one
+thing that was harder than expected.
