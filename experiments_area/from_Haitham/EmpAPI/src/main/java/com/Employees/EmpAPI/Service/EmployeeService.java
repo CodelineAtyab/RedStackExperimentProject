@@ -1,8 +1,6 @@
 package com.Employees.EmpAPI.Service;
 
 import com.Employees.EmpAPI.Controller.EmployeeController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -15,18 +13,17 @@ public class EmployeeService {
 
 
     public List<EmployeeController.Employees> getAllEmp(){
+
         return emps;
     }
 
 
-    public ResponseEntity<?> getSpecificId(String id){
+    public EmployeeController.Employees getSpecificId(String id){
         for (int i = 0; i < emps.size(); i++) {
             if(emps.get(i).id().equals(id)){
-                return ResponseEntity.ok(emps.get(i));
+                return emps.get(i);
             }
-        }return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body("Employee with ID " + id + " not found.");
+        }return null;
     }
 
     public EmployeeController.Employees newFeedbackk(EmployeeController.Employees newEmp) {
@@ -35,39 +32,33 @@ public class EmployeeService {
     }
 
 
-    public ResponseEntity<?> updatee(String id, EmployeeController.Employees newEmp){
+    public EmployeeController.Employees updatee(String id, EmployeeController.Employees newEmp){
         for (int i = 0; i < emps.size(); i++) {
             if(emps.get(i).id().equals(id)){
                 EmployeeController.Employees xx = new EmployeeController.Employees(emps.get(i).id(), newEmp.name());
                 emps.set(i,xx);
-                return ResponseEntity.ok(xx);
+                return xx;
             }
-        }return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body("Cannot update. Employee with ID " + id + " not found.");
+        }return null;
     }
 
-    public ResponseEntity<?> deletee( String id) {
+    public boolean deletee( String id) {
         for (int i = 0; i < emps.size(); i++) {
             if(emps.get(i).id().equals(id)){
                 emps.remove(i);
-                return ResponseEntity.ok(emps);
+                return true;
             }
         }
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND) // 404 Not Found
-                .body("Cannot delete. Employee with ID " + id + " not found.");
+        return false;
     }
 
-    public ResponseEntity<?> deleteAlll (Boolean confirm){
+    public boolean deleteAlll (Boolean confirm){
         if (confirm == null || !confirm) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST) // 400 Bad Request
-                    .body("Confirmation required. Add ?confirm=true to delete all employees.");
+            return false;
         }
 
         emps.clear();
-        return ResponseEntity.ok("All employees deleted.");
+        return true;
 
     }
 
