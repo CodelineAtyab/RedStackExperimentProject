@@ -13,6 +13,8 @@ import java.util.List;
 
 import com.example.employee_api.Model.Employee;
 import com.example.employee_api.Service.EmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,32 +35,44 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable String id) {
-        return employeeService.getEmployeeById(id);
+    public ResponseEntity<?> getEmployeeById(@PathVariable String id) {
+        return employeeService.getEmployeeById(id)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Employee with ID " + id + " not found."));
     }
 
     @PostMapping
-    public Employee createEmployee(@RequestBody Employee newEmployee) {
-        return employeeService.createEmployee(newEmployee);
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee newEmployee) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(employeeService.createEmployee(newEmployee));
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable String id, @RequestBody Employee updatedEmployee) {
-        return employeeService.updateEmployee(id, updatedEmployee);
+    public ResponseEntity<?> updateEmployee(@PathVariable String id, @RequestBody Employee updatedEmployee) {
+        return employeeService.updateEmployee(id, updatedEmployee)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Employee with ID " + id + " not found."));
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEmployee(@PathVariable String id) {
-        return employeeService.deleteEmployee(id);
+    public ResponseEntity<?> deleteEmployee(@PathVariable String id) {
+        return employeeService.deleteEmployee(id)
+                .<ResponseEntity<?>>map(employee -> ResponseEntity.ok(
+                        "Employee with ID " + employee.getId() + " deleted successfully."))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Employee with ID " + id + " not found."));
     }
 
     @DeleteMapping
-    public String deleteAllEmployees(@RequestParam(required = false, defaultValue = "false") boolean confirm) {
-        return employeeService.deleteAllEmployees(confirm);
+    public ResponseEntity<String> deleteAllEmployees(
+            @RequestParam(required = false, defaultValue = "false") boolean confirm) {
+        return ResponseEntity.ok(employeeService.deleteAllEmployees(confirm));
     }
 }
