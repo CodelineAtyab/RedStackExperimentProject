@@ -1,65 +1,109 @@
 package com.redstack.employees;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.redstack.employees.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private final List<Employee> employees = new ArrayList<>();
 
-    @PostMapping
-    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-        employees.add(employee);
-        return ResponseEntity.status(HttpStatus.CREATED).body(employee);
-    }
+    @Autowired
+    private EmployeeService employeeService;
 
+    // GET ALL EMPLOYEES - 200 OK
     @GetMapping
-    public List<Employee> getAll() {
-        return employees;
+    public ResponseEntity<List<Employee>> getAll() {
+
+        List<Employee> employees = employeeService.getAll();
+
+        return ResponseEntity.ok(employees);
     }
 
+    // GET EMPLOYEE BY ID - 200 OR 404
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable String id) {
-        return employees.stream().filter(employee -> id.equals(employee.getId())).findFirst()
+
+        return employeeService.getOne(id)
                 .<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElseGet(() -> notFound(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody Employee replacement) {
-        for (int i = 0; i < employees.size(); i++) {
-            if (id.equals(employees.get(i).getId())) {
-                replacement.setId(id); // The URL identifies the employee being replaced.
-                employees.set(i, replacement);
-                return ResponseEntity.ok(replacement);
-            }
-        }
-        return notFound(id);
+    // CREATE EMPLOYEE - 201 CREATED
+    @PostMapping
+    public ResponseEntity<Employee> create(
+            @RequestBody Employee employee) {
+
+        Employee createdEmployee = employeeService.create(employee);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdEmployee);
     }
 
+    // UPDATE EMPLOYEE - 200 OR 404
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(
+            @PathVariable String id,
+            @RequestBody Employee replacement) {
+
+        return employeeService.update(id, replacement)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(() -> notFound(id));
+    }
+
+    // DELETE ONE EMPLOYEE - 200 OR 404
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOne(@PathVariable String id) {
-        boolean removed = employees.removeIf(employee -> id.equals(employee.getId()));
-        if (!removed) return notFound(id);
-        return ResponseEntity.ok(Map.of("message", "Employee " + id + " removed"));
-    }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteAll(@RequestParam(required = false) String confirm) {
-        if (!"true".equals(confirm)) {
-            return ResponseEntity.badRequest().body(Map.of("message", "To delete all employees, use ?confirm=true"));
+        boolean removed = employeeService.deleteOne(id);
+
+        if (!removed) {
+            return notFound(id);
         }
-        employees.clear();
-        return ResponseEntity.ok(Map.of("message", "All employees removed"));
+
+        return ResponseEntity.ok(
+                Map.of("message", "Employee " + id + " removed")
+        );
     }
 
+    // DELETE ALL EMPLOYEES - 200 OR 400
+    @DeleteMapping
+    public ResponseEntity<?> deleteAll(
+            @RequestParam(required = false) String confirm) {
+
+        // Preserve confirmation behavior from Part 1
+        if (!"true".equals(confirm)) {
+
+            return ResponseEntity.badRequest().body(
+                    Map.of(
+                            "message",
+                            "To delete all employees, use ?confirm=true"
+                    )
+            );
+        }
+
+        employeeService.deleteAll();
+
+        return ResponseEntity.ok(
+                Map.of("message", "All employees removed")
+        );
+    }
+
+    // HELPER METHOD - 404 NOT FOUND
     private ResponseEntity<Map<String, String>> notFound(String id) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", "Employee with id " + id + " not found"));
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(
+                        Map.of(
+                                "message",
+                                "Employee with id " + id + " not found"
+                        )
+                );
     }
 }
