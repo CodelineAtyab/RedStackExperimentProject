@@ -4,11 +4,12 @@ public class Employee {
 
     private String id;
     private String name;
+    private String role;
 
     public Employee(){
 
     }
-    public Employee(String id, String name){
+    public Employee(String id, String name, String role){
 
         this.id= id;
         this.name= name;
@@ -30,6 +31,13 @@ public class Employee {
 
         this.name= name;
 
+    }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 
