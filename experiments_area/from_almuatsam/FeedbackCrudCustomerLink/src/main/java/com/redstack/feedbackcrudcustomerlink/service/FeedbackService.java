@@ -14,6 +14,11 @@ import com.redstack.feedbackcrudcustomerlink.store.InMemoryDataStore;
 public class FeedbackService {
 
     private final List<Feedback> feedbackList = InMemoryDataStore.feedbackList;
+    private final CustomerService customerService;
+
+    public FeedbackService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     public List<Feedback> getAllFeedback() {
         return feedbackList;
@@ -61,8 +66,7 @@ public class FeedbackService {
     }
 
     private boolean customerExists(String customerId) {
-        return InMemoryDataStore.customers.stream()
-                .anyMatch(currCustomer -> currCustomer.id != null && currCustomer.id.equals(customerId));
+        return customerService.getCustomerById(customerId).isPresent();
     }
 
     private void requireExistingCustomer(String customerId) {
