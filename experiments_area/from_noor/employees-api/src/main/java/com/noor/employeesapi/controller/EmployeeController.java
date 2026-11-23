@@ -6,6 +6,7 @@ import com.noor.employeesapi.service.EmployeeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -19,39 +20,59 @@ public class EmployeeController {
 
     // GET all employees
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     // GET employee by ID
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable int id) {
-        return employeeService.getEmployeeById(id);
+    public ResponseEntity<?> getEmployeeById(@PathVariable int id) {
+        Employee employee = employeeService.getEmployeeById(id);
+
+        if (employee == null) {
+            return ResponseEntity.status(404).body("Employee " + id + " not found");
+        }
+
+        return ResponseEntity.ok(employee);
     }
 
     // POST create employee
     @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        return ResponseEntity.status(201).body(employeeService.addEmployee(employee));
     }
+
 
     // PUT update employee
     @PutMapping("/{id}")
-    public Employee updateEmployee(
+    public ResponseEntity<?> updateEmployee(
             @PathVariable int id,
             @RequestBody Employee updatedEmployee) {
-        return employeeService.updateEmployee(id, updatedEmployee);
+
+        Employee employee = employeeService.updateEmployee(id, updatedEmployee);
+
+        if (employee == null) {
+            return ResponseEntity.status(404).body("Employee " + id + " not found");
+        }
+
+        return ResponseEntity.ok(employee);
     }
 
     // DELETE employee
     @DeleteMapping("/{id}")
-    public String deleteEmployee(@PathVariable int id) {
-        return employeeService.deleteEmployee(id);
+    public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
+        String result = employeeService.deleteEmployee(id);
+
+        if (result.equals("Employee not found")) {
+            return ResponseEntity.status(404).body("Employee " + id + " not found");
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     // DELETE all employees
     @DeleteMapping
-    public String deleteAllEmployees() {
-        return employeeService.deleteAllEmployees();
+    public ResponseEntity<String> deleteAllEmployees() {
+        return ResponseEntity.ok(employeeService.deleteAllEmployees());
     }
 }
