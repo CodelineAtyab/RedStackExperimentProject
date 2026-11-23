@@ -1,27 +1,60 @@
-NOTES – Service layer refactor (Part 1, #594)
+# NOTES – Status codes with ResponseEntity (Part 2, #595)
 
-Resource refactored: Employees.
+**Resource:** Employees (same project as #594).
 
-What a service is and why we use it
+## 201 vs 202
+- `201 Created` means the request worked and a new resource was created. This is what POST does here,
+  because the employee is added to the list immediately.
+- `202 Accepted` means the request was received but will be processed later, which is not our case.
+- My choice: **201 Created**.
+- Source: TODO (write the page you read, for example RFC 9110 section 15.3 "Successful 2xx", or MDN "HTTP response status codes")
 
-A service is a class marked with @Service that holds the data and the real logic (find, add, update, delete). The controller only receives the web request and passes it on, like a waiter handing the order to the kitchen. We split them so each class has one job, and the logic is in one clear place.
+## What `ResponseEntity` does
+It lets the controller return the body and the status code together, for example the employee with 201,
+or the text "Employee 99 not found" with 404. Without it Spring always answers 200.
 
-What @Autowired does
+## filter and map
+- **filter:** keeps only the items that match a condition (for example employees whose role is "Developer").
+- **map:** turns every item into something else (for example an employee into its name).
 
-It tells Spring: "give me the service object". Spring creates one EmployeeService (a bean) and puts it into the controller field, so I never write new EmployeeService().
+## Design notes
+- The service returns `Optional` (get one, update) or `boolean` (delete one) and does not know about HTTP.
+  The controller checks `isPresent()` and decides 200 or 404, so a missing id gives a clean 404 and no crash.
+- Delete all still needs `?confirm=true` from #549 and answers 400 without it.
+- The 404 and delete answers are now plain text messages (not JSON objects).
 
-Test log (Postman)
+## Postman Verification (with Status Codes)
+1. `POST /employees` (`{"id":"1","name":"Sara","role":"Developer"}`) -> `201 Created`
+2. `GET /employees/1` -> `200 OK`
+3. `PUT /employees/1` (`{"id":"1","name":"Sara K","role":"Developer"}`) -> `200 OK`
+4. `GET /employees/99` -> `404 Not Found` (`"Employee 99 not found"`)
+5. `DELETE /employees/1` -> `200 OK` (`"Employee 1 deleted"`)
+6. `GET /employees/1` -> `404 Not Found`
+7. `DELETE /employees/1` -> `404 Not Found`
 
-I tested every endpoint in Postman after the refactor. All answers are the same as before the refactor.
+## Postman Verification (earlier endpoints, behaviour unchanged)
+Re-tested all `/employees` endpoints sequentially after the refactor and confirmed behaviour remained unchanged:
+1. `POST /employees` (created employees)
+2. `GET /employees` (returned all employees)
+3. `GET /employees/{id}` (returned matching employee / handled missing id)
+4. `PUT /employees/{id}` (updated matching employee / handled missing id)
+5. `DELETE /employees/{id}` (deleted matching employee / handled missing id)
+6. `DELETE /employees` and `DELETE /employees?confirm=true` (enforced the confirmation flag and cleared the list when confirmed)
 
-Request	Result
-POST /employees {"id":"1","name":"Sara"}	201, Sara added (same as before)
-GET /employees	200, JSON array (same as before)
-GET /employees/1 and /employees/999	200 Sara; 404 with message (same as before)
-PUT /employees/1 {"id":"1","name":"Sara K"}	200, Sara K (same as before)
-DELETE /employees/1 and /employees/999	200 removed; 404 with message (same as before)
-DELETE /employees (no confirm)	400, nothing deleted (same as before)
-DELETE /employees?confirm=true	200, all removed (same as before)
-Blockers
+## Section B output (`StreamPractice`)
+```
+--- Task 1: developers ---
+Sara
+Ali
+--- Task 2: all names ---
+[Sara, Ali, Noor]
+--- Task 3: developer names ---
+[Sara, Ali]
+--- Task 4: find by id ---
+id 2 -> Ali
+id 99 -> not found
+```
 
-TODO: No blockers + one thing that was harder than expected, or the exact error text.
+## Blockers
+**Harder than expected:** Moving every endpoint's list lookup, update, and delete logic cleanly out of `EmployeeController` into `EmployeeService` while keeping controller method signatures and behavior identical.
+- **Harder than expected:** Ensuring every missing-ID path (`GET /{id}`, `PUT /{id}`, `DELETE /{id}`) safely handles an empty `Optional` and returns a clean `404 Not Found` with a message instead of throwing an unhandled exception.
