@@ -132,3 +132,9 @@ Part 2:
 4) 0.0.0.0: Worked with localhost, 127.0.0.1, my private IP (192.168.100.130), and from another device on the same Wi-Fi using (http://192.168.100.130:8081). Because 0.0.0.0 is a wildcard address that tells the server to listen on all available network interfaces at once.
 
 Recommended setting: server.address=0.0.0.0 Because It allows me to keep testing locally using localhost while also letting colleagues on the same Wi-Fi network connect using my private IP address (and it avoids app startup crashes if my DHCP router assigns me a new private IP later).
+
+Unknown customerId status choice:
+I chose 400 Bad Request because the client provided an invalid customer ID reference in the request payload that does not exist in the system, so the request is invalid and cannot be processed.
+
+No Blockers.
+
