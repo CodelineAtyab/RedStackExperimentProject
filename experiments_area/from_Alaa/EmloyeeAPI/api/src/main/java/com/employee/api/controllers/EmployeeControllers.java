@@ -3,7 +3,6 @@ package com.employee.api.controllers;
 import com.employee.api.models.Employee;
 import com.employee.api.services.EmployeesServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -46,17 +45,10 @@ public class EmployeeControllers {
         return employeeService.deleteEmployee(id);
     }
 
+
     // Delete all employees (requires ?confirm=true)
     @DeleteMapping
-    public ResponseEntity<String> deleteAllEmployees(
-            @RequestParam(defaultValue = "false") boolean confirm) {
-
-        if (!confirm) {
-            return ResponseEntity.badRequest()
-                    .body("Deletion not allowed. Please use ?confirm=true to delete all employees.");
-        }
-
-        employeeService.deleteAllEmployees();
-        return ResponseEntity.ok("All employees have been deleted successfully.");
+    public String deleteAllEmployees(@RequestParam(defaultValue = "false") boolean confirm) {
+        return employeeService.deleteAllEmployees(confirm);
     }
 }

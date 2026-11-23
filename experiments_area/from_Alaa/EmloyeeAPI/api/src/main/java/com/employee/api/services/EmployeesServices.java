@@ -46,8 +46,13 @@ public class EmployeesServices {
         return toDelete.name + " removed";
     }
 
-    // Remove every employee
-    public void deleteAllEmployees() {
+    // Remove every employee, only when confirm is true, or throw 400
+    public String deleteAllEmployees(boolean confirm) {
+        if (!confirm) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Deletion not allowed. Please use ?confirm=true to delete all employees.");
+        }
         employees.clear();
+        return "All employees have been deleted successfully.";
     }
 }

@@ -37,8 +37,7 @@ The DELETE endpoint for removing all employees requires a confirmation query par
 - When `confirm=true` is provided, all employees are removed.
 - When the parameter is missing or set to `false`, nothing is deleted and the API returns **400 Bad Request** with a clear message.
 
-I used `@RequestParam` with a default value of `false`. The confirmation check stays in the controller because it validates the HTTP request. The service only clears the list through `deleteAllEmployees()`.
-
+I used `@RequestParam` with a default value of `false` in the controller and pass the value to the service. `EmployeesServices.deleteAllEmployees(confirm)` checks it and throws `ResponseStatusException` with 400 Bad Request when it is not true, the same way the 404 is handled. This keeps the controller method to a single call to the service.
 ## 5. Challenges and Learning
 
 During this task, I struggled a little with Java Streams syntax, particularly understanding how `filter()` and `findFirst()` work together to retrieve a specific employee from the list.
