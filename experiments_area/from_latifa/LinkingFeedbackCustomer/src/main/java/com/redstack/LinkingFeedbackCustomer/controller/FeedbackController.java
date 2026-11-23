@@ -23,6 +23,7 @@ public class FeedbackController {
 
     // Get one feedback by ID
     @GetMapping("/{id}")
+    //ResponseEntity controls the HTTP status and response body
     public ResponseEntity<?> getFeedbackById(@PathVariable String id) {
 
         for (Feedback currFeedback : feedbackList) {
@@ -33,28 +34,21 @@ public class FeedbackController {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", "Feedback not found!"));
+                .body(Map.of("message", "Feedback not found!"));     
+                //Map.of() creates a key-value map that Spring returns as JSON
     }
 
     // Add feedback
     @PostMapping
     public ResponseEntity<?> addFeedback(@RequestBody Feedback newFeedback) {
 
-        boolean customerExists = false;
-
-        for (Customer currCustomer : CustomerController.customersList) {
-
-            if (currCustomer.id.equals(newFeedback.customerId)) {
-                customerExists = true;
-                break;
-            }
-        }
-
-        if (!customerExists) {
+        // Check if the customer exists
+        if (!customerExists(newFeedback.customerId)) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("message", "refused (no such customer)"));
+                .body(Map.of("message", "refused (no such customer)"));
         }
 
+        // Add feedback
         feedbackList.add(newFeedback);
 
         return ResponseEntity.ok(newFeedback);
@@ -70,21 +64,13 @@ public class FeedbackController {
 
             if (currFeedback.id.equals(id)) {
 
-                boolean customerExists = false;
-
-                for (Customer currCustomer : CustomerController.customersList) {
-
-                    if (currCustomer.id.equals(updatedFeedback.customerId)) {
-                        customerExists = true;
-                        break;
-                    }
-                }
-
-                if (!customerExists) {
+                // Check if the customer exists
+                if (!customerExists(updatedFeedback.customerId)) {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message", "Customer does not exist!"));
                 }
 
+                // Update feedback information
                 currFeedback.message = updatedFeedback.message;
                 currFeedback.customerId = updatedFeedback.customerId;
 
@@ -121,6 +107,19 @@ public class FeedbackController {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("message", "Feedback not found!"));
+    }
+
+
+    private boolean customerExists(String id) {
+
+        for (Customer currCustomer : CustomerController.customersList) {
+
+            if (currCustomer.id.equals(id)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
