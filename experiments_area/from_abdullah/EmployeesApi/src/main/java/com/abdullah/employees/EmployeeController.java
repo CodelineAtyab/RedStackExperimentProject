@@ -1,88 +1,96 @@
 package com.abdullah.employees;
 
+import com.abdullah.employees.service.EmployeeService;
+
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private ArrayList<Employee> employees = new ArrayList<>();
+    @Autowired
+    private EmployeeService employeeService;
 
-    // Add an employee from the JSON body.
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Employee addEmployee(@RequestBody Employee employee) {
-        employees.add(employee);
-        return employee;
+    public ResponseEntity<Employee> addEmployee(
+            @RequestBody Employee employee) {
+
+        Employee createdEmployee = employeeService.addEmployee(employee);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(createdEmployee);
     }
 
-    // Return the complete list.
     @GetMapping
-    public ArrayList<Employee> getAllEmployees() {
-        return employees;
+    public ResponseEntity<ArrayList<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-    // Find one employee using the ID in the URL.
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable("id") String id) {
-        return findEmployee(id);
+    public ResponseEntity<?> getEmployee(
+            @PathVariable("id") String id) {
+
+        Employee employee = employeeService.getEmployee(id);
+
+        if (employee == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Employee " + id + " not found"));
+        }
+
+        return ResponseEntity.ok(employee);
     }
 
-    // Replace the employee's data while keeping the URL's ID.
     @PutMapping("/{id}")
-    public Employee updateEmployee(
+    public ResponseEntity<?> updateEmployee(
             @PathVariable("id") String id,
             @RequestBody Employee updatedEmployee) {
 
-        Employee employee = findEmployee(id);
-        employee.setName(updatedEmployee.getName());
+        Employee employee =
+                employeeService.updateEmployee(id, updatedEmployee);
 
-        return employee;
+        if (employee == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Employee " + id + " not found"));
+        }
+
+        return ResponseEntity.ok(employee);
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, String> deleteEmployee(
+    public ResponseEntity<Map<String, String>> deleteEmployee(
             @PathVariable("id") String id) {
 
-        Employee employee = findEmployee(id);
-        employees.remove(employee);
+        boolean deleted = employeeService.deleteEmployee(id);
 
-        return Map.of("message", "Employee " + id + " removed");
+        if (!deleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Employee " + id + " not found"));
+        }
+
+        return ResponseEntity.ok(
+                Map.of("message", "Employee " + id + " deleted"));
     }
 
     @DeleteMapping
-    public Map<String, String> deleteAllEmployees(
+    public ResponseEntity<Map<String, String>> deleteAllEmployees(
             @RequestParam(name = "confirm", required = false)
             String confirm) {
 
-        if (!"true".equals(confirm)) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Nothing deleted. Use ?confirm=true to delete all employees."
-            );
+        boolean deleted = employeeService.deleteAllEmployees(confirm);
+
+        if (!deleted) {
+            return ResponseEntity.badRequest().body(
+                    Map.of("message",
+                            "Nothing deleted. Use ?confirm=true to delete all employees."));
         }
 
-        employees.clear();
-
-        return Map.of("message", "All employees removed");
-    }
-
-    // Reuse the same search for GET one, PUT and DELETE one.
-    private Employee findEmployee(String id) {
-        for (Employee employee : employees) {
-            if (id.equals(employee.getId())) {
-                return employee;
-            }
-        }
-
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Employee " + id + " not found"
-        );
+        return ResponseEntity.ok(
+                Map.of("message", "All employees deleted"));
     }
 }

@@ -1,26 +1,26 @@
-# Employees REST API Notes (#549)
+# HTTP Status Codes & Stream Practice Notes (#595)
 
-## HTTP Methods & Query Theory
-- **GET:** Requests a representation of a resource from the server without modifying its state and does not carry a request body.
-- **POST:** Submits new data to the server to create a new resource, typically carrying a request body.
-- **PUT:** Updates or replaces an existing target resource entirely using data provided in the request body.
-- **DELETE:** Removes a specified resource or collection from the server.
-- **QUERY:** A proposed HTTP method intended for reading data like GET, but designed to safely carry a request body containing complex search filters.
+## 201 Created vs. 202 Accepted
+- **Choice:** Use `201 Created` for `POST /employees`.
+- **Why:** `201 Created` indicates that the request succeeded and a new resource was created immediately as a result. `202 Accepted` means the request was accepted for processing, but processing has not been completed yet (such as asynchronous or queued work).
+- **Source:** MDN Web Docs — HTTP response status codes (`201 Created` and `202 Accepted`).
 
-## Design Decisions
-- **Missing ID Behavior:** For GET one (`/employees/{id}`), PUT (`/employees/{id}`), and DELETE one (`/employees/{id}`), if the employee ID does not exist in the in-memory list, the server responds with status `404 Not Found` and a clear message rather than crashing.
-- **Delete All Protection:** The bulk delete endpoint (`/employees`) requires the query parameter `?confirm=true`. If missing or false, it halts execution and returns `400 Bad Request` to prevent accidental data wipes.
+## What `ResponseEntity` Does
+`ResponseEntity` wraps both the HTTP status code and the response body (and optional headers) returned by a controller method. Instead of letting Spring always default to `200 OK`, it lets the controller explicitly return statuses like `201 Created` or `404 Not Found` along with clear data or error messages.
 
-## Testing Results (Postman)
-- Tested all six actions sequentially:
-  1. `POST /employees` (Created employee 1 and 2)
-  2. `GET /employees` (Retrieved all)
-  3. `GET /employees/2` (Retrieved single employee)
-  4. `PUT /employees/2` (Updated single employee data)
-  5. `DELETE /employees/1` (Removed single employee)
-  6. `DELETE /employees` (Blocked with 400 when missing confirm parameter)
-  7. `DELETE /employees?confirm=true` (Successfully wiped remaining list)
+## Stream `filter` and `map`
+- **`filter`:** Evaluates a predicate on each element in a stream and keeps only the elements that match the condition without modifying the original collection.
+- **`map`:** Transforms each element in a stream into a new value or type (such as extracting a single field) while producing a stream of the transformed results.
+
+## Postman Verification (with Status Codes)
+1. `POST /employees` (`{"id":"1","name":"Sara","role":"Developer"}`) -> `201 Created`
+2. `GET /employees/1` -> `200 OK`
+3. `PUT /employees/1` (`{"id":"1","name":"Sara K","role":"Developer"}`) -> `200 OK`
+4. `GET /employees/99` -> `404 Not Found` (`"Employee 99 not found"`)
+5. `DELETE /employees/1` -> `200 OK` (`"Employee 1 deleted"`)
+6. `GET /employees/1` -> `404 Not Found`
+7. `DELETE /employees/1` -> `404 Not Found`
 
 ## Blockers
 - No blockers.
-- **Harder than expected:** Properly handling validation logic for the query parameter (`confirm=true`) and ensuring HTTP status codes like `400 Bad Request` and `404 Not Found` returned cleanly through `ResponseEntity`.
+- **Harder than expected:** Ensuring every missing-ID path (`GET /{id}`, `PUT /{id}`, `DELETE /{id}`) safely handles an empty `Optional` and returns a clean `404 Not Found` with a message instead of throwing an unhandled exception.

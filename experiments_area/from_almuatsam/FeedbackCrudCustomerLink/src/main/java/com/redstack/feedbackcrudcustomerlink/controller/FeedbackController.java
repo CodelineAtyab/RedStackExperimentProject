@@ -1,102 +1,76 @@
 package com.redstack.feedbackcrudcustomerlink.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
-import com.redstack.feedbackcrudcustomerlink.model.Customer;
 import com.redstack.feedbackcrudcustomerlink.model.Feedback;
-import com.redstack.feedbackcrudcustomerlink.store.InMemoryDataStore;
+import com.redstack.feedbackcrudcustomerlink.service.FeedbackService;
 
 @RestController
 public class FeedbackController {
 
-    private final List<Feedback> feedbackList = InMemoryDataStore.feedbackList;
+    @Autowired
+    private FeedbackService feedbackService;
 
     @GetMapping("/feedback")
-    public List<Feedback> getAllFeedback() {
-        return feedbackList;
+    public ResponseEntity<List<Feedback>> getAllFeedback() {
+        return ResponseEntity.ok(feedbackService.getAllFeedback());
     }
 
     @GetMapping("/feedback/{id}")
-    public Feedback getSpecificFeedback(@PathVariable String id) {
-        for (Feedback currFeedback : feedbackList) {
-            if (id.equals(currFeedback.id)) {
-                return currFeedback;
-            }
+    public ResponseEntity<?> getSpecificFeedback(@PathVariable String id) {
+        Optional<Feedback> feedback = feedbackService.getFeedbackById(id);
+        if (feedback.isPresent()) {
+            return ResponseEntity.ok(feedback.get());
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found: id=" + id);
+        return feedbackNotFound(id);
     }
 
     @PostMapping("/feedback")
-    public Feedback createFeedback(@RequestBody Feedback feedback) {
-        requireExistingCustomer(feedback.customerId);
-        feedbackList.add(feedback);
-        return feedback;
+    public ResponseEntity<Feedback> createFeedback(@RequestBody Feedback feedback) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(feedbackService.createFeedback(feedback));
     }
 
     @PutMapping("/feedback/{id}")
-    public Feedback updateFeedback(@PathVariable String id, @RequestBody Feedback request) {
-        for (Feedback currFeedback : feedbackList) {
-            if (id.equals(currFeedback.id)) {
-                requireExistingCustomer(request.customerId);
-                currFeedback.message = request.message;
-                currFeedback.customerId = request.customerId;
-                return currFeedback;
-            }
+    public ResponseEntity<?> updateFeedback(@PathVariable String id, @RequestBody Feedback request) {
+        Optional<Feedback> updated = feedbackService.updateFeedback(id, request);
+        if (updated.isPresent()) {
+            return ResponseEntity.ok(updated.get());
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found: id=" + id);
+        return feedbackNotFound(id);
     }
 
     @DeleteMapping("/feedback/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFeedback(@PathVariable String id) {
-        boolean removed = feedbackList.removeIf(currFeedback -> id.equals(currFeedback.id));
-        if (!removed) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found: id=" + id);
+    public ResponseEntity<String> deleteFeedback(@PathVariable String id) {
+        if (feedbackService.deleteFeedback(id)) {
+            return ResponseEntity.ok("Feedback deleted: id=" + id);
         }
+        return feedbackNotFound(id);
+    }
+
+    @DeleteMapping("/feedback")
+    public ResponseEntity<String> deleteAllFeedback() {
+        feedbackService.deleteAllFeedback();
+        return ResponseEntity.ok("All feedback deleted");
     }
 
     @GetMapping("/customers/{id}/feedback")
-    public List<Feedback> getFeedbackByCustomer(@PathVariable String id) {
-        boolean customerExists = false;
-        for (Customer currCustomer : InMemoryDataStore.customers) {
-            if (id.equals(currCustomer.id)) {
-                customerExists = true;
-                break;
-            }
-        }
-        if (!customerExists) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found: id=" + id);
-        }
-
-        List<Feedback> customerFeedback = new ArrayList<>();
-        for (Feedback currFeedback : feedbackList) {
-            if (id.equals(currFeedback.customerId)) {
-                customerFeedback.add(currFeedback);
-            }
-        }
-        return customerFeedback;
+    public ResponseEntity<?> getFeedbackByCustomer(@PathVariable String id) {
+        return ResponseEntity.ok(feedbackService.getFeedbackByCustomerId(id));
     }
 
-    private void requireExistingCustomer(String customerId) {
-        for (Customer currCustomer : InMemoryDataStore.customers) {
-            if (currCustomer.id != null && currCustomer.id.equals(customerId)) {
-                return;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                "Customer does not exist: customerId=" + customerId);
+    private ResponseEntity<String> feedbackNotFound(String id) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Feedback not found: id=" + id);
     }
-
 }
