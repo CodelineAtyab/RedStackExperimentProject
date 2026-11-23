@@ -13,22 +13,22 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final List<Employee> employees = new ArrayList<>();
+    private final List<Employee> employeeList = new ArrayList<>();
 
-    // GET all employees
+    // GET all employees   http://localhost:8080/employees
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employees;
+        return employeeList;
     }
 
-    // GET employee by ID
+    // GET employee by ID     http://localhost:8080/employees/2
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployeeById(
             @PathVariable int id) {
 
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                return ResponseEntity.ok(employee);
+        for (Employee emp : employeeList) {
+            if (emp.getId() == id) {
+                return ResponseEntity.ok(emp);
             }
         }
 
@@ -40,13 +40,13 @@ public class EmployeeController {
     public ResponseEntity<Employee> addEmployee(
             @RequestBody Employee employee) {
 
-        for (Employee existing : employees) {
+        for (Employee existing : employeeList) {
             if (existing.getId() == employee.getId()) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
         }
 
-        employees.add(employee);
+        employeeList.add(employee);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(employee);
     }
@@ -55,14 +55,14 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(
             @PathVariable int id,
-            @RequestBody Employee updatedEmployee) {
+            @RequestBody Employee updatedEmp) {
 
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                employee.setName(updatedEmployee.getName());
-                employee.setDepartment(updatedEmployee.getDepartment());
+        for (Employee emp: employeeList) {
+            if (emp.getId() == id) {
+                emp.setName(updatedEmp.getName());
+                emp.setDepartment(updatedEmp.getDepartment());
 
-                return ResponseEntity.ok(employee);
+                return ResponseEntity.ok(emp);
             }
         }
 
@@ -74,9 +74,9 @@ public class EmployeeController {
     public ResponseEntity<Void> deleteEmployee(
             @PathVariable int id) {
 
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getId() == id) {
-                employees.remove(i);
+        for (int i = 0; i < employeeList.size(); i++) {
+            if (employeeList.get(i).getId() == id) {
+                employeeList.remove(i);
                 return ResponseEntity.noContent().build();
             }
         }
