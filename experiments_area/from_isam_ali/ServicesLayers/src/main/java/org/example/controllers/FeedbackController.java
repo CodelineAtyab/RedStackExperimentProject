@@ -1,10 +1,11 @@
 package org.example.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.example.Feedback;
+import org.example.services.FeedbackService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,73 +14,59 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/feedback")
 public class FeedbackController {
 
-    public static final List<Feedback> feedbackList = new ArrayList<>();
+    @Autowired
+    private FeedbackService feedbackService;
 
-    // POST /feedback
+    // 201 Created, or 400 Bad Request when the customerId does not exist
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Feedback feedback) {
-        if (CustomerController.findCustomer(feedback.getCustomerId()) == null) {
+        if (!feedbackService.customerExists(feedback.getCustomerId())) {
             return unknownCustomer(feedback.getCustomerId());
         }
-        feedbackList.add(feedback);
-        return ResponseEntity.status(HttpStatus.CREATED).body(feedback);
+        Feedback created = feedbackService.create(feedback);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // GET /feedback
     @GetMapping
-    public List<Feedback> getAll() {
-        return feedbackList;
+    public ResponseEntity<List<Feedback>> getAll() {
+        return ResponseEntity.ok(feedbackService.getAll());
     }
 
-    // GET /feedback/{id}
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable String id) {
-        Feedback found = null;
-        for (Feedback f : feedbackList) {
-            if (f.getId().equals(id)) {
-                found = f;
-                break;
-            }
-        }
-        if (found == null) {
-            return notFound(id);
-        }
-        return ResponseEntity.ok(found);
-    }
-
-    // PUT /feedback/{id}
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody Feedback updated) {
-        if (CustomerController.findCustomer(updated.getCustomerId()) == null) {
-            return unknownCustomer(updated.getCustomerId());
-        }
-        for (int i = 0; i < feedbackList.size(); i++) {
-            if (feedbackList.get(i).getId().equals(id)) {
-                updated.setId(id);
-                feedbackList.set(i, updated);
-                return ResponseEntity.ok(updated);
-            }
+        Optional<Feedback> found = feedbackService.getOne(id);
+        if (found.isPresent()) {
+            return ResponseEntity.ok(found.get());
         }
         return notFound(id);
     }
 
-    // DELETE /feedback/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        boolean removed = feedbackList.removeIf(f -> f.getId().equals(id));
-        if (!removed) {
-            return notFound(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody Feedback updated) {
+        if (!feedbackService.customerExists(updated.getCustomerId())) {
+            return unknownCustomer(updated.getCustomerId());
         }
-        return ResponseEntity.ok(Map.of("message", "Feedback " + id + " was removed."));
+        Optional<Feedback> result = feedbackService.update(id, updated);
+        if (result.isPresent()) {
+            return ResponseEntity.ok(result.get());
+        }
+        return notFound(id);
     }
 
-    private ResponseEntity<?> notFound(String id) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", "No feedback with id " + id + " exists."));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOne(@PathVariable String id) {
+        if (feedbackService.deleteOne(id)) {
+            return ResponseEntity.ok("Feedback " + id + " deleted");
+        }
+        return notFound(id);
     }
 
-    private ResponseEntity<?> unknownCustomer(String customerId) {
+    private ResponseEntity<String> notFound(String id) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Feedback " + id + " not found");
+    }
+
+    private ResponseEntity<String> unknownCustomer(String customerId) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("message", "Refused: no customer with id " + customerId + " exists."));
+                .body("Refused: no customer with id " + customerId + " exists");
     }
 }
