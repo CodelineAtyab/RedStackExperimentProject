@@ -1,6 +1,6 @@
 package com.redstack.employeeApi.Controllers;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import com.redstack.employeeApi.Employee;
 import com.redstack.employeeApi.services.EmployeeService;
@@ -14,8 +14,7 @@ import org.springframework.http.ResponseEntity;
 public class EmployeeController {
 
 
-    private ArrayList<Employee> employees = new ArrayList<>(); // Store employees here
-    // 2. POST - Add employee
+   // 2. POST - Add employee
     @PostMapping
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
         return new ResponseEntity<>(
@@ -28,8 +27,8 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping
-    public List<Employee> getEmployees() {
-        return employeeService.getEmployees();
+    public ResponseEntity<List<Employee>> getEmployees() {
+        return ResponseEntity.ok(employeeService.getEmployees());
     }
     // 3. GET one employee by ID
     @GetMapping("/{id}")
