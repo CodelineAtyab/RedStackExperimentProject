@@ -2,10 +2,10 @@ package com.redstack.employeeApi.Controllers;
 
 import com.redstack.employeeApi.Customer;
 import com.redstack.employeeApi.Feedback;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +13,21 @@ import java.util.Map;
 @RestController
 @RequestMapping("/feedback")
 public class FeedbackController {
+
     //to store the feedback in memory
     public static List<Feedback> feedbacks = new ArrayList<>();
 
-    //GET ALL FEDDBACK
+    //Check if a customer exists. Compares as text, so a bad id never crashes the server.
+    private boolean customerExists(String customerId) {
+        for (Customer customer : CustomerController.customers) {
+            if (String.valueOf(customer.getId()).equals(customerId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //GET ALL FEEDBACK
     @GetMapping
     public List<Feedback> getFeedbacks() {
         return feedbacks;
@@ -26,40 +37,29 @@ public class FeedbackController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getFeedbackById(@PathVariable int id) {
         for (Feedback feedback : feedbacks) {
-            if (feedback.getId()==id) {
+            if (feedback.getId() == id) {
                 return ResponseEntity.ok(feedback);
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message","Feedback not found"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Feedback not found"));
     }
 
-    //Post - Add feedback
+    //POST - Add feedback
     @PostMapping
     public ResponseEntity<?> addFeedback(@RequestBody Feedback feedback) {
-        boolean customerExists = false;
-        //check if cust exists
-        for(Customer customer: CustomerController.customers){
-            if (customer.getId() == Integer.parseInt(feedback.getCustomerId())){
-                customerExists = true;
-                break;
-            }
-        }
-        if(!customerExists){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message","Customer not found"));
+        if (!customerExists(feedback.getCustomerId())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Customer not found"));
         }
         feedbacks.add(feedback);
         return ResponseEntity.status(HttpStatus.CREATED).body(feedback);
     }
 
-    // PUT - Update feedback
+    //PUT - Update feedback
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateFeedback(
-            @PathVariable int id,
-            @RequestBody Feedback feedback) {
-
-        Feedback foundFeedback = null;
+    public ResponseEntity<?> updateFeedback(@PathVariable int id, @RequestBody Feedback feedback) {
 
         // Find the existing feedback
+        Feedback foundFeedback = null;
         for (Feedback feedback1 : feedbacks) {
             if (feedback1.getId() == id) {
                 foundFeedback = feedback1;
@@ -74,16 +74,7 @@ public class FeedbackController {
         }
 
         // Check if the customer exists
-        boolean customerExists = false;
-
-        for (Customer customer : CustomerController.customers) {
-            if (customer.getId()==Integer.parseInt(feedback.getCustomerId())) {
-                customerExists = true;
-                break;
-            }
-        }
-
-        if (!customerExists) {
+        if (!customerExists(feedback.getCustomerId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Customer not found"));
         }
@@ -95,21 +86,20 @@ public class FeedbackController {
         return ResponseEntity.ok(foundFeedback);
     }
 
-    //DELETEING A FEEDBACK
+    //DELETE a feedback
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteFeedback(@PathVariable int id) {
         Feedback foundFeedback = null;
         for (Feedback feedback : feedbacks) {
-            if(feedback.getId()==id){
-                foundFeedback=feedback;
+            if (feedback.getId() == id) {
+                foundFeedback = feedback;
                 break;
             }
         }
-        if(foundFeedback==null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message","Feedback not found"));
+        if (foundFeedback == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Feedback not found"));
         }
         feedbacks.remove(foundFeedback);
-        return ResponseEntity.ok(Map.of("message","Feedback deleted"));
+        return ResponseEntity.ok(Map.of("message", "Feedback deleted"));
     }
-
 }
