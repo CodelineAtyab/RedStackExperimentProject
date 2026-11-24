@@ -2,6 +2,7 @@ package com.example.EmployeeApi.controller;
 
 import com.example.EmployeeApi.model.Feedback;
 import com.example.EmployeeApi.service.FeedbackService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @RequestMapping("/feedback")
 public class FeedbackController {
 
+    @Autowired
     private final FeedbackService feedbackService;
 
     public FeedbackController(FeedbackService feedbackService) {

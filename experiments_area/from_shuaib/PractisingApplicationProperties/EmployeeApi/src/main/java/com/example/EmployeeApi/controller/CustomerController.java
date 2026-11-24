@@ -2,6 +2,7 @@ package com.example.EmployeeApi.controller;
 
 import com.example.EmployeeApi.model.Customer;
 import com.example.EmployeeApi.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @RequestMapping("/customers")
 public class CustomerController {
 
+    @Autowired
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
