@@ -1,6 +1,7 @@
 package com.reddesk.desk_api.service;
 
 import com.reddesk.desk_api.model.Customer;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,13 @@ import java.util.Optional;
 @Service
 public class CustomerService {
     private ArrayList<Customer> listOfCustomers = new ArrayList<>();
+
+    @PostConstruct
+    public void generateDummyCustomers() {
+        listOfCustomers.add(new Customer("cus-1", "Abdullah"));
+        listOfCustomers.add(new Customer("cus-2", "AlAyhem"));
+        listOfCustomers.add(new Customer("cus-3", "Noor"));
+    }
 
     public ArrayList<Customer> getAllCustomers() {
         return listOfCustomers;

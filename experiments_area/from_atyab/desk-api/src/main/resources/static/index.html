@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Red Stack</title>
+    <style>
+        :root {
+            --bg: #0b0d12;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #f3f4f6;
+            --muted: #8b93a7;
+            --red: #ff2d55;
+            --red-soft: #ff5c7a;
+            --amber: #ffb020;
+            --radius: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
+        body {
+            margin: 0;
+            padding: 48px 24px 72px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background glow */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::before {
+            width: 560px;
+            height: 560px;
+            top: -220px;
+            right: -160px;
+            background: radial-gradient(circle, rgba(255, 45, 85, 0.38), transparent 70%);
+        }
+
+        body::after {
+            width: 520px;
+            height: 520px;
+            bottom: -240px;
+            left: -180px;
+            background: radial-gradient(circle, rgba(255, 176, 32, 0.18), transparent 70%);
+        }
+
+        .page {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        /* ---------- Header ---------- */
+        .page-header {
+            margin-bottom: 44px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--surface);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .eyebrow .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.18);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%      { opacity: 0.55; transform: scale(0.85); }
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: clamp(2rem, 5vw, 3.1rem);
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+        }
+
+        h1 .accent {
+            background: linear-gradient(100deg, var(--red) 0%, var(--red-soft) 45%, var(--amber) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            max-width: 60ch;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--muted);
+        }
+
+        /* ---------- Section bar ---------- */
+        .section-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 0 0 22px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 4px;
+            height: 18px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, var(--red), var(--amber));
+        }
+
+        .count {
+            padding: 4px 11px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        /* ---------- Grid ---------- */
+        .customer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+            gap: 20px;
+        }
+
+        /* ---------- Card ---------- */
+        .customer-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background:
+                linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
+                var(--bg);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .customer-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 3px;
+            background: linear-gradient(90deg, var(--red), var(--red-soft), var(--amber));
+            opacity: 0.75;
+        }
+
+        .customer-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 45, 85, 0.45);
+            box-shadow: 0 20px 44px rgba(255, 45, 85, 0.16), 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar {
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            color: #fff;
+            background: linear-gradient(140deg, var(--red), #b8153a);
+            box-shadow: 0 8px 20px rgba(255, 45, 85, 0.32);
+        }
+
+        .card-name {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .id-chip {
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            color: var(--red-soft);
+            background: rgba(255, 45, 85, 0.1);
+            border: 1px solid rgba(255, 45, 85, 0.22);
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #3ddc97;
+        }
+
+        .status::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 3px rgba(61, 220, 151, 0.15);
+        }
+
+        /* ---------- States ---------- */
+        .state {
+            grid-column: 1 / -1;
+            padding: 56px 24px;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            text-align: center;
+        }
+
+        .state-title {
+            margin: 0 0 8px;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .state-text {
+            margin: 0;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .state.error {
+            border-color: rgba(255, 45, 85, 0.35);
+            background: rgba(255, 45, 85, 0.06);
+        }
+
+        .state.error .state-title { color: var(--red-soft); }
+
+        .skeleton {
+            height: 132px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: linear-gradient(100deg, rgba(255, 255, 255, 0.04) 30%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 70%);
+            background-size: 220% 100%;
+            animation: shimmer 1.4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            from { background-position: 180% 0; }
+            to   { background-position: -60% 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+
+        @media (max-width: 520px) {
+            body { padding: 32px 16px 56px; }
+            .customer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="page-header">
+            <span class="eyebrow"><span class="dot"></span> Live Dashboard</span>
+            <h1>Hello <span class="accent">Team Red Stack</span></h1>
+            <p class="subtitle">
+                This is your dashboard — served by Spring Boot and rendered by Chrome Client.
+                Customer records are fetched live from <code>GET /customers</code>.
+            </p>
+        </header>
+
+        <div class="section-bar">
+            <h2 class="section-title">Customers</h2>
+            <span class="count" id="customerCount">Loading…</span>
+        </div>
+
+        <div class="customer-grid" id="listOfCustomers">
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+        </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById("listOfCustomers");
+        const countBadge = document.getElementById("customerCount");
+
+        const initialsOf = (name) => {
+            const parts = String(name || "?").trim().split(/\s+/).filter(Boolean);
+            if (parts.length === 0) return "?";
+            if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        };
+
+        const showState = (kind, title, text) => {
+            const box = document.createElement("div");
+            box.className = `state ${kind || ""}`.trim();
+
+            const heading = document.createElement("p");
+            heading.className = "state-title";
+            heading.textContent = title;
+
+            const message = document.createElement("p");
+            message.className = "state-text";
+            message.textContent = text;
+
+            box.append(heading, message);
+            grid.replaceChildren(box);
+        };
+
+        const buildCustomerCard = (customer, index) => {
+            const card = document.createElement("article");
+            card.className = "customer-card";
+            card.style.animationDelay = `${Math.min(index * 60, 480)}ms`;
+
+            const top = document.createElement("div");
+            top.className = "card-top";
+
+            const avatar = document.createElement("div");
+            avatar.className = "avatar";
+            avatar.textContent = initialsOf(customer.name);
+
+            const identity = document.createElement("div");
+
+            const name = document.createElement("h3");
+            name.className = "card-name";
+            name.textContent = customer.name;
+
+            const meta = document.createElement("div");
+            meta.className = "card-meta";
+            meta.textContent = "Customer";
+
+            identity.append(name, meta);
+            top.append(avatar, identity);
+
+            const footer = document.createElement("div");
+            footer.className = "card-footer";
+
+            const idChip = document.createElement("span");
+            idChip.className = "id-chip";
+            idChip.textContent = `#${customer.id}`;
+
+            const status = document.createElement("span");
+            status.className = "status";
+            status.textContent = "Active";
+
+            footer.append(idChip, status);
+
+            card.append(top, footer);
+            return card;
+        };
+
+        fetch("http://localhost:8080/customers", { method: "GET" })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Request failed with status ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((JSONResponse) => {
+                console.log(JSONResponse);
+
+                if (!Array.isArray(JSONResponse) || JSONResponse.length === 0) {
+                    countBadge.textContent = "0 customers";
+                    showState("", "No customers yet", "Register a customer with POST /customers and it will appear here.");
+                    return;
+                }
+
+                countBadge.textContent = `${JSONResponse.length} ${JSONResponse.length === 1 ? "customer" : "customers"}`;
+                grid.replaceChildren(...JSONResponse.map(buildCustomerCard));
+            })
+            .catch((error) => {
+                console.error(error);
+                countBadge.textContent = "Unavailable";
+                showState("error", "Could not load customers", "Make sure the Spring Boot app is running on localhost:8080, then reload this page.");
+            });
+    </script>
+</body>
+</html>
