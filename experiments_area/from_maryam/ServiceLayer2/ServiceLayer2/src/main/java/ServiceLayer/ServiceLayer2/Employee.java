@@ -13,6 +13,8 @@ public class Employee {
 
         this.id= id;
         this.name= name;
+        this.role = role;
+
     }
 
     public String getId(){
