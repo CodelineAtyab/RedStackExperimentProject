@@ -1,11 +1,13 @@
 package org.example.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.example.Customer;
 import org.example.Feedback;
+import org.example.services.CustomerService;
+import org.example.services.FeedbackService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,54 +16,46 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customers")
 public class CustomerController {
 
+    @Autowired
+    private CustomerService customerService;
 
-    public static final List<Customer> customers = new ArrayList<>();
+    @Autowired
+    private FeedbackService feedbackService;
 
     @GetMapping
-    public List<Customer> getAll() {
-        return customers;
+    public ResponseEntity<List<Customer>> getAll() {
+        return ResponseEntity.ok(customerService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable String id) {
-        Customer customer = findCustomer(id);
-        if (customer == null) {
-            return notFound(id);
+        Optional<Customer> found = customerService.getOne(id);
+        if (found.isPresent()) {
+            return ResponseEntity.ok(found.get());
         }
-        return ResponseEntity.ok(customer);
+        return notFound(id);
     }
 
     @PostMapping
     public ResponseEntity<Customer> create(@RequestBody Customer customer) {
-        customers.add(customer);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        Customer created = customerService.create(customer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
-
 
     @GetMapping("/{id}/feedback")
     public ResponseEntity<?> getFeedbackOfCustomer(@PathVariable String id) {
-        if (findCustomer(id) == null) {
+        if (customerService.getOne(id).isEmpty()) {
             return notFound(id);
         }
-        List<Feedback> result = FeedbackController.feedbackList.stream()
-                .filter(f -> id.equals(f.getCustomerId()))
-                .toList();
+        List<Feedback> result = feedbackService.getByCustomerId(id);
         return ResponseEntity.ok(result);
     }
 
-    // TODO (you write these, copy the idea from your EmployeeController):
-    // PUT    /customers/{id}
-    // DELETE /customers/{id}   <- also decide what happens to that customer's feedback
+    // TODO: PUT /customers/{id} and DELETE /customers/{id}
+    // (write the logic in CustomerService, call it here in one line each)
 
-    static Customer findCustomer(String id) {
-        return customers.stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-
-    private ResponseEntity<?> notFound(String id) {
+    private ResponseEntity<String> notFound(String id) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", "No customer with id " + id + " exists."));
+                .body("Customer " + id + " not found");
     }
 }
