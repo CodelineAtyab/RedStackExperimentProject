@@ -1,4 +1,4 @@
-package com.teamred.employees.service;
+package com.teamred.employees;
 
 import java.util.ArrayList;
 import java.util.List;
