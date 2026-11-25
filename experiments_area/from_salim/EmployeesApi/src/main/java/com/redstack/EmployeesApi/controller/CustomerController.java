@@ -1,10 +1,13 @@
 package com.redstack.EmployeesApi.controller;
 
+import com.redstack.EmployeesApi.service.CustomerService;
 import com.redstack.EmployeesApi.model.Customer;
+import com.redstack.EmployeesApi.service.FeedbackService;
 import com.redstack.EmployeesApi.model.Feedback;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +17,20 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-    public static final List<Customer> customers = new ArrayList<>();
-    public static final List<Feedback> feedback = new ArrayList<>();
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private FeedbackService feedbackService;
 
     @GetMapping
     public List<Customer> getAllCustomers() {
-        return customers;
+        return customerService.getAllCustomers();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCustomer(@PathVariable String id) {
-        Optional<Customer> customer = findCustomer(id);
+        Optional<Customer> customer = customerService.getCustomerById(id);
 
         if (customer.isEmpty()) {
             return customerNotFound(id);
@@ -35,8 +41,7 @@ public class CustomerController {
 
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer) {
-        customers.add(customer);
-        return customer;
+        return customerService.createCustomer(customer);
     }
 
     @PutMapping("/{id}")
@@ -44,57 +49,40 @@ public class CustomerController {
             @PathVariable String id,
             @RequestBody Customer replacement) {
 
-        Optional<Customer> existing = findCustomer(id);
+        Optional<Customer> updated =
+                customerService.updateCustomer(id, replacement);
+
+        if (updated.isEmpty()) {
+            return customerNotFound(id);
+        }
+
+        return ResponseEntity.ok(updated.get());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable String id) {
+        Optional<Customer> existing = customerService.getCustomerById(id);
 
         if (existing.isEmpty()) {
             return customerNotFound(id);
         }
 
-        replacement.id = id;
-        int index = customers.indexOf(existing.get());
-        customers.set(index, replacement);
+        feedbackService.deleteFeedbackForCustomer(id);
+        customerService.deleteCustomer(id);
 
-        return ResponseEntity.ok(replacement);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable String id) {
-        Optional<Customer> customer = findCustomer(id);
-
-        if (customer.isEmpty()) {
-            return customerNotFound(id);
-        }
-
-        // Chosen behavior: deleting a customer deletes their feedback too.
-        feedback.removeIf(item -> item.customerId.equals(id));
-        customers.remove(customer.get());
-
-        return ResponseEntity.ok(
-                Map.of("message", "Customer " + id + " and their feedback deleted"));
+        return ResponseEntity.ok(Map.of("message", "Customer " + id + " and their feedback deleted"));
     }
 
     @GetMapping("/{id}/feedback")
     public ResponseEntity<?> getCustomerFeedback(@PathVariable String id) {
-        if (findCustomer(id).isEmpty()) {
+        if (customerService.getCustomerById(id).isEmpty()) {
             return customerNotFound(id);
         }
 
-        List<Feedback> customerFeedback = feedback.stream()
-                .filter(item -> item.customerId.equals(id))
-                .toList();
-
-        return ResponseEntity.ok(customerFeedback);
-    }
-
-    private Optional<Customer> findCustomer(String id) {
-        return customers.stream()
-                .filter(customer -> customer.id.equals(id))
-                .findFirst();
+        return ResponseEntity.ok(feedbackService.getFeedbackForCustomer(id));
     }
 
     private ResponseEntity<Map<String, String>> customerNotFound(String id) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", "Customer " + id + " not found"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Customer " + id + " not found"));
     }
-
 }
