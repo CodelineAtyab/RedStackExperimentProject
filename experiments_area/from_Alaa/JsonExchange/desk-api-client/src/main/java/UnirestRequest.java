@@ -16,12 +16,12 @@ public class UnirestRequest {
         System.out.println("Name: " + jsonObject.getString("name"));
 
         // 4. Read the "favorites" array
-        JSONArray favoritesList = jsonObject.getJSONArray("favorites");
+        JSONArray favouritesList = jsonObject.getJSONArray("favourites");
 
         // 5. Loop through the array and print each item
-        for (int index = 0; index < favoritesList.length(); index++) {
-            JSONObject currObj = favoritesList.getJSONObject(index);
-            System.out.println(currObj.getInt("id") + " - " + currObj.getString("Title"));
+        for (int index = 0; index < favouritesList.length(); index++) {
+            JSONObject currObj = favouritesList.getJSONObject(index);
+            System.out.println(currObj.getInt("id") + " - " + currObj.getString("title"));
         }
     }
 }
