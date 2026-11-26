@@ -17,20 +17,20 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // GET all employees   http://localhost:8080/employees
+    // GET all employees
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-    // GET employee by ID     http://localhost:8080/employees/2
+    // GET employee by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
-
+    public ResponseEntity<?> getEmployeeById(@PathVariable int id) {
         Employee employee = employeeService.getEmployeeById(id);
 
         if (employee == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404)
+                    .body("Employee " + id + " not found");
         }
 
         return ResponseEntity.ok(employee);
@@ -38,12 +38,12 @@ public class EmployeeController {
 
     // POST create employee
     @PostMapping
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-
+    public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {
         Employee created = employeeService.addEmployee(employee);
 
         if (created == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Employee " + employee.getId() + " already exists");
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -51,14 +51,15 @@ public class EmployeeController {
 
     // PUT update employee
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(
+    public ResponseEntity<?> updateEmployee(
             @PathVariable int id,
             @RequestBody Employee updatedEmployee) {
 
         Employee employee = employeeService.updateEmployee(id, updatedEmployee);
 
         if (employee == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404)
+                    .body("Employee " + id + " not found");
         }
 
         return ResponseEntity.ok(employee);
@@ -66,20 +67,20 @@ public class EmployeeController {
 
     // DELETE employee
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable int id) {
-
+    public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
         String result = employeeService.deleteEmployee(id);
 
         if ("Employee not found".equals(result)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404)
+                    .body("Employee " + id + " not found");
         }
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(result);
     }
 
     // DELETE all employees
     @DeleteMapping
-    public String deleteAllEmployees() {
-        return employeeService.deleteAllEmployees();
+    public ResponseEntity<String> deleteAllEmployees() {
+        return ResponseEntity.ok(employeeService.deleteAllEmployees());
     }
 }
