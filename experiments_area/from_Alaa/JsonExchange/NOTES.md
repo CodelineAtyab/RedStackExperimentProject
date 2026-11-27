@@ -87,3 +87,83 @@ No blockers.
 
 ### What was harder than expected
 Understanding how Spring Boot handles JSON serialization. I first thought I had to build the response by hand.
+
+
+# Issue 645 Notes
+
+## Part 1
+
+### 1.1 Networking Basics
+**Source:** GeeksforGeeks
+
+- **IP address:** A numerical address used to identify a device on a network.
+- **Private IP:** Used for communication within a local network (e.g., `192.168.x.x`).
+- **Public IP:** Used to communicate over the internet. Public IPs can be static or dynamic.
+- **Static vs dynamic:** A static IP stays the same, while a dynamic IP may change over time.
+- **DHCP:** Automatically assigns IP addresses and network settings. The DHCP server assigns addresses, while the client requests them. My laptop is the client and my router usually acts as the server.
+- **localhost / 127.0.0.1:** Refers to my own computer and allows local testing without network access from other devices.
+- **0.0.0.0:** When used as a server binding address, it allows the server to listen on all network interfaces.
+
+| `server.address` | Who can reach it? |
+|---|---|
+| `127.0.0.1` | Only my own computer |
+| `localhost` | Only my own computer |
+| Private IP | Devices that can reach that network IP, subject to firewall |
+| `0.0.0.0` | All network interfaces, subject to firewall |
+
+A colleague cannot use my `localhost` because it refers to their own computer, not mine. A dynamic private IP may change after reconnecting, making an old server link unreliable.
+
+### 1.2 SDLC
+**Source:** GeeksforGeeks
+
+- **Requirement gathering & planning:** Identify what the software needs to do and plan resources, time and feasibility.
+- **SRS:** Documents the functional and non-functional requirements of the software.
+- **SDS/SDD:** Describes how the system will be designed and implemented technically.
+- **SLA:** An agreement defining service expectations, such as 99.9% uptime.
+- **Design:** Create the system architecture and technical blueprint.
+- **Develop:** Write the code and build the software.
+- **Test:** Check the software for errors and verify requirements.
+- **Deploy:** Release the software for use.
+- **Maintain:** Fix bugs, update and improve the software.
+
+**Current issue:** This issue mainly involves development and testing. Requirements were defined before implementation through the user story and acceptance criteria.
+
+### 1.3 Agile, Scrum and Kanban
+**Source:** Atlassian — [Scrum vs Kanban](https://www.atlassian.com/agile/kanban/kanban-vs-scrum)
+
+- **Agile:** An approach to software development that encourages flexibility, collaboration and delivering work incrementally.
+- **Scrum:** Uses fixed-length sprints, a backlog, daily stand-ups, sprint reviews and retrospectives.
+- **Kanban:** Visualizes work on a board, uses workflow columns and limits work in progress to improve continuous flow.
+
+| Scrum | Kanban |
+|---|---|
+| Works in fixed-length sprints | Continuous workflow |
+| Sprint planning and defined ceremonies | Flexible planning as capacity allows |
+| Sprint backlog and sprint goals | Work-in-progress limits and flow |
+
+### 1.4 IAM, LDAP and Active Directory
+**Sources:** Cloudflare, GeeksforGeeks and Microsoft Learn
+
+- **IAM:** Manages identities and permissions. It answers who someone is and what they are allowed to access.
+- **LDAP:** A protocol used to access and look up information stored in directories.
+- **Active Directory:** Microsoft's directory service that stores information about users, groups, computers and network resources.
+
+IAM is the overall concept of managing identities and access. Active Directory is a directory service that stores identity information. LDAP is one protocol applications can use to communicate with directory services such as Active Directory.
+
+---
+
+## Part 2 — Server Address Experiments
+
+| `server.address` | Result |
+|---|---|
+| `localhost` | Worked with `localhost` and `127.0.0.1`. |
+| `127.0.0.1` | Worked with `localhost` and `127.0.0.1`. |
+| `192.168.100.14` | Worked with my private IP, but `localhost` did not work. |
+| `0.0.0.0` | Worked with both `localhost` and my private IP. |
+| `0.0.0.0` (colleague) | Not tested because I was working on the weekend. |
+
+I recommend `0.0.0.0` when colleagues need to access the server over the same network because it listens on all network interfaces, subject to firewall restrictions.
+
+### Blockers
+No blockers.
+
