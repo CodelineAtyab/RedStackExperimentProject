@@ -1,54 +1,52 @@
-
 package com.noor.employeesapi.controller;
 
 import com.noor.employeesapi.model.Employee;
+import com.noor.employeesapi.service.EmployeeService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final List<Employee> employees = new ArrayList<>();
+    @Autowired
+    private EmployeeService employeeService;
 
-    // GET all employees
+    // GET all employees   http://localhost:8080/employees
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employees;
+        return employeeService.getAllEmployees();
     }
 
-    // GET employee by ID
+    // GET employee by ID     http://localhost:8080/employees/2
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(
-            @PathVariable int id) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
 
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                return ResponseEntity.ok(employee);
-            }
+        Employee employee = employeeService.getEmployeeById(id);
+
+        if (employee == null) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(employee);
     }
 
     // POST create employee
     @PostMapping
-    public ResponseEntity<Employee> addEmployee(
-            @RequestBody Employee employee) {
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
 
-        for (Employee existing : employees) {
-            if (existing.getId() == employee.getId()) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-            }
+        Employee created = employeeService.addEmployee(employee);
+
+        if (created == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        employees.add(employee);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(employee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     // PUT update employee
@@ -57,30 +55,31 @@ public class EmployeeController {
             @PathVariable int id,
             @RequestBody Employee updatedEmployee) {
 
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                employee.setName(updatedEmployee.getName());
-                employee.setDepartment(updatedEmployee.getDepartment());
+        Employee employee = employeeService.updateEmployee(id, updatedEmployee);
 
-                return ResponseEntity.ok(employee);
-            }
+        if (employee == null) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(employee);
     }
 
     // DELETE employee
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(
-            @PathVariable int id) {
+    public ResponseEntity<Void> deleteEmployee(@PathVariable int id) {
 
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getId() == id) {
-                employees.remove(i);
-                return ResponseEntity.noContent().build();
-            }
+        String result = employeeService.deleteEmployee(id);
+
+        if ("Employee not found".equals(result)) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
+    }
+
+    // DELETE all employees
+    @DeleteMapping
+    public String deleteAllEmployees() {
+        return employeeService.deleteAllEmployees();
     }
 }
