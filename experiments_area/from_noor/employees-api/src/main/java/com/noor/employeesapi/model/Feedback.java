@@ -2,34 +2,34 @@ package com.noor.employeesapi.model;
 
 public class Feedback {
 
-    private int id;
-    private int customerId;
+    private String id;
+    private String customerId;
     private String message;
     private int rating;
 
     public Feedback() {
     }
 
-    public Feedback(int id, int customerId, String message, int rating) {
+    public Feedback(String id, String customerId, String message, int rating) {
         this.id = id;
         this.customerId = customerId;
         this.message = message;
         this.rating = rating;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
