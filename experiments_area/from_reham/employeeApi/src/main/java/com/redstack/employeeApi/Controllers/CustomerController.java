@@ -2,95 +2,98 @@ package com.redstack.employeeApi.Controllers;
 
 import com.redstack.employeeApi.Customer;
 import com.redstack.employeeApi.Feedback;
+import com.redstack.employeeApi.services.FeedbackService;
+import com.redstack.employeeApi.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
 
-    public static List<Customer> customers = new ArrayList<>();
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private FeedbackService feedbackService;
 
     //Get all customers
     @GetMapping
     public ResponseEntity<?> getAllCustomers() {
+        List<Customer> customers = customerService.getCustomers();
+
         if (customers.isEmpty()) {
             return ResponseEntity.ok("No customers found");
         }
+
         return ResponseEntity.ok(customers);
     }
 
     //Get one customer
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerById(@PathVariable int id) {
-        for (Customer customer : customers) {
-            if (customer.getId() == id) {
-                return ResponseEntity.ok(customer);
-            }
+    public ResponseEntity<?> getCustomerById(@PathVariable String id) {
+        Customer customer = customerService.getCustomerById(id);
+
+        if (customer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Customer with id " + id + " not found");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with id " + id + " not found");
+
+        return ResponseEntity.ok(customer);
     }
 
     //Add customer
     @PostMapping
     public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
-        customers.add(customer);
+        customerService.addCustomer(customer);
         return ResponseEntity.ok("Customer created");
     }
 
     //Update customer (uses the id from the URL)
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCustomer(@PathVariable int id, @RequestBody Customer customer) {
-        for (Customer c : customers) {
-            if (c.getId() == id) {
-                c.setName(customer.getName());
-                return ResponseEntity.ok("Customer updated");
-            }
+    public ResponseEntity<?> updateCustomer(
+            @PathVariable String id,
+            @RequestBody Customer customer) {
+
+        Customer updatedCustomer = customerService.updateCustomer(id, customer);
+
+        if (updatedCustomer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Customer with id " + id + " not found");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with id " + id + " not found");
+
+        return ResponseEntity.ok("Customer updated");
     }
 
     //Delete customer and all of their feedback
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable int id) {
-        Customer foundCustomer = null;
-        for (Customer customer : customers) {
-            if (customer.getId() == id) {
-                foundCustomer = customer;
-                break;
-            }
+    public ResponseEntity<?> deleteCustomer(@PathVariable String id) {
+
+        if (!customerService.customerExists(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Customer with id " + id + " not found");
         }
-        if (foundCustomer == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with id " + id + " not found");
-        }
-        // customerId is a String, so compare it with the id as text
-        FeedbackController.feedbacks.removeIf(feedback -> String.valueOf(id).equals(feedback.getCustomerId()));
-        customers.remove(foundCustomer);
+        feedbackService.deleteFeedbackByCustomerId(id);
+
+        customerService.deleteCustomer(id);
+
         return ResponseEntity.ok("Customer deleted");
     }
 
+
     //Get all feedback that belongs to one specific customer
     @GetMapping("/{id}/feedback")
-    public ResponseEntity<?> getCustomerFeedback(@PathVariable int id) {
-        // check that the customer exists in the customers list
-        boolean customerFound = false;
-        for (Customer customer : customers) {
-            if (customer.getId() == id) {
-                customerFound = true;
-                break;
-            }
+    public ResponseEntity<?> getCustomerFeedback(@PathVariable String id) {
+
+        if (!customerService.customerExists(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Customer with id " + id + " not found");
         }
-        if (!customerFound) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with id " + id + " not found");
-        }
-        List<Feedback> customerFeedbacks = FeedbackController.feedbacks
-                .stream() //allows us to process and filter elements from the collection
-                .filter(feedback -> String.valueOf(id).equals(feedback.getCustomerId()))
-                .toList(); //converts the filtered stream back to a list
+        List<Feedback> customerFeedbacks = feedbackService.getFeedbackByCustomerId(id);
         return ResponseEntity.ok(customerFeedbacks);
     }
 }
